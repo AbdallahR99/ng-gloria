@@ -2,6 +2,7 @@ const products = '/products';
 export enum APP_ROUTES {
   HOME = '/home',
   PRODUCTS = products,
+  PRODUCT_DETAILS = products,
   MEN_PERFUME = products + '?category=perfum&gender=male',
   WOMEN_PERFUME = products + '?category=perfum&gender=female',
   SKIN_CARE = products + '?category=skin_care',
