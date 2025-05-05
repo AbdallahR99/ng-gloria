@@ -1,0 +1,32 @@
+<div class="flex flex-col bg-white h-full w-full">
+  <div class="flex flex-col flex-1 flex-auto">
+    @for (item of navItems; track item.route) {
+    <a [routerLink]="item.route" class="btn btn-link text-dark flex justify-between hover:text-primary px-3 py-4">
+      <span>
+        {{item.name | translate}}
+      </span>
+      <mat-icon fontIcon="chevron_right" />
+    </a>
+    }
+
+  </div>
+  <div class="flex flex-col flex-auto bg-neutral-content py-4 gap-4">
+    <div class="flex gap-2">
+      <a [routerLink]="appRoutes.SignUp" class="btn btn-block btn-outline btn-primary shadow-none">
+        {{"Sign Up" | translate}}
+      </a>
+      <a [routerLink]="appRoutes.SignIn" class="btn btn-block btn-primary shadow-none">
+        {{"Login" | translate}}
+      </a>
+
+    </div>
+    <div class="flex gap-3">
+      <a href="btn btn-link">
+        <mat-icon svgIcon="fb" />
+        <mat-icon svgIcon="insta" />
+        <mat-icon svgIcon="whatsapp" />
+        <mat-icon svgIcon="linkedin" />
+      </a>
+    </div>
+  </div>
+</div>

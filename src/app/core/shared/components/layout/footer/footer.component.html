@@ -1,0 +1,40 @@
+<footer class="p-3 flex max-md:flex-col gap-3 flex-wrap bg-primary-content">
+  <div class="flex flex-column">
+    <a class="btn btn-link text-xl" [routerLink]="[appRoutes.HOME]">
+      {{"LOGO"}}
+    </a>
+    <div class="md:hidden flex flex-col gap-4">
+      <p class="max-w-48">
+        {{"Lorem Ipsum is simply and dummy Lorem" | translate}}
+      </p>
+      <div class="flex gap-3">
+        <a href="btn btn-link">
+          <mat-icon svgIcon="fb" />
+          <mat-icon svgIcon="insta" />
+          <mat-icon svgIcon="whatsapp" />
+          <mat-icon svgIcon="linkedin" />
+        </a>
+      </div>
+    </div>
+
+  </div>
+  <div class="flex flex-column">
+    <h3 class="text-xl">{{"Shop Now" | translate}}</h3>
+    @for (item of [
+    { name: `Men's Perfume`, route: appRoutes.MEN_PERFUME },
+    { name: `Women's Perfume`, route: appRoutes.WOMEN_PERFUME },
+    { name: `Skin Care`, route: appRoutes.SKIN_CARE },
+    { name: `Hair Care`, route: appRoutes.HAIR_CARE },
+    { name: `Blogs`, route: appRoutes.BLOGS },
+    ]; track item.name) {
+    <a class="btn btn-link" [routerLink]="[item.route]">
+      {{item.name | translate}}
+    </a>
+    }
+
+
+  </div>
+</footer>
+<div class="p-3 text-center border-top border-primary bg-primary-content">
+  <bdi>© 2025</bdi> {{"Gloria Natural Cosmetics. All rights reserved." | translate}}
+</div>

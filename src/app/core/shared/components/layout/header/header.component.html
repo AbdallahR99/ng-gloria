@@ -1,0 +1,57 @@
+<app-header-banner />
+<header #header class="navbar bg-primary">
+  <div class="navbar-start">
+    <div class="md:hidden">
+      <label class="swap swap-rotate">
+        <!-- this hidden checkbox controls the state -->
+        <input type="checkbox" [(ngModel)]="menuCollapse" />
+
+        <!-- on icon -->
+        <mat-icon class="swap-on fill-current" svgIcon="menu" />
+
+
+        <!-- off icon -->
+        <mat-icon class="swap-off fill-current" svgIcon="menu" />
+
+      </label>
+      <a class="btn btn-link text-xl">
+        <mat-icon svgIcon="menu" />
+      </a>
+    </div>
+    <div class="max-md:hidden">
+      <a class="btn btn-link text-xl">
+        {{"LOGO"}}
+      </a>
+    </div>
+  </div>
+  <div class="navbar-center gap-4">
+    @for (item of navItems; track item.name) {
+    <a class="btn btn-link text-xl" [routerLink]="item.route" routerLinkActive="btn-active">
+      {{item.name}}
+    </a>
+    }
+  </div>
+  <div class="navbar-end">
+    <div class="flex gap-3">
+      <a class="btn btn-link" [routerLink]="[appRoutes.Cart]" routerLinkActive="btn-active">
+        <mat-icon svgIcon="cart" [inline]="true" />
+      </a>
+      <div class="flex md:hidden">
+        <a class="btn btn-link" [routerLink]="[appRoutes.SignIn]" routerLinkActive="btn-active">
+          {{"Login" | translate}}
+        </a>
+        <span>
+          {{"|"}}
+        </span>
+        <a class="btn btn-link" [routerLink]="[appRoutes.SignUp]" routerLinkActive="btn-active">
+          {{"Sign Up" | translate}}
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="fixed left-0 right-0 bottom-0 transition-all h-{{menuCollapse() ? 'full' : 'none'}}"
+  [ngStyle]="{'top.px': header?.clientHeight}">
+  <header-nav-menu />
+</div>

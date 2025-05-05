@@ -1,0 +1,6 @@
+<app-header domElement #headerComponent="domElement" />
+<div [ngStyle]="{'padding-top.px': headerComponent?.element?.nativeElement?.clientHeight ?? 50}"></div>
+<main class="flex-1">
+  <ng-content></ng-content>
+</main>
+<app-footer />

@@ -1,0 +1,20 @@
+const products = '/products';
+export enum APP_ROUTES {
+  HOME = '/home',
+  PRODUCTS = products,
+  MEN_PERFUME = products + '?category=perfum&gender=male',
+  WOMEN_PERFUME = products + '?category=perfum&gender=female',
+  SKIN_CARE = products + '?category=skin_care',
+  HAIR_CARE = products + '?category=hair_care',
+  LOGIN = '/login',
+  SIGNUP = '/signup',
+  DASHBOARD = '/dashboard',
+  PROFILE = '/profile',
+  SETTINGS = '/settings',
+  SHOP = '/shop',
+  BLOGS = '/blogs',
+  Cart = '/cart',
+  SignIn = '/signin',
+  SignUp = '/signup',
+  NOT_FOUND = '**',
+}
