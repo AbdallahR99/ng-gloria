@@ -1,4 +1,4 @@
-<app-header-banner />
+<app-header-banner domElement #banner="domElement" />
 <header #header class="navbar bg-primary">
   <div class="navbar-start">
     <div class="md:hidden">
@@ -50,8 +50,9 @@
     </div>
   </div>
 </header>
-
-<div class="fixed left-0 right-0 bottom-0 transition-all h-{{menuCollapse() ? 'full' : 'none'}}"
-  [ngStyle]="{'top.px': header?.clientHeight}">
+@let topSpace = (header?.clientHeight ?? 0) + (banner?.element?.nativeElement?.clientHeight ?? 0);
+<div
+  class="fixed left-0 right-0 bottom-0 transition-all {{menuCollapse() ? 'h-full' : 'h-0'}} overflow-hidden bg-white z-50"
+  [ngStyle]="{'top.px': topSpace}">
   <header-nav-menu />
 </div>

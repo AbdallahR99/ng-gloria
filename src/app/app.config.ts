@@ -23,7 +23,7 @@ export const appConfig: ApplicationConfig = {
       routes,
       withInMemoryScrolling({ scrollPositionRestoration: 'top' })
     ),
-    provideClientHydration(withEventReplay()),
+    // provideClientHydration(withEventReplay()),
     provideClientTranslatorModule(),
     provideHttpClient(withFetch()),
     MatIconModule,

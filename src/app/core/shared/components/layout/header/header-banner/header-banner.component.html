@@ -1,20 +1,31 @@
 <div class="navbar bg-secondary p-0 m-0 text-sm">
-  <div class="navbar-start md:hidden">
+  <div class="navbar-start max-md:hidden">
     <span>
-      <span>{{"Email Us" | translate}}</span> | <span>{{"GloriaNatural@gmail.com"}}</span>
+      <span>{{"Email Us" | translate}}</span> | <span> <span> {{"GloriaNatural@gmail.com"}}</span></span>
     </span>
   </div>
-  <div class="navbar-center">
+  <div class="navbar-center text-center mx-auto">
     <a class="text-sm link">{{"Sign Up and get our free Discounts" | translate }}</a>
   </div>
-  <div class="navbar-end md:hidden">
-    <div class="flex gap-3">
+  <div class="navbar-end max-md:hidden">
+    <div class="flex gap-2">
       <a href="btn btn-link">
-        <mat-icon svgIcon="fb" [inline]="true" />
-        <mat-icon svgIcon="insta" [inline]="true" />
-        <mat-icon svgIcon="whatsapp" [inline]="true" />
-        <mat-icon svgIcon="linkedin" [inline]="true" />
+        <mat-icon svgIcon="fb" />
+
       </a>
+      <a href="btn btn-link">
+        <mat-icon svgIcon="insta" />
+
+      </a>
+      <a href="btn btn-link">
+        <mat-icon svgIcon="whatsapp" />
+
+      </a>
+      <a href="btn btn-link">
+        <mat-icon svgIcon="linkedin" />
+
+      </a>
+
     </div>
   </div>
 </div>
