@@ -1,102 +1,91 @@
 import { PlatformService } from './../platform/platform.service';
 import { DOCUMENT } from '@angular/common';
-import {
-  EventEmitter,
-  inject,
-  Inject,
-  Injectable,
-  InjectionToken,
-} from '@angular/core';
+import { EventEmitter, inject, Injectable } from '@angular/core';
 import { APP_SETTINGS } from '@app/core/constants/app-settings.constants';
 import { LocalStorageKeys } from '@app/core/constants/local_storage';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
-// import { HOST_LANGAUGE } from 'hosts';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TranslatorService {
-  PlatformService = inject(PlatformService);
-  private translate = inject<TranslateService>(TranslateService);
-  private document = inject<Document>(DOCUMENT);
+  private readonly PlatformService = inject(PlatformService);
+  private readonly translate = inject<TranslateService>(TranslateService);
+  private readonly document = inject<Document>(DOCUMENT);
+
+  private static readonly LANG_AR = 'ar';
+  private static readonly LANG_EN = 'en';
+
+  get localStorage(): Storage | any | null {
+    if (this.PlatformService.isServer) {
+      return null;
+    }
+    return localStorage;
+  }
 
   onLangChange(): EventEmitter<LangChangeEvent> {
     return this.translate.onLangChange;
   }
-  langOb = this.translate.onLangChange.asObservable();
-  getCurrentLang(): string | null {
-    const isServer = this.PlatformService.isServer;
 
-    // const isServer = isPlatformServer(this.platformId);
-    if (isServer || !localStorage) {
+  langOb = this.translate.onLangChange.asObservable();
+
+  getCurrentLang(): string | null {
+    if (this.PlatformService.isServer) {
+      const urlParams = new URLSearchParams(
+        this.document.location?.search || ''
+      );
+      const langParam = urlParams.get('lang');
+      return langParam || APP_SETTINGS.defaultLanguage;
+    }
+
+    if (typeof localStorage === 'undefined') {
       return APP_SETTINGS.defaultLanguage;
     }
-    // this.activatedRoute.snapshot.queryParamMap?.get(GlobalNames.langaugeParam)
-    // if (!localStorage) return 'ar';
-    return localStorage.getItem(LocalStorageKeys.LANG);
-    // return 'ar';
+
+    return (
+      this.localStorage?.getItem(LocalStorageKeys.LANG) ||
+      APP_SETTINGS.defaultLanguage
+    );
   }
 
-  setCurrentLang(val: string): void {
-    if (!val) {
-      val = 'ar';
-    }
+  setCurrentLang(lang: string = APP_SETTINGS.defaultLanguage): void {
+    lang = lang || APP_SETTINGS.defaultLanguage;
 
-    this.translate.use(val);
-    this.translate.setDefaultLang(val);
-    this.translate.currentLang = val;
-    if (localStorage) localStorage.setItem('Lang', val);
-    if (val === 'ar') {
-      // this.setLangagueQueryParam('ar');
-      this.document.documentElement.setAttribute('dir', 'rtl');
-      this.document.documentElement.lang = 'ar';
-      this.document
-        .getElementsByTagName('html')[0]
-        ?.setAttribute(LocalStorageKeys.LANG, 'ar');
-      this.document.getElementsByTagName('html')[0]?.setAttribute('dir', 'rtl');
-      this.document.getElementsByTagName('body')[0]?.setAttribute('dir', 'rtl');
-      this.document
-        .getElementsByTagName('body')[0]
-        ?.setAttribute('class', 'rtl');
-    }
-    if (val === 'en') {
-      // this.setLangagueQueryParam('en');
-      this.document.documentElement.setAttribute('dir', 'ltr');
-      this.document.documentElement.lang = 'en';
-      this.document
-        .getElementsByTagName('html')[0]
-        ?.setAttribute(LocalStorageKeys.LANG, 'en');
-      this.document.getElementsByTagName('html')[0]?.removeAttribute('dir');
-      this.document.getElementsByTagName('body')[0]?.removeAttribute('dir');
-      this.document.getElementsByTagName('body')[0]?.removeAttribute('class');
-      this.document.getElementsByTagName('html')[0]?.setAttribute('dir', 'ltr');
-      this.document.getElementsByTagName('body')[0]?.setAttribute('dir', 'ltr');
-      this.document
-        .getElementsByTagName('body')[0]
-        ?.setAttribute('class', 'ltr');
-    }
-    // if (localStorage) localStorage.setItem(LocalStorageKeys.LANG, val);
+    this.translate.use(lang);
+    this.translate.setDefaultLang(lang);
+    this.translate.currentLang = lang;
+
+    this.localStorage?.setItem(LocalStorageKeys.LANG, lang);
+
+    this.updateDocumentAttributes(lang);
   }
 
-  // setLangagueQueryParam(value: 'ar' | 'en'): void {
-  //   if (value != 'ar' && value != 'en') return;
-  //   this.router.navigate([], {
-  //     // relativeTo: this.activatedRoute,
-  //     queryParams: {
-  //       [GlobalNames.langaugeParam]: value == 'en' ? 'en' : null,
-  //     },
-  //     queryParamsHandling: 'merge',
-  //   });
-  //   // console.log('i18n', this.activatedRoute.snapshot);
+  private updateDocumentAttributes(lang: string): void {
+    const isArabic = lang === TranslatorService.LANG_AR;
+    const dir = isArabic ? 'rtl' : 'ltr';
 
-  //   // console.log(this.activatedRoute.snapshot.queryParamMap);
-  // }
+    this.document.documentElement.setAttribute('dir', dir);
+    this.document.documentElement.lang = lang;
 
-  translateWord(val: string): string {
-    return this.translate?.instant(val || '  ');
+    const htmlElement = this.document.getElementsByTagName('html')[0];
+    const bodyElement = this.document.getElementsByTagName('body')[0];
+
+    htmlElement?.setAttribute(LocalStorageKeys.LANG, lang);
+    htmlElement?.setAttribute('dir', dir);
+    bodyElement?.setAttribute('dir', dir);
+
+    if (isArabic) {
+      bodyElement?.setAttribute('class', 'rtl');
+    } else {
+      bodyElement?.removeAttribute('class');
+    }
+  }
+
+  translateWord(key: string): string {
+    return this.translate.instant(key || '');
   }
 
   isEn(): boolean {
-    return this.getCurrentLang() === 'en';
+    return this.getCurrentLang() === TranslatorService.LANG_EN;
   }
 }

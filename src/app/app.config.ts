@@ -15,6 +15,7 @@ import { provideClientTranslatorModule } from '@core/shared/modules/translator/t
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { IconService } from './core/services/utils/icon.service';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslatorService } from './core/services/translate/translator.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -29,6 +30,7 @@ export const appConfig: ApplicationConfig = {
     MatIconModule,
     provideAppInitializer(() => {
       inject(IconService).registerIcons();
+      inject(TranslatorService).setCurrentLang();
     }),
   ],
 };

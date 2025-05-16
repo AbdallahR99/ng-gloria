@@ -1,5 +1,4 @@
 import { inject, Injectable, Injector } from '@angular/core';
-import 'reflect-metadata';
 import { TranslatorService } from './translate/translator.service';
 import { CategoryService } from './repository/category.service';
 import { ProductService } from './repository/product.service';

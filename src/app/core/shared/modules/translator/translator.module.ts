@@ -11,6 +11,7 @@ export const provideClientTranslatorModule = () =>
       loader: {
         provide: TranslateLoader,
         useClass: TranslateBrowserLoader,
+
         // useFactory: translateBrowserLoaderFactory,
         // useFactory: createTranslateLoader,
         deps: [HttpClient, TransferState],

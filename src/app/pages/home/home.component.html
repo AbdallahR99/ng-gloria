@@ -4,9 +4,9 @@
     <h3 class="mb-4 text-center">
       {{"Shop By Category" | translate}}
     </h3>
-
+    {{isEn}}
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-      <!-- @for (item of categories.value()?.items; track item.id) {
+      @for (item of categories.value()?.items; track item.id) {
       @let name = isEn ? item.nameEn : item.nameAr;
       <a [routerLink]="appRoutes.PRODUCTS" [queryParams]="{category: item.slug}"
         class="flex flex-col items-center text-center">
@@ -17,7 +17,7 @@
         </div>
         <span class="mt-2 text-sm font-medium">{{name}}</span>
       </a>
-      } -->
+      }
     </div>
   </section>
   <section class="mb-8 top-discounts">
@@ -72,40 +72,8 @@
           <h3 class="text-lg font-bold">New Arrivals</h3>
         </div>
       </div>
-      @for (item of [
-      {
-      name: `Amber and Musk's Mist», For her/him`,
-      stars: 5,
-      reviews: 95,
-      price: 75,
-      image: 'images/perfume2.png',
-      route: appRoutes.PRODUCT_DETAILS + '/6'
-      },
-      {
-      name: `Amber and Musk's Mist», For her/him`,
-      stars: 4,
-      reviews: 87,
-      price: 78,
-      image: 'images/perfume3.png',
-      route: appRoutes.PRODUCT_DETAILS + '/7'
-      },
-      {
-      name: `Amber and Musk's Mist», For her/him`,
-      stars: 5,
-      reviews: 102,
-      price: 75,
-      image: 'images/perfume4.png',
-      route: appRoutes.PRODUCT_DETAILS + '/8'
-      },
-      {
-      name: `Amber and Musk's Mist», For her/him`,
-      stars: 4,
-      reviews: 79,
-      price: 76,
-      image: 'images/perfume1.png',
-      route: appRoutes.PRODUCT_DETAILS + '/9'
-      }
-      ]; track item.name) {
+      @for (item of products.value()?.items; track item.id) {
+      @let name = isEn ? item.nameEn : item.nameAr;
       <div class="card card-compact">
         <div class="relative">
           <button class="btn btn-circle btn-sm absolute right-2 top-2 bg-base-100">
@@ -116,7 +84,7 @@
             </svg>
           </button>
           <figure class="h-48 flex items-center justify-center p-4">
-            <img [src]="item.image" alt="{{item.name}}" class="h-full object-contain" />
+            <img [src]="item.image" alt="{{name}}" class="h-full object-contain" />
           </figure>
         </div>
         <div class="card-body">
@@ -130,7 +98,7 @@
             }
             <span class="text-xs ml-1">({{item.reviews}})</span>
           </div>
-          <h4 class="text-sm">{{item.name}}</h4>
+          <h4 class="text-sm">{{name}}</h4>
           <div class="flex justify-between items-center mt-2">
             <span class="font-bold">AED {{item.price}}</span>
             <button class="btn btn-primary btn-sm">Add to cart</button>
