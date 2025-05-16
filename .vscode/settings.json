@@ -4,6 +4,7 @@
       "file": "./.vscode/daisyui.md"
     }
   ],
+  "tailwindCSS.experimental.configFile": "public/styles/tailwind.scss",
   "angular-schematics.schematicsDefaultOptions": {
     "angular-*": {
       "style": "scss",

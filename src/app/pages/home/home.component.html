@@ -6,23 +6,16 @@
     </h3>
 
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-      @for (item of [
-      { name: `Bukhoor`, route: appRoutes.PRODUCTS + '?category=Bukhoor', image: 'images/perfume1.png' },
-      { name: `Bukhoor`, route: appRoutes.PRODUCTS + '?category=Bukhoor', image: 'images/perfume2.png' },
-      { name: `Hair Mist`, route: appRoutes.PRODUCTS + '?category=Hair Mist', image: 'images/perfume1.png' },
-      { name: `Hair Mist`, route: appRoutes.PRODUCTS + '?category=Hair Mist', image: 'images/perfume2.png' },
-      { name: `Hair Mist`, route: appRoutes.PRODUCTS + '?category=Hair Mist', image: 'images/perfume1.png' },
-      { name: `Hair Mist`, route: appRoutes.PRODUCTS + '?category=Hair Mist', image: 'images/perfume2.png' },
-      { name: `Hair Mist`, route: appRoutes.PRODUCTS + '?category=Hair Mist', image: 'images/perfume1.png' },
-      { name: `Hair Mist`, route: appRoutes.PRODUCTS + '?category=Hair Mist', image: 'images/perfume2.png' },
-      ]; track item.name) {
-      <a href="{{item.route}}" class="flex flex-col items-center text-center">
+      @for (item of categories.value()?.items; track item.id) {
+      @let name = isEn ? item.nameEn : item.nameAr;
+      <a [routerLink]="appRoutes.PRODUCTS" [queryParams]="{category: item.slug}"
+        class="flex flex-col items-center text-center">
         <div class="avatar">
           <div class="w-24 h-24 rounded-full border border-base-300 overflow-hidden">
-            <img [src]="item.image" alt="{{item.name}}" class="object-contain w-full h-full" />
+            <img [src]="item.image" alt="{{name}}" class="object-contain w-full h-full" />
           </div>
         </div>
-        <span class="mt-2 text-sm font-medium">{{item.name}}</span>
+        <span class="mt-2 text-sm font-medium">{{name}}</span>
       </a>
       }
     </div>
@@ -32,48 +25,8 @@
       {{"Today's Discounts" | translate}}
     </h3>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      @for (item of [
-      {
-      name: `Amber and Musk's Mist», For her/him`,
-      stars: 4,
-      reviews: 82,
-      price: 70,
-      image: 'images/perfume1.png',
-      route: appRoutes.PRODUCT_DETAILS + '/1'
-      },
-      {
-      name: `Amber and Musk's Mist», For her/him`,
-      stars: 5,
-      reviews: 120,
-      price: 75,
-      image: 'images/perfume2.png',
-      route: appRoutes.PRODUCT_DETAILS + '/2'
-      },
-      {
-      name: `Amber and Musk's Mist», For her/him`,
-      stars: 4,
-      reviews: 65,
-      price: 68,
-      image: 'images/perfume3.png',
-      route: appRoutes.PRODUCT_DETAILS + '/3'
-      },
-      {
-      name: `Amber and Musk's Mist», For her/him`,
-      stars: 5,
-      reviews: 110,
-      price: 75,
-      image: 'images/perfume4.png',
-      route: appRoutes.PRODUCT_DETAILS + '/4'
-      },
-      {
-      name: `Amber and Musk's Mist», For her/him`,
-      stars: 4,
-      reviews: 95,
-      price: 76,
-      image: 'images/perfume1.png',
-      route: appRoutes.PRODUCT_DETAILS + '/5'
-      }
-      ]; track item.name) {
+      @for (item of products.value()?.items; track item.id) {
+      @let name = isEn ? item.nameEn : item.nameAr;
       <div class="card card-compact">
         <div class="relative">
           <button class="btn btn-circle btn-sm absolute right-2 top-2 bg-base-100">
@@ -84,7 +37,7 @@
             </svg>
           </button>
           <figure class="h-48 flex items-center justify-center p-4">
-            <img [src]="item.image" alt="{{item.name}}" class="h-full object-contain" />
+            <img [src]="item.image" alt="{{name}}" class="h-full object-contain" />
           </figure>
         </div>
         <div class="card-body">
@@ -98,7 +51,7 @@
             }
             <span class="text-xs ml-1">({{item.reviews}})</span>
           </div>
-          <h4 class="text-sm">{{item.name}}</h4>
+          <h4 class="text-sm">{{name}}</h4>
           <div class="flex justify-between items-center mt-2">
             <span class="font-bold">AED {{item.price}}</span>
             <button class="btn btn-primary btn-sm">Add to cart</button>
