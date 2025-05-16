@@ -2,7 +2,7 @@
   <div class="flex flex-col flex-1 ">
     @for (item of navItems; track item.route) {
     <a [routerLink]="item.route"
-      class="btn btn-link link-hover text-dark flex justify-between hover:text-primary px-3 py-6">
+      class="btn btn-link link-hover hover:bg-neutral-content text-dark flex justify-between hover:text-primary px-3 py-6">
       <span>
         {{item.name | translate}}
       </span>
@@ -13,7 +13,7 @@
   </div>
   <div class="flex flex-col  bg-neutral-content py-4 gap-4 ">
     <div class="flex px-3 gap-2">
-      <a [routerLink]="appRoutes.SignUp" class="btn flex-1 btn-outline btn-primary shadow-none">
+      <a [routerLink]="appRoutes.SignUp" class="btn flex-1 border-2 btn-outline btn-primary shadow-none">
         {{"Sign Up" | translate}}
       </a>
       <a [routerLink]="appRoutes.SignIn" class="btn flex-1 btn-primary shadow-none text-white">
