@@ -6,7 +6,7 @@
     </h3>
 
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-      @for (item of categories.value()?.items; track item.id) {
+      <!-- @for (item of categories.value()?.items; track item.id) {
       @let name = isEn ? item.nameEn : item.nameAr;
       <a [routerLink]="appRoutes.PRODUCTS" [queryParams]="{category: item.slug}"
         class="flex flex-col items-center text-center">
@@ -17,7 +17,7 @@
         </div>
         <span class="mt-2 text-sm font-medium">{{name}}</span>
       </a>
-      }
+      } -->
     </div>
   </section>
   <section class="mb-8 top-discounts">

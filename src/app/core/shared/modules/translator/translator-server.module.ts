@@ -1,9 +1,12 @@
 import { importProvidersFrom, TransferState } from '@angular/core';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
-import { PlatformService } from '@core/services/platform/platform.service';
 import { APP_SETTINGS } from '@core/constants/app-settings.constants';
-import { TranslateServerLoader } from '@core/utils/i18n-server-loader';
+import {
+  TranslateServerLoader,
+  translateServerLoaderFactory,
+} from '@core/utils/i18n-server-loader';
+import { PlatformService } from '@core/services/platform/platform.service';
 
 export const provideServerTranslatorModule = () =>
   importProvidersFrom(
@@ -12,11 +15,8 @@ export const provideServerTranslatorModule = () =>
       defaultLanguage: APP_SETTINGS.defaultLanguage,
       loader: {
         provide: TranslateLoader,
-        useClass: TranslateServerLoader,
-        // useFactory: translateBrowserLoaderFactory,
-        // useFactory: createTranslateLoader,
+        useFactory: translateServerLoaderFactory,
         deps: [TransferState, PlatformService],
-        // deps: [HttpClient],
       },
     })
   );

@@ -15,50 +15,36 @@ export class TranslateServerLoader implements TranslateLoader {
     private transferState: TransferState,
     private platformService: PlatformService,
     private prefix: string = 'i18n',
-    private suffix: string = '.json',
+    private suffix: string = '.json'
   ) {}
 
   public getTranslation(lang: string): Observable<any> {
     return new Observable((observer) => {
-      if (this.platformService.isBrowser) return;
+      if (this.platformService.isBrowser) {
+        observer.complete();
+        return;
+      }
       const filePath = pathLocator(lang, this.prefix, this.suffix);
-      // const filePath = join(
-      //   process.cwd(),
-      //   'public',
-      //   this.prefix,
-
-      //   `${lang}${this.suffix}`,
-      // );
-
-      // const assets_folder = join(
-      //   process.cwd(),
-      //   'public',
-      //   // 'ssr', // Your project name here
-      //   // 'i18n',
-      //   // 'assets',
-      //   this.prefix,
-      //   `${lang}${this.suffix}`,
-      // );
-      // const jsonData = JSON.parse(
-      //   fs.readFileSync(`./${lang}${this.suffix}`, 'utf8')
-      // );
-      const jsonData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-
-      // Here we save the translations in the transfer-state
-      const key: StateKey<number> = makeStateKey<number>(
-        'transfer-translate-' + lang,
-      );
-      // console.log(this.idk);
-      this.transferState.set(key, jsonData);
-
-      observer.next(jsonData);
-      observer.complete();
+      try {
+        const jsonData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        const key: StateKey<number> = makeStateKey<number>(
+          'transfer-translate-' + lang
+        );
+        this.transferState.set(key, jsonData);
+        observer.next(jsonData);
+        observer.complete();
+      } catch (err) {
+        observer.error(err);
+      }
+      // Return a teardown logic (noop, since no async subscription)
+      return () => {};
     });
   }
 }
 
-// export function translateServerLoaderFactory(transferState: TransferState) {
-//   transferState = inject(TransferState);
-
-//   return new TranslateServerLoader(transferState);
-// }
+export function translateServerLoaderFactory(
+  transferState: TransferState,
+  platformService: PlatformService
+) {
+  return new TranslateServerLoader(transferState, platformService);
+}
