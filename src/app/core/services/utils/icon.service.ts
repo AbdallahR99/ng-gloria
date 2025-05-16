@@ -18,6 +18,8 @@ export class IconService {
       'linkedin',
       'menu',
       'whatsapp',
+      'heart',
+      'heart-filled',
     ];
 
     icons.forEach((icon) => {

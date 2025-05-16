@@ -10,6 +10,8 @@ export const PRODUCTS_DATA: Product[] = [
     stars: 4,
     reviews: 82,
     price: 70,
+    oldPrice: 90,
+    quantity: 10,
     image: 'images/perfume1.png',
     categoryId: 3, // Hair Mist
     category: CATEGORIES_DATA.find((c) => c.id === 3) as Category,
@@ -21,6 +23,8 @@ export const PRODUCTS_DATA: Product[] = [
     stars: 5,
     reviews: 120,
     price: 75,
+    oldPrice: 90,
+    quantity: 15,
     image: 'images/perfume2.png',
     categoryId: 4, // Hair Mist
     category: CATEGORIES_DATA.find((c) => c.id === 4) as Category,
@@ -32,6 +36,8 @@ export const PRODUCTS_DATA: Product[] = [
     stars: 4,
     reviews: 65,
     price: 68,
+    oldPrice: 90,
+    quantity: 20,
     image: 'images/perfume3.png',
     categoryId: 3, // Hair Mist
     category: CATEGORIES_DATA.find((c) => c.id === 3) as Category,
@@ -43,6 +49,8 @@ export const PRODUCTS_DATA: Product[] = [
     stars: 5,
     reviews: 110,
     price: 75,
+    oldPrice: 90,
+    quantity: 25,
     image: 'images/perfume4.png',
     categoryId: 4, // Hair Mist
     category: CATEGORIES_DATA.find((c) => c.id === 4) as Category,
@@ -54,6 +62,8 @@ export const PRODUCTS_DATA: Product[] = [
     stars: 4,
     reviews: 95,
     price: 76,
+    oldPrice: 90,
+    quantity: 30,
     image: 'images/perfume1.png',
     categoryId: 3, // Hair Mist
     category: CATEGORIES_DATA.find((c) => c.id === 3) as Category,
@@ -66,6 +76,8 @@ export const PRODUCTS_DATA: Product[] = [
     stars: 5,
     reviews: 60,
     price: 90,
+    oldPrice: 90,
+    quantity: 0,
     image: 'images/perfume2.png',
     categoryId: 1, // Bukhoor
     category: CATEGORIES_DATA.find((c) => c.id === 1) as Category,
@@ -77,6 +89,34 @@ export const PRODUCTS_DATA: Product[] = [
     stars: 4,
     reviews: 45,
     price: 110,
+    oldPrice: 90,
+    quantity: 0,
+    image: 'images/perfume1.png',
+    categoryId: 2, // Bukhoor
+    category: CATEGORIES_DATA.find((c) => c.id === 2) as Category,
+  },
+  {
+    id: 8,
+    nameEn: `Classic Bukhoor`,
+    nameAr: `بخور كلاسيكي`,
+    stars: 5,
+    reviews: 60,
+    price: 90,
+    oldPrice: 90,
+    quantity: 0,
+    image: 'images/perfume2.png',
+    categoryId: 1, // Bukhoor
+    category: CATEGORIES_DATA.find((c) => c.id === 1) as Category,
+  },
+  {
+    id: 9,
+    nameEn: `Royal Bukhoor`,
+    nameAr: `بخور ملكي`,
+    stars: 4,
+    reviews: 45,
+    price: 110,
+    oldPrice: 90,
+    quantity: 0,
     image: 'images/perfume1.png',
     categoryId: 2, // Bukhoor
     category: CATEGORIES_DATA.find((c) => c.id === 2) as Category,

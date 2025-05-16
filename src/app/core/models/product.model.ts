@@ -7,7 +7,9 @@ export interface Product {
   stars: number;
   reviews: number;
   price: number;
+  oldPrice?: number;
   image: string;
   categoryId: number;
   category: Category;
+  quantity: number;
 }
