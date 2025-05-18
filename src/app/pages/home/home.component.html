@@ -1,18 +1,18 @@
 <img src="images/home-cover.png" alt="" class="img-fluid w-full" />
-<div class="container py-3 mx-auto">
+<div class="container px-3 py-3 mx-auto">
   <section class="mb-20 categories">
     <h3 class="my-8 text-center text-4xl">
       {{"Shop By Category" | translate}}
     </h3>
 
-    <div class="grid grid-cols-2 sm:grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-4">
+    <div class="grid grid-cols-4 sm:grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-4">
       @for (item of categories.value()?.items; track item.id) {
       @let name = isEn ? item.nameEn : item.nameAr;
       <a [routerLink]="appRoutes.PRODUCTS" [queryParams]="{category: item.slug}"
         class="group flex flex-col items-center text-center ">
-        <div class="avatar ">
+        <div class="avatar card-app ">
           <div
-            class="w-24 h-24 group-hover:shadow-md shadow-gray-300/50 transition-shadow rounded-full border border-gray-300 bg-gray-100 overflow-hidden">
+            class="w-20 h-20 md:h-24 md:w-24  group-hover:shadow-md shadow-gray-300/50 transition-shadow rounded-full border border-gray-300 bg-gray-100 overflow-hidden">
             <img [src]="item.image" alt="{{name}}" class="object-contain w-full h-full" />
           </div>
         </div>
@@ -25,7 +25,7 @@
     <h3 class="mb-4 font-medium text-3xl">
       {{"Today's Discounts" | translate}}
     </h3>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+    <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
       @for (item of productsTodayDiscounts.value()?.items; track item.id) {
 
       <ng-container *ngTemplateOutlet="productCard; context: {$implicit: item}"></ng-container>
