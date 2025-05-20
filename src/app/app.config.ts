@@ -4,7 +4,11 @@ import {
   provideAppInitializer,
   provideZoneChangeDetection,
 } from '@angular/core';
-import { provideRouter, withInMemoryScrolling } from '@angular/router';
+import {
+  provideRouter,
+  withComponentInputBinding,
+  withInMemoryScrolling,
+} from '@angular/router';
 
 import { routes } from './app.routes';
 import {
@@ -22,6 +26,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(
       routes,
+      withComponentInputBinding(),
       withInMemoryScrolling({ scrollPositionRestoration: 'top' })
     ),
     // provideClientHydration(withEventReplay()),

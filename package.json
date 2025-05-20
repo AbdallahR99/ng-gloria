@@ -1,6 +1,9 @@
 {
   "name": "ng-gloria",
   "version": "0.0.1",
+  "imports": {
+    "#tailwindtheme": "./public/styles/tailwind.scss"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

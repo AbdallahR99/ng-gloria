@@ -1,0 +1,10 @@
+@reference "tailwindcss";
+@reference "#tailwindtheme";
+
+:host {
+  display: block;
+.breadcrumbs li:last-child::before {
+      @apply border-t-2 border-e-2 h-2 w-2 text-gray-700 opacity-100;
+  }
+
+}

@@ -7,6 +7,9 @@ import { LayoutComponent } from './core/shared/components/layout/layout.componen
   imports: [RouterOutlet, LayoutComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
+  host: {
+    class: 'h-full',
+  },
 })
 export class AppComponent {
   title = 'ng-gloria';

@@ -1,0 +1,168 @@
+@let productName = isEn ? product().nameEn : product().nameAr;
+@let productDetails = isEn ? product().descriptionEn : product().descriptionAr;
+<section class="product-overview bg-neutral-content p-3">
+  <div class="breadcrumbs text-sm">
+    <ul class="font-medium">
+      <li><a class="text-gray-700" [routerLink]="[routes.HOME]">Home</a></li>
+      <li>
+        {{productName}}
+      </li>
+    </ul>
+  </div>
+  <div class="flex max-md:flex-col container mx-auto py-5 max-md:gap-4 lg:gap-8">
+    <div class="flex-1 flex-col px-3 __product-details">
+      <div class="flex justify-between items-center max-w-140">
+        <span class="font-medium">
+          {{productName}}
+        </span>
+        <button class="btn btn-link btn-sm px-1 hover:text-secondary ">
+          <mat-icon class="scale-75" svgIcon="heart" />
+        </button>
+      </div>
+
+      <div class="flex m-auto ">
+        @for (star of [1, 2, 3, 4, 5]; track star) {
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" [class.text-yellow-400]="star <= product().stars"
+          [class.text-gray-300]="star > product().stars" viewBox="0 0 20 20" fill="currentColor">
+          <path
+            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+        </svg>
+        }
+        <span class="text-xs ml-1">({{product().reviews}})</span>
+      </div>
+
+      <div class="flex justify-between items-center my-4 max-w-140">
+        <span class="line-through text-gray-400 text-md">AED {{product().oldPrice}}</span>
+        <span class="font-medium text-xl">AED {{product().price}}</span>
+      </div>
+      @if (product().inspiredBy; as inspiredBy) {
+      <div class="px-2 py-3 mb-4 bg-white border border-gray-200 rounded-sm text-xs max-w-85">
+        <div class="flex">
+          <div>
+            <p class="mb-3">
+              <span>
+                {{"Inspired by"}}:
+              </span>
+              <span class="font-medium">
+                {{ isEn? inspiredBy.nameEn : inspiredBy.nameAr }}
+              </span>
+            </p>
+            <p>
+              {{isEn? inspiredBy.descriptionEn : inspiredBy.descriptionAr}}
+            </p>
+          </div>
+          <div class="flex-1 flex justify-end items-start">
+            <img [src]="inspiredBy.image" alt="inspired by"
+              class="w-16 h-16 object-contain bg-neutral-content rounded-md">
+          </div>
+        </div>
+      </div>
+      }
+
+      <div class="flex max-md:flex-col md:gap-8 ">
+        @if (product().sizes; as sizes) {
+        <div class="mb-4">
+          <p class="font-medium mb-2">
+            {{"Size" | translate}}
+          </p>
+          <div class="flex flex-wrap gap-2">
+            @for (size of sizes; track size) {
+            <button class="btn btn-sm btn-outline border-1 btn-primary">
+              {{size}}
+            </button>
+            }
+          </div>
+        </div>
+        }
+
+        @if (product().colors; as colors) {
+        <div class="mb-4">
+          <p class="font-medium mb-2">
+            {{"Color" | translate}}
+          </p>
+          <div class="flex flex-wrap gap-2 my-auto">
+            @for (color of colors; track color.hex) {
+            <div class="border border-primary/40 h-7 w-7 rounded-full" [ngStyle]="{'background': color.hex}"></div>
+            }
+          </div>
+        </div>
+        }
+
+      </div>
+
+      <!-- Quantity -->
+      <div class="mb-8">
+        <p class="font-medium mb-2">
+          {{"Quantity" | translate}}
+        </p>
+        @if (product().quantity > 0) {
+        <div class="flex gap-2 ">
+          <div class="flex rounded-md border border-primary text-primary">
+
+            <button (click)="decrease()" class="btn btn-sm btn-ghost">
+              <mat-icon fontIcon="remove" />
+            </button>
+            <div class="px-4 py-1 font-medium min-w-[2rem] text-center">
+              {{quantity()}}
+            </div>
+            <button (click)="increase()" class="btn btn-sm btn-ghost">
+              <mat-icon fontIcon="add" />
+            </button>
+
+          </div>
+
+        </div>
+        } @else {
+        <div class="flex items-center gap-1 text-error m-auto ">
+          <div class="badge badge-error badge-xs h-2 w-2 "></div>
+          <div class="text-xs">{{"Out of Stock" | translate}}</div>
+
+        </div>
+        }
+
+      </div>
+
+      <div class="flex flex-wrap gap-5 max-w-85">
+        <button class="btn flex-1 border-1 btn-outline btn-primary shadow-sm">
+          <mat-icon class="scale-65" svgIcon="cart" />
+          <span>
+            {{"Add to Cart" | translate}}
+          </span>
+        </button>
+        <button class="btn flex-1 btn-primary text-white">
+          {{"Buy Now" | translate}}
+        </button>
+
+      </div>
+    </div>
+
+    <div class="flex-1 __product_images max-md:order-first">
+      <div class="flex max-lg:flex-col gap-2">
+        <div class="flex-1 h-full">
+          <img [src]="currentImage()" alt="product image"
+            class="w-full min-h-[20rem] max-h-[28rem] h-full object-contain bg-neutral-content rounded-md">
+        </div>
+        <div class="flex lg:flex-col gap-2 overflow-x-auto mx-auto">
+          @for (image of product().images; track image) {
+
+          <figure (click)="setImage($index)"
+            [ngClass]="$index == currentImageIndex() ? 'border-primary/40' : 'border-gray-200'"
+            class="aspect-square trains hover:border transition-color border hover:border-primary/40 cursor-pointer rounded-md flex items-center justify-center bg-gray-100 h-18">
+            <img [src]="image" alt="product image" class="h-full object-contain aspect-square" />
+          </figure>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="py-1"></div>
+
+<section class="product-details container mx-auto px-4">
+  <p class="w-full border-b border-primary/40">
+    <span class="font-medium text-primary text-lg">
+      {{"Description" | translate}}
+    </span>
+  </p>
+  <p class="py-2 text-sm text-gray-500" [textContent]="productDetails"></p>
+</section>

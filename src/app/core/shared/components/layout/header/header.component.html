@@ -24,12 +24,21 @@
       </a>
     </div>
   </div>
-  <div class="navbar-center gap-4 max-md:hidden">
-    @for (item of navItems; track item.name) {
-    <a class="btn btn-link link-hover text-white text-xl" [routerLink]="item.route" routerLinkActive="!text-secondary">
-      {{item.name}}
-    </a>
-    }
+  <div class="navbar-center gap-4">
+    <div class="md:hidden">
+      <a class="btn btn-link link-hover text-xl text-white md:hidden">
+        {{"LOGO"}}
+      </a>
+    </div>
+    <div class="flex gap-4 max-md:hidden">
+      @for (item of navItems; track item.name) {
+      <a class="btn btn-link link-hover text-white text-xl" [routerLink]="item.route"
+        routerLinkActive="!text-secondary">
+        {{item.name}}
+      </a>
+      }
+    </div>
+
   </div>
   <div class="navbar-end">
     <div class="flex gap-3">

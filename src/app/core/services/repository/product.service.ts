@@ -37,6 +37,10 @@ export class ProductService {
     return of(this.products.find((p) => p.id === id)).pipe(delay(200));
   }
 
+  getProductBySlug(slug: string): Observable<Product | undefined> {
+    return of(this.products.find((p) => p.slug === slug)).pipe(delay(200));
+  }
+
   addProduct(product: Product): Observable<Product> {
     product.id = this.products.length + 1;
     this.products.push(product);

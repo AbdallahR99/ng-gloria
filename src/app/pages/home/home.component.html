@@ -282,14 +282,14 @@
 
 <ng-template #productCard let-item>
   @let name = isEn ? item.nameEn : item.nameAr;
-  <a [routerLink]="[appRoutes.PRODUCT_DETAILS, item.id]">
+  <a [routerLink]="[appRoutes.PRODUCT_DETAILS, item.slug]">
     <div
       class="__product_card hover:shadow-md shadow-gray-300/50 cursor-pointer transition-shadow rounded-lg relative border border-gray-200 flex flex-col">
       <button class="btn btn-link btn-sm px-1 hover:text-secondary absolute z-10 right-0 top-0">
         <mat-icon class="scale-75" svgIcon="heart" />
       </button>
       <figure class="aspect-square flex items-center justify-center bg-gray-100 p-1 max-h-[250px]">
-        <img [src]="item.image" alt="{{name}}" class="h-full object-contain aspect-square" />
+        <img [src]="item.thumbnail" alt="{{name}}" class="h-full object-contain aspect-square" />
       </figure>
       <div class="__card-body flex flex-col p-3">
 

@@ -8,6 +8,9 @@ import { FooterComponent } from './footer/footer.component';
   imports: [SHARED_MODULES, HeaderComponent, FooterComponent],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
+  host: {
+    class: 'h-full flex flex-col',
+  },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LayoutComponent {}
