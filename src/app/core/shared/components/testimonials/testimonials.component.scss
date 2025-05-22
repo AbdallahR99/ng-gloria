@@ -1,0 +1,249 @@
+.testimonials-section {
+  display: flex;
+  padding-right: 80px;
+  padding-top: 42px;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: #f7f7f7;
+}
+
+.testimonials-title {
+  color: #363636;
+  font-family:
+    Microsoft Sans Serif,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+  align-self: center;
+}
+
+.testimonials-container {
+  align-self: start;
+  display: flex;
+  margin-top: 52px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.testimonials-side-image {
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  width: 100px;
+  align-self: end;
+  margin-top: 358px;
+  flex-shrink: 0;
+  max-width: 100%;
+}
+
+.testimonials-content {
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: 0;
+  width: fit-content;
+}
+
+.testimonials-grid {
+  gap: 20px;
+}
+
+.testimonials-row {
+  gap: 20px;
+  display: flex;
+}
+
+.testimonial-card {
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  margin-top: 32px;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 245px;
+  width: 100%;
+  padding: 25px 16px;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: start;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+
+  &.active {
+    opacity: 1;
+  }
+}
+
+.testimonial-content {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: start;
+}
+
+.testimonial-rating {
+  align-self: center;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  justify-content: start;
+}
+
+.star-icon {
+  aspect-ratio: 24/23;
+  object-fit: contain;
+  object-position: center;
+  width: 24px;
+  align-self: stretch;
+  margin: auto 0;
+  flex-shrink: 0;
+}
+
+.testimonial-text {
+  color: #999;
+  text-align: center;
+  font-family:
+    Microsoft Sans Serif,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 24px;
+  margin-top: 20px;
+}
+
+.testimonial-author {
+  border-radius: 12px;
+  align-self: center;
+  display: flex;
+  margin-top: 24px;
+  width: 201px;
+  max-width: 100%;
+  align-items: center;
+  font-family:
+    Microsoft Sans Serif,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  font-size: 20px;
+  color: #3d2a41;
+  font-weight: 400;
+  line-height: 1.6;
+  justify-content: center;
+}
+
+.author-name {
+  font-family:
+    Inter,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  font-weight: 600;
+}
+
+.author-location {
+  color: #676767;
+}
+
+.testimonials-navigation {
+  align-self: center;
+  display: flex;
+  margin-top: 87px;
+  width: 200px;
+  max-width: 100%;
+  align-items: stretch;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.nav-arrow-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.nav-arrow {
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  width: 24px;
+  flex-shrink: 0;
+}
+
+.nav-dots {
+  display: flex;
+  margin: auto 0;
+  align-items: center;
+  gap: 8px;
+  justify-content: start;
+}
+
+.nav-dot {
+  aspect-ratio: 1;
+  background-color: #c8c8c8;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &.active {
+    background-color: #3f4a5d;
+  }
+
+  &:hover:not(.active) {
+    background-color: #a0a0a0;
+  }
+}
+
+@media (max-width: 991px) {
+  .testimonials-section {
+    padding-right: 20px;
+  }
+
+  .testimonials-container {
+    max-width: 100%;
+    margin-top: 40px;
+  }
+
+  .testimonials-side-image {
+    margin-top: 40px;
+  }
+
+  .testimonials-content {
+    max-width: 100%;
+  }
+
+  .testimonials-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0px;
+  }
+
+  .testimonial-card {
+    margin-top: 40px;
+  }
+
+  .testimonials-navigation {
+    margin-top: 40px;
+  }
+}

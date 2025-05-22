@@ -1,0 +1,87 @@
+<section class="testimonials-section">
+  <h2 class="testimonials-title">What our Client Says</h2>
+  <div class="testimonials-container">
+    <img
+      src="https://cdn.builder.io/api/v1/image/assets/TEMP/467b9e6ddabb990c5e150c2d052a4e1600ff0161?placeholderIfAbsent=true"
+      class="testimonials-side-image"
+      alt="Decorative side image"
+    />
+
+    <div class="testimonials-content">
+      <div class="testimonials-grid">
+        <div class="testimonials-row">
+          @for (testimonial of testimonials; track $index) {
+            <article
+              class="testimonial-card"
+              [class.active]="currentSlide() === $index + 1"
+            >
+              <div class="testimonial-content">
+                <div class="testimonial-rating">
+                  @for (
+                    star of generateStarArray(testimonial.rating);
+                    track $index
+                  ) {
+                    <img
+                      [src]="
+                        star
+                          ? 'https://cdn.builder.io/api/v1/image/assets/TEMP/3ceca864491a1975f08af69f9b449acc936a2004?placeholderIfAbsent=true'
+                          : 'https://cdn.builder.io/api/v1/image/assets/TEMP/6fc1242181e0095eca4287112384b4faac9463ac?placeholderIfAbsent=true'
+                      "
+                      class="star-icon"
+                      [alt]="star ? 'Filled star' : 'Empty star'"
+                    />
+                  }
+                </div>
+                <p class="testimonial-text">{{ testimonial.text }}</p>
+              </div>
+              <div class="testimonial-author">
+                <span class="author-name">{{ testimonial.author.name }}</span>
+                -
+                <span class="author-location">{{
+                  testimonial.author.location
+                }}</span>
+              </div>
+            </article>
+          }
+        </div>
+      </div>
+
+      <div class="testimonials-navigation">
+        <button
+          class="nav-arrow-btn"
+          (click)="navigateSlide('prev')"
+          aria-label="Previous testimonial"
+        >
+          <img
+            src="https://cdn.builder.io/api/v1/image/assets/TEMP/5d81b99c6c3a028e42cd95b9b2ec9448419dda3c?placeholderIfAbsent=true"
+            class="nav-arrow"
+            alt="Previous"
+          />
+        </button>
+
+        <div class="nav-dots">
+          @for (testimonial of testimonials; track $index) {
+            <button
+              class="nav-dot"
+              [class.active]="currentSlide() === $index + 1"
+              (click)="setSlide($index)"
+              [attr.aria-label]="'Go to slide ' + ($index + 1)"
+            ></button>
+          }
+        </div>
+
+        <button
+          class="nav-arrow-btn"
+          (click)="navigateSlide('next')"
+          aria-label="Next testimonial"
+        >
+          <img
+            src="https://cdn.builder.io/api/v1/image/assets/TEMP/918f9d56c6d2f45fec9465ee05f898c6dca5526f?placeholderIfAbsent=true"
+            class="nav-arrow"
+            alt="Next"
+          />
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
