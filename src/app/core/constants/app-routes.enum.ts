@@ -17,5 +17,9 @@ export enum APP_ROUTES {
   Cart = '/cart',
   SignIn = '/signin',
   SignUp = '/signup',
+  About = '/about',
+  Contact = '/contact',
+  ReturnPolicy = '/return-policy',
+  PrivacyPolicy = '/privacy-policy',
   NOT_FOUND = '**',
 }

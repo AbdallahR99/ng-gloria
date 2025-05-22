@@ -24,6 +24,11 @@ export class IconService {
       'w_headset',
       'w_nature',
       'w_shipped',
+
+      // footer icons
+      'phone',
+      'email',
+      'location',
     ];
 
     icons.forEach((icon) => {
@@ -32,5 +37,14 @@ export class IconService {
         this.sanitizer.bypassSecurityTrustResourceUrl(`icons/${icon}.svg`)
       );
     });
+    this.iconRegistry.registerFontClassAlias(
+      'symbols',
+      'material-symbols-rounded'
+    );
+    const defaultFontSetClasses = this.iconRegistry.getDefaultFontSetClass();
+    const outlinedFontSetClasses = defaultFontSetClasses
+      .filter((fontSetClass) => fontSetClass !== 'material-icons')
+      .concat(['material-symbols-rounded']);
+    this.iconRegistry.setDefaultFontSetClass(...outlinedFontSetClasses);
   }
 }

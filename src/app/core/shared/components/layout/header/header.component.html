@@ -46,6 +46,17 @@
         routerLinkActive="!text-secondary">
         <mat-icon svgIcon="cart" class="scale-75" [inline]="true" />
       </a>
+      <!-- Language Switch Button -->
+      <label class="swap swap-rotate">
+        <!-- Hidden checkbox to control the state -->
+        <input type="checkbox" (change)="toggleLanguage()" [checked]="!isEn" />
+
+        <!-- English Icon -->
+        <div class="swap-off text-white">عربي</div>
+
+        <!-- Arabic Icon -->
+        <div class="swap-on text-white">EN</div>
+      </label>
       <div class="flex max-md:hidden">
         <a class="btn btn-link link-hover text-white" [routerLink]="[appRoutes.SignIn]"
           routerLinkActive="!text-secondary">
@@ -63,7 +74,7 @@
   </div>
 </header>
 @let topSpace = (header?.clientHeight ?? 0) + (banner?.element?.nativeElement?.clientHeight ?? 0);
-<div class="fixed left-0 right-0 bottom-0 transition-all  overflow-hidden bg-white z-50"
+<div (window:resize)="0" class="fixed left-0 right-0 bottom-0 transition-all  overflow-hidden bg-white z-50"
   [ngStyle]="{'top.px': topSpace, 'height': menuCollapse() ? 'calc(100% - '+topSpace+'px)' : '0'}">
   <header-nav-menu class="h-full" />
 </div>
