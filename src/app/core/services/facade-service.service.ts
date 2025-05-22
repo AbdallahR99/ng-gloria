@@ -4,6 +4,7 @@ import { CategoryService } from './repository/category.service';
 import { ProductService } from './repository/product.service';
 import { CartService } from './repository/cart.service';
 import { PaymentService } from './repository/payment.service';
+import { BundleService } from './repository/product-bundle.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +17,7 @@ export class FacadeService {
   private _productService?: ProductService;
   private _cartService?: CartService;
   private _paymentService?: PaymentService;
+  private _productBundleService?: BundleService;
 
   get translateService() {
     if (!this._translateService) {
@@ -46,5 +48,11 @@ export class FacadeService {
       this._paymentService = this.inject.get(PaymentService);
     }
     return this._paymentService;
+  }
+  get productBundleService() {
+    if (!this._productBundleService) {
+      this._productBundleService = this.inject.get(BundleService);
+    }
+    return this._productBundleService;
   }
 }

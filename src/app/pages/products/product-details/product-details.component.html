@@ -158,11 +158,167 @@
 </section>
 <div class="py-1"></div>
 
-<section class="product-details container mx-auto px-4">
-  <p class="w-full border-b border-primary/40">
+<section class="product-details container mx-auto my-5 px-4">
+  <p class="w-full border-b border-primary/40 mb-3">
     <span class="font-medium text-primary text-lg">
       {{"Description" | translate}}
     </span>
   </p>
   <p class="py-2 text-sm text-gray-500" [textContent]="productDetails"></p>
 </section>
+
+@if (bundle.value(); as bundle) {
+<section class="product-bandle px-4 my-8">
+  <p class="text-lg mb-5 font-medium">
+    {{"Perfect Bundle" | translate}}
+  </p>
+  <div class="flex px-2 flex-wrap gap-3 justify-center lg:justify-start max-md:hidden">
+    @for (productBandle of bundle.bundle; track productBandle.productId) {
+    @if (productBandle.product; as item) {
+    @let name = isEn ? item?.nameEn : item.nameAr;
+    <div class="flex">
+      @if (!$first) {
+      <div class="h-full flex items-center mx-5 text-primary">
+        <mat-icon class="m-auto" fontIcon="add" />
+      </div>
+      }
+      <a class="flex-fill max-w-40" [routerLink]="[routes.PRODUCT_DETAILS, item.slug]">
+        <div
+          class="__product_card hover:shadow-md shadow-gray-300/50 cursor-pointer transition-shadow rounded-lg relative border border-gray-200 flex flex-col">
+          <button class="btn btn-link btn-sm px-1 hover:text-secondary absolute z-10 right-0 top-0">
+            <input type="checkbox" checked="checked" class="checkbox checkbox-primary" />
+
+          </button>
+          <figure class="aspect-square flex items-center justify-center bg-gray-100 p-1 max-h-[250px]">
+            <img [src]="item?.thumbnail" alt="{{name}}" class="h-full object-contain aspect-square" />
+          </figure>
+          <div class="__card-body flex flex-col p-3">
+
+            <h4 class="text-sm font-medium mb-2">{{name}}</h4>
+
+            <div class="justify-between text-sm flex gap-2 flex-wrap">
+              <span class="font-normal">AED {{item.price}}</span>
+              <span class="line-through text-gray-400">AED {{item.oldPrice}}</span>
+            </div>
+
+
+          </div>
+        </div>
+      </a>
+    </div>
+    }
+
+    }
+    <div class="flex">
+      <div class="h-full flex items-center mx-5 text-primary">
+        <span class="text-2xl font-medium">=</span>
+      </div>
+
+      <div class="flex flex-col justify-center">
+        <p class="font-medium mb-5 text-xl">
+          {{"Total Price" | translate}}
+        </p>
+        <div class="justify-between text-sm flex gap-2 flex-wrap">
+          <span class="font-normal">AED {{bundle.price}}</span>
+          <span class="line-through text-gray-400">AED {{bundle.oldPrice}}</span>
+        </div>
+        <button
+          class="btn btn-primary font-normal btn-sm mt-2 text-white flex items-center gap-1 shadow-none hover:text-secondary">
+          <mat-icon class="scale-65" svgIcon="cart" />
+          <span>
+            {{"Add to Cart" | translate}}
+          </span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+  <div class="md:hidden">
+    <div class="flex flex-col gap-4 border border-gray-200 rounded-lg p-3">
+      @for (productBandle of bundle.bundle; track productBandle.productId) {
+      @if (productBandle.product; as item) {
+      @let name = isEn ? item?.nameEn : item.nameAr;
+      <div class="flex items-center pb-4 border-b border-gray-200 ">
+        <input type="checkbox" checked="checked" class="checkbox checkbox-primary mr-3" />
+        <img [src]="item?.thumbnail" alt="{{name}}" class="w-16 h-16 object-contain rounded-md mr-3" />
+        <div class="flex-1">
+          <h4 class="text-sm font-medium mb-1">{{name}}</h4>
+          <div class="text-sm flex justify-between">
+            <span class="font-normal">{{"AED" | translate}} {{item.price}}</span>
+            <span class="line-through text-gray-400">{{"AED" | translate}} {{item.oldPrice}}</span>
+          </div>
+        </div>
+      </div>
+      }
+      }
+      <button class="btn btn-block btn-primary text-white">
+        {{isEn ? "Total AED" : "الإجمالي بالدرهم"}}
+        {{bundle.price}}</button>
+    </div>
+  </div>
+</section>
+}
+
+@if (relatedProducts.value(); as relatedProducts) {
+<section class="product-related px-4 my-8">
+  <p class="text-lg mb-5 font-medium">
+    {{"You May Also Like" | translate}}
+  </p>
+  <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+    @for (item of relatedProducts; track item.id) {
+
+    @let name = isEn ? item.nameEn : item.nameAr;
+    <a [routerLink]="[routes.PRODUCT_DETAILS, item.slug]">
+      <div
+        class="__product_card hover:shadow-md shadow-gray-300/50 cursor-pointer transition-shadow rounded-lg relative border border-gray-200 flex flex-col">
+        <button class="btn btn-link btn-sm px-1 hover:text-secondary absolute z-10 right-0 top-0">
+          <mat-icon class="scale-75" svgIcon="heart" />
+        </button>
+        <figure class="aspect-square flex items-center justify-center bg-gray-100 p-1 max-h-[250px]">
+          <img [src]="item.thumbnail" alt="{{name}}" class="h-full object-contain aspect-square" />
+        </figure>
+        <div class="__card-body flex flex-col p-3">
+
+          <h4 class="text-sm font-medium mb-2">{{name}}</h4>
+          <div class="flex m-auto">
+            @for (star of [1, 2, 3, 4, 5]; track star) {
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" [class.text-yellow-400]="star <= item.stars"
+              [class.text-gray-300]="star > item.stars" viewBox="0 0 20 20" fill="currentColor">
+              <path
+                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+            }
+            <span class="text-xs ml-1">({{item.reviews}})</span>
+          </div>
+          @if (item.quantity == 0) {
+          <div class="flex items-center gap-1 text-error m-auto ">
+            <div class="badge badge-error badge-xs h-2 w-2 "></div>
+            <div class="text-xs">{{"Out of Stock" | translate}}</div>
+
+          </div>
+
+          } @else {
+
+          <div class="m-auto text-sm flex gap-2 flex-wrap">
+            <span class="font-normal">AED {{item.price}}</span>
+            <span class="line-through text-gray-400">AED {{item.oldPrice}}</span>
+          </div>
+          }
+
+          <button
+            class="btn btn-primary font-normal btn-sm mt-2 text-white flex items-center gap-1 shadow-none hover:text-secondary">
+            <mat-icon class="scale-65" svgIcon="cart" />
+            <span>
+              {{"Add to Cart" | translate}}
+            </span>
+
+          </button>
+        </div>
+      </div>
+    </a>
+    }
+  </div>
+
+
+</section>
+}

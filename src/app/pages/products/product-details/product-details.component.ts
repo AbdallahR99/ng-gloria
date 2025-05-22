@@ -1,3 +1,4 @@
+import { ProductService } from '@app/core/services/repository/product.service';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,8 +7,10 @@ import {
   input,
   signal,
 } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { APP_ROUTES } from '@app/core/constants/app-routes.enum';
 import { Product } from '@app/core/models/product.model';
+import { BundleService } from '@app/core/services/repository/product-bundle.service';
 import { TranslatorService } from '@app/core/services/translate/translator.service';
 
 import { SHARED_MODULES } from '@app/core/shared/modules/shared.module';
@@ -22,7 +25,10 @@ import { SHARED_MODULES } from '@app/core/shared/modules/shared.module';
 export class ProductDetailsComponent {
   product = input.required<Product>();
   translatorService = inject(TranslatorService);
+  productService = inject(ProductService);
+  bundleService = inject(BundleService);
   quantity = signal(1);
+
   currentImageIndex = signal(0);
 
   currentImage = computed(() => {
@@ -40,6 +46,24 @@ export class ProductDetailsComponent {
   }
 
   routes = APP_ROUTES;
+
+  bundle = rxResource({
+    request: () => ({
+      productId: this.product().id,
+    }),
+    loader: ({ request }) => {
+      return this.bundleService.getBundleByProductId(request.productId);
+    },
+  });
+
+  relatedProducts = rxResource({
+    request: () => ({
+      productId: this.product().id,
+    }),
+    loader: ({ request }) => {
+      return this.productService.getRelatedProducts(request.productId);
+    },
+  });
 
   increase() {
     if (this.quantity() >= this.product().quantity) return;

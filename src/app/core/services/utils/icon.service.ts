@@ -20,6 +20,10 @@ export class IconService {
       'whatsapp',
       'heart',
       'heart-filled',
+      'w_box',
+      'w_headset',
+      'w_nature',
+      'w_shipped',
     ];
 
     icons.forEach((icon) => {
