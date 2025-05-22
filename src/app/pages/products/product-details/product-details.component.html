@@ -168,7 +168,7 @@
 </section>
 
 @if (bundle.value(); as bundle) {
-<section class="product-bandle px-4 my-8">
+<section class="container mx-auto product-bandle px-4 my-8">
   <p class="text-lg mb-5 font-medium">
     {{"Perfect Bundle" | translate}}
   </p>
@@ -260,7 +260,7 @@
 }
 
 @if (relatedProducts.value(); as relatedProducts) {
-<section class="product-related px-4 my-8">
+<section class="product-related container mx-auto px-4 my-8">
   <p class="text-lg mb-5 font-medium">
     {{"You May Also Like" | translate}}
   </p>
@@ -322,3 +322,55 @@
 
 </section>
 }
+
+<section class="mb-8 why-choose-us container mx-auto px-4">
+  <h3 class="text-center mb-6 text-3xl font-medium">
+    {{"Why Choose Us" | translate}}
+  </h3>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+    @for (item of [{
+    icon: "w_nature",
+    title: "100% Natural",
+    description: "High quality products"
+    },
+    {
+    icon: "w_shipped",
+    title: "Free shipping",
+    description: "On all orders over $50"
+    },
+    {
+    icon: "w_headset",
+    title: "24/7 Support",
+    description: "Dedicated support"
+    },
+    {
+    icon: "w_box",
+    title: "Return policy",
+    description: "Easy returns"
+    }
+    ]; track item.title) {
+    <div class="flex max-md:flex-col items-center gap-2 max-md:hidden justify-center">
+      <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center relative">
+        <mat-icon class="scale-300 absolute top-4 right-8" [svgIcon]="item.icon" />
+      </div>
+      <div class="md:text-start">
+        <h4 class="font-medium ">{{item.title}}</h4>
+        <p class="text-sm text-base-content/70">{{item.description}}</p>
+      </div>
+    </div>
+    <div class="md:hidden grid gird-cols-2 px-2">
+      <div class="flex items-center gap-2 p-3 border border-primary/80 rounded-md">
+        <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center relative">
+          <mat-icon class="scale-150 absolute top-1 right-2" [svgIcon]="item.icon" />
+        </div>
+        <div class="text-start">
+          <h4 class="font-medium ">{{item.title}}</h4>
+          <p class="text-sm text-base-content/70">{{item.description}}</p>
+        </div>
+      </div>
+    </div>
+    }
+
+
+  </div>
+</section>
