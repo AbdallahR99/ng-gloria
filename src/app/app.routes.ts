@@ -17,6 +17,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: APP_ROUTES.About.substring(1),
+    loadComponent: () =>
+      import('./pages/about-us/about-us.component').then(
+        (m) => m.AboutUsComponent
+      ),
+  },
+  {
     path: `${APP_ROUTES.PRODUCTS.substring(1)}/:slug`,
     loadComponent: () =>
       import('./pages/products/product-details/product-details.component').then(

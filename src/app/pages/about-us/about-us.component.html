@@ -1,0 +1,144 @@
+<h1 class="text-center text-3xl font-medium p-10 text-primary">
+  {{"About Us" | translate}}
+</h1>
+
+
+<section class="mb-8">
+  <div class="flex flex-wrap max-md:flex-col container max-w-[700px] gap-10 items-center py-10 mx-auto">
+    <div class="flex-1 py-3">
+      <h3 class="text-2xl font-bold text-primary mb-5">
+        {{"Our Vision" | translate}}
+      </h3>
+      <p class="text-sm text-primary/80">
+        @if (isEn) {
+        At Gloria Natural, we are committed to providing our customers with the highest quality natural products. Our
+        vision is to be a leading provider of natural solutions that enhance the well-being of our customers and the
+        environment.
+        } @else {
+        في غلوريا ناتشورال، نحن ملتزمون بتقديم أعلى جودة من المنتجات الطبيعية لعملائنا. رؤيتنا هي أن نكون مزودين رائدين
+        للحلول الطبيعية التي تعزز رفاهية عملائنا والبيئة.
+        }
+      </p>
+    </div>
+    <div>
+      <img src="images/about-us-image.png" alt="About Us Vision" class="w-full max-h-[250px]">
+    </div>
+  </div>
+</section>
+
+<section class="bg-neutral-content mb-8">
+  <div class="flex flex-wrap max-md:flex-col container max-w-[700px] gap-10 items-center py-10 mx-auto">
+    <div>
+      <img src="images/about-us-image.png" alt="About Us Vision" class="w-full max-h-[250px]">
+    </div>
+    <div class="flex-1 py-3">
+      <h3 class="text-2xl font-bold text-primary mb-5">
+        {{"Our Vision" | translate}}
+      </h3>
+      <p class="text-sm text-primary/80">
+        @if (isEn) {
+        At Gloria Natural, we are committed to providing our customers with the highest quality natural products. Our
+        vision is to be a leading provider of natural solutions that enhance the well-being of our customers and the
+        environment.
+        } @else {
+        في غلوريا ناتشورال، نحن ملتزمون بتقديم أعلى جودة من المنتجات الطبيعية لعملائنا. رؤيتنا هي أن نكون مزودين رائدين
+        للحلول الطبيعية التي تعزز رفاهية عملائنا والبيئة.
+        }
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+<div class="bg-white container mx-auto">
+  <section class="mb-8 why-choose-us">
+    <h3 class="text-center mb-6 text-3xl font-medium">
+      {{"Why Choose Us" | translate}}
+    </h3>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      @for (item of [{
+      icon: "w_nature",
+      title: "100% Natural",
+      description: "High quality products"
+      },
+      {
+      icon: "w_shipped",
+      title: "Free shipping",
+      description: "On all orders over $50"
+      },
+      {
+      icon: "w_headset",
+      title: "24/7 Support",
+      description: "Dedicated support"
+      },
+      {
+      icon: "w_box",
+      title: "Return policy",
+      description: "Easy returns"
+      }
+      ]; track item.title) {
+      <div class="flex max-md:flex-col items-center gap-2 max-md:hidden justify-center">
+        <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center relative">
+          <mat-icon class="scale-300 absolute top-4 end-8" [svgIcon]="item.icon" />
+        </div>
+        <div class="md:text-start">
+          <h4 class="font-medium ">{{item.title | translate}}</h4>
+          <p class="text-sm text-base-content/70">{{item.description | translate}}</p>
+        </div>
+      </div>
+      <div class="md:hidden grid gird-cols-2 px-2">
+        <div class="flex max-sm:flex-col items-center gap-2 p-3 border border-primary/80 rounded-md">
+          <div>
+            <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center relative">
+              <mat-icon class="sm:scale-150 absolute top-1 sm:end-2" [svgIcon]="item.icon" />
+            </div>
+          </div>
+          <div class="max-sm:text-center sm:text-start">
+            <h4 class="font-medium ">{{item.title | translate}}</h4>
+            <p class="text-sm text-base-content/70">{{item.description | translate}}</p>
+          </div>
+        </div>
+      </div>
+      }
+
+
+    </div>
+  </section>
+
+  <section class="mb-8 get-in-touch max-md:bg-secondary/8 p-3">
+    <h3 class="text-center mb-6 text-3xl font-medium">
+      {{"Get in Touch" | translate}}
+    </h3>
+    <div class="flex flex-col md:flex-row gap-6 max-w-[1000px] mx-auto">
+      <div class="md:w-1/3">
+        <div class="relative h-72">
+          <div class="absolute h-full w-full p-4">
+            <img src="images/get-in-touch.png" alt="Products" class="max-h-full mx-auto" />
+          </div>
+        </div>
+      </div>
+      <div class="md:w-2/3 flex flex-col justify-center">
+        <form>
+          <div class="grid grid-cols-1  gap-4 mb-4">
+            <div>
+              <input type="text" placeholder="{{'Your Name'| translate}}"
+                class="input border border-primary/20 rounded-none w-full required" />
+            </div>
+            <div>
+              <input type="email" placeholder="{{'Your Email' | translate}}"
+                class="input border border-primary/20 rounded-none w-full" />
+            </div>
+          </div>
+          <div class="mb-4">
+            <textarea class="textarea border border-primary/20 rounded-none w-full h-24"
+              placeholder="{{'Your Message' | translate}}"></textarea>
+          </div>
+          <div class="flex justify-end">
+            <button class="btn btn-primary btn-block lg:btn-wide">{{"Send" | translate | uppercase}}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>
