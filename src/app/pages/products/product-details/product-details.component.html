@@ -351,23 +351,23 @@
     ]; track item.title) {
     <div class="flex max-md:flex-col items-center gap-2 max-md:hidden justify-center">
       <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center relative">
-        <mat-icon class="scale-300 absolute top-4 right-8" [svgIcon]="item.icon" />
+        <mat-icon class="scale-300 absolute top-4 end-8" [svgIcon]="item.icon" />
       </div>
       <div class="md:text-start">
-        <h4 class="font-medium ">{{item.title}}</h4>
-        <p class="text-sm text-base-content/70">{{item.description}}</p>
+        <h4 class="font-medium ">{{item.title | translate}}</h4>
+        <p class="text-sm text-base-content/70">{{item.description | translate}}</p>
       </div>
     </div>
     <div class="md:hidden grid gird-cols-2 px-2">
       <div class="flex max-sm:flex-col items-center gap-2 p-3 border border-primary/80 rounded-md">
         <div>
           <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center relative">
-            <mat-icon class="sm:scale-150 absolute top-1 sm:right-2" [svgIcon]="item.icon" />
+            <mat-icon class="sm:scale-150 absolute top-1 sm:end-2" [svgIcon]="item.icon" />
           </div>
         </div>
         <div class="max-sm:text-center sm:text-start">
-          <h4 class="font-medium ">{{item.title}}</h4>
-          <p class="text-sm text-base-content/70">{{item.description}}</p>
+          <h4 class="font-medium ">{{item.title | translate}}</h4>
+          <p class="text-sm text-base-content/70">{{item.description | translate}}</p>
         </div>
       </div>
     </div>
