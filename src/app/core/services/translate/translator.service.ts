@@ -30,13 +30,12 @@ export class TranslatorService {
   langOb = this.translate.onLangChange.asObservable();
 
   getCurrentLang(): string | null {
-    if (this.PlatformService.isServer) {
-      const urlParams = new URLSearchParams(
-        this.document.location?.search || ''
-      );
-      const langParam = urlParams.get('lang');
-      return langParam || APP_SETTINGS.defaultLanguage;
+    const urlParams = new URLSearchParams(this.document.location?.search || '');
+    const langParam = urlParams.get('lang');
+    if (langParam) {
+      return langParam;
     }
+    if (this.PlatformService.isServer) return APP_SETTINGS.defaultLanguage;
 
     if (typeof localStorage === 'undefined') {
       return APP_SETTINGS.defaultLanguage;
