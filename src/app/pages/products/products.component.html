@@ -1,1 +1,158 @@
-<p>products works!</p>,
+<section class="_filter-tools bg-primary-content p-5">
+  <div class="container mx-auto max-w-[1000px]">
+    <label class="input input-secondary rounded-full w-full">
+      <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="currentColor">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.3-4.3"></path>
+        </g>
+      </svg>
+      <input type="search" class="grow" placeholder="Search" />
+
+    </label>
+    <div class="mt-5">
+      <div class="grid grid-cols-4  sm:grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-4 max-w-[1000px] mx-auto">
+
+        @for (item of categories.value()?.items; track item.id) {
+        @let name = isEn ? item.nameEn : item.nameAr;
+        @let isActive = item.slug === categorySlug();
+        <a [routerLink]="routes.PRODUCTS"
+          [queryParams]="{category: isActive ? undefined : item.slug, search: queryString() }"
+          class="group flex flex-col items-center text-center ">
+          <div class="avatar card-app ">
+            <div [ngClass]="{
+        'ext-primary border border-2 border-secondary': isActive,
+
+      }" class="w-15 h-15 group-hover:shadow-md shadow-gray-300/50 transition-shadow rounded-full border border-gray-300 bg-gray-100 overflow-hidden">
+              <img [src]="item.image" alt="{{name}}" class="object-contain w-full h-full" />
+            </div>
+          </div>
+          <span
+            class="mt-2 text-sm {{isActive ? 'text-secondary' : 'text-primary/80'}} font-medium group-hover:text-secondary transition-colors">{{name}}</span>
+        </a>
+        }
+      </div>
+      @if (categorySlug()) {
+      <div class="text-end mt-3">
+        <a class="link link-primary link-hover" [routerLink]="routes.PRODUCTS"
+          [queryParams]="{ search: queryString() }">
+          <span class="text-sm font-medium text-primary">{{"Or View All" | translate}}</span>
+          <mat-icon class="scale-75 align-middle" fontIcon="interests" />
+
+        </a>
+      </div>
+      }
+
+    </div>
+
+  </div>
+</section>
+
+<section class="products_results container mx-auto max-w-[1000px] mt-5">
+  <div class="text-3xl font-medium text-primary mb-4">
+    {{"Products" | translate}}
+  </div>
+  @if (products.isLoading()) {
+  <div class="p-8 mx-auto text-center w-full">
+    <span class="loading loading-spinner loading-primary loading-xl"></span>
+
+  </div>
+  }
+
+  @if (products.value(); as productsValue) {
+  @if (productsValue.items.length == 0) {
+  <div class="p-8 mx-auto text-center w-full">
+    <h3 class="text-2xl font-medium text-primary mb-4">
+      {{"No Products Found" | translate}}
+    </h3>
+    <p class="text-gray-500">
+      {{"Try searching with different keywords or filters." | translate}}
+    </p>
+  </div>
+  }
+  @if (productsValue.items.length > 0) {
+  <div class="flex items-center justify-between mb-4">
+    <div class="text-sm text-gray-500">
+      {{productsValue.total}} {{"Products Found" | translate}}
+    </div>
+    <div class="flex gap-2">
+      <button class="btn btn-link btn-sm px-1 hover:text-secondary">
+        <mat-icon class="scale-75" svgIcon="grid_view" />
+      </button>
+      <button class="btn btn-link btn-sm px-1 hover:text-secondary">
+        <mat-icon class="scale-75" svgIcon="view_list" />
+      </button>
+    </div>
+    <!-- <div class="flex gap-2">
+      <span class="text-sm text-gray-500">
+        {{"Sort By" | translate}}
+      </span>
+      <select class="select select-bordered select-sm w-full max-w-[150px]">
+        <option selected>{{"Default" | translate}}</option>
+        <option>{{"Price: Low to High" | translate}}</option>
+        <option>{{"Price: High to Low" | translate}}</option>
+        <option>{{"Newest Arrivals" | translate}}</option>
+      </select>
+    </div> -->
+  </div>
+
+  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+
+    @for (item of productsValue.items; track item.id) {
+
+    @let name = isEn ? item.nameEn : item.nameAr;
+    <a [routerLink]="[routes.PRODUCT_DETAILS, item.slug]">
+      <div
+        class="__product_card hover:shadow-md h-full shadow-gray-300/50 cursor-pointer transition-shadow rounded-lg relative border border-gray-200 flex flex-col">
+        <button class="btn btn-link btn-sm px-1 hover:text-secondary absolute z-10 right-0 top-0">
+          <mat-icon class="scale-75" svgIcon="heart" />
+        </button>
+        <figure class="aspect-square flex items-center justify-center bg-gray-100 p-1 max-h-[250px]">
+          <img [src]="item.thumbnail" alt="{{name}}" class="h-full object-contain aspect-square" />
+        </figure>
+        <div class="__card-body flex-1 flex flex-col p-3">
+
+          <h4 class="text-sm font-medium mb-2 flex-1">{{name}}</h4>
+          <div class="flex m-auto">
+            @for (star of [1, 2, 3, 4, 5]; track star) {
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" [class.text-yellow-400]="star <= item.stars"
+              [class.text-gray-300]="star > item.stars" viewBox="0 0 20 20" fill="currentColor">
+              <path
+                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+            }
+            <span class="text-xs ml-1">({{item.reviews}})</span>
+          </div>
+          @if (item.quantity == 0) {
+          <div class="flex items-center gap-1 text-error m-auto ">
+            <div class="badge badge-error badge-xs h-2 w-2 "></div>
+            <div class="text-xs">{{"Out of Stock" | translate}}</div>
+
+          </div>
+
+          } @else {
+
+          <div class="m-auto text-sm flex gap-2 flex-wrap">
+            <span class="font-normal">AED {{item.price}}</span>
+            <span class="line-through text-gray-400">AED {{item.oldPrice}}</span>
+          </div>
+          }
+
+          <button
+            class="btn btn-primary font-normal btn-sm mt-2 text-white flex items-center gap-1 shadow-none hover:text-secondary">
+            <mat-icon class="scale-65" svgIcon="cart" />
+            <span>
+              {{"Add to Cart" | translate}}
+            </span>
+
+          </button>
+        </div>
+      </div>
+    </a>
+
+    }
+  </div>
+  }
+  }
+
+</section>

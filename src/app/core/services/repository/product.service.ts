@@ -11,6 +11,8 @@ export interface ProductQuery {
   page?: number;
   pageSize?: number;
   minRating?: number;
+  queryString?: string; // New field for search query
+  categorySlug?: string; // New field for category slug
 }
 
 @Injectable({ providedIn: 'root' })
@@ -23,17 +25,40 @@ export class ProductService {
     query: ProductQuery = {}
   ): Observable<{ items: Product[]; total: number }> {
     let filtered = this.products;
+
+    // Filter by categoryId
     if (query.categoryId) {
       filtered = filtered.filter((p) => p.categoryId === query.categoryId);
     }
+
+    // Filter by categorySlug (assuming categorySlug is part of the category object)
+    if (query.categorySlug) {
+      filtered = filtered.filter(
+        (p) => p.category?.slug === query.categorySlug
+      );
+    }
+
+    // Filter by minRating
     if (query.minRating) {
       filtered = filtered.filter((p) => p.stars >= (query.minRating ?? 0));
     }
+
+    // Filter by queryString
+    if (query.queryString) {
+      const lowerQuery = query.queryString.toLowerCase();
+      filtered = filtered.filter(
+        (p) =>
+          p.nameEn.toLowerCase().includes(lowerQuery) ||
+          p.nameAr.toLowerCase().includes(lowerQuery)
+      );
+    }
+
     const total = filtered.length;
     const page = query.page ?? 1;
     const pageSize = query.pageSize ?? 10;
     const start = (page - 1) * pageSize;
     const items = filtered.slice(start, start + pageSize);
+
     return of({ items, total }).pipe(delay(300));
   }
 
