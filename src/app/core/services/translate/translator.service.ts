@@ -49,7 +49,7 @@ export class TranslatorService {
   }
 
   setCurrentLang(lang?: string): void {
-    if (this.PlatformService.isServer) return;
+    // if (this.PlatformService.isServer) return;
     lang ??= this.getCurrentLang() || APP_SETTINGS.defaultLanguage;
     lang = lang;
 
