@@ -48,8 +48,10 @@ export class TranslatorService {
     );
   }
 
-  setCurrentLang(lang: string = APP_SETTINGS.defaultLanguage): void {
-    lang = lang || APP_SETTINGS.defaultLanguage;
+  setCurrentLang(lang?: string): void {
+    if (this.PlatformService.isServer) return;
+    lang ??= this.getCurrentLang() || APP_SETTINGS.defaultLanguage;
+    lang = lang;
 
     this.translate.use(lang);
     this.translate.setDefaultLang(lang);
