@@ -25,9 +25,9 @@ export class HeaderComponent {
   menuCollapse = model(false);
   appRoutes = APP_ROUTES;
   navItems: { name: string; route: string }[] = [
-    { name: 'home', route: APP_ROUTES.HOME },
-    { name: 'shop', route: APP_ROUTES.PRODUCTS },
-    { name: 'services', route: APP_ROUTES.BLOGS },
+    { name: 'Home', route: APP_ROUTES.HOME },
+    { name: 'Shop', route: APP_ROUTES.PRODUCTS },
+    { name: 'Services', route: APP_ROUTES.BLOGS },
   ];
   setLang(lang: 'en' | 'ar') {
     this.TranslatorService.setCurrentLang(lang);
