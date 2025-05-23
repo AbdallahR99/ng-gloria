@@ -28,8 +28,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(
       routes,
       withComponentInputBinding(),
-      withInMemoryScrolling({ scrollPositionRestoration: 'top' }),
-      withViewTransitions()
+      withInMemoryScrolling({ scrollPositionRestoration: 'top' })
+      // withViewTransitions()
     ),
     // provideClientHydration(withEventReplay()),
     provideClientTranslatorModule(),
