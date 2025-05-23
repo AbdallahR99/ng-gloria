@@ -117,6 +117,7 @@ export class ProductDetailsComponent {
     const productName = this.product().nameEn;
     const selectedColor = this.selectedColor();
     const selectedSize = this.selectedSize();
+    const quantity = this.quantity();
 
     let message = `Product: ${productName}`;
     if (selectedColor) {
@@ -126,7 +127,11 @@ export class ProductDetailsComponent {
       message += `\nSize: ${selectedSize}`;
     }
 
-    const phoneNumber = '+971554454159';
+    if (quantity > 1) {
+      message += `\nQuantity: ${quantity}`;
+    }
+
+    const phoneNumber = '+971509700715';
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
       message
     )}`;
