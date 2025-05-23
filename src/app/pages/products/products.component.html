@@ -8,7 +8,8 @@
             <path d="m21 21-4.3-4.3"></path>
           </g>
         </svg>
-        <input type="search" class="grow" #searchInput placeholder="{{'Search' | translate}}" />
+        <input type="search" class="grow" #searchInput [value]="queryString() || ''"
+          placeholder="{{'Search' | translate}}" />
 
       </label>
     </form>

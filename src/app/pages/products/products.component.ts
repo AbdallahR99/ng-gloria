@@ -54,7 +54,10 @@ export class ProductsComponent {
 
   onSearch(query: string) {
     this.router.navigate([this.routes.PRODUCTS], {
-      queryParams: { search: query, category: this.categorySlug() },
+      queryParams: {
+        search: query ? query : undefined,
+        category: this.categorySlug(),
+      },
     });
   }
 }
