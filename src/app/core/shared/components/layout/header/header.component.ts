@@ -26,7 +26,7 @@ export class HeaderComponent {
   appRoutes = APP_ROUTES;
   navItems: { name: string; route: string }[] = [
     { name: 'home', route: APP_ROUTES.HOME },
-    { name: 'shop', route: APP_ROUTES.SHOP },
+    { name: 'shop', route: APP_ROUTES.PRODUCTS },
     { name: 'services', route: APP_ROUTES.BLOGS },
   ];
   setLang(lang: 'en' | 'ar') {
