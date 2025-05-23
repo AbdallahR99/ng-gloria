@@ -67,7 +67,9 @@
           </p>
           <div class="flex flex-wrap gap-2">
             @for (size of sizes; track size) {
-            <button class="btn btn-sm btn-outline border-1 btn-primary">
+            @let isSelected = size == selectedSize();
+            <button (click)="selectedSize.set(isSelected ? '' : size)" [class.btn-active]="isSelected"
+              class="btn btn-sm btn-outline border-1 btn-primary">
               {{size}}
             </button>
             }
@@ -82,7 +84,11 @@
           </p>
           <div class="flex flex-wrap gap-2 my-auto">
             @for (color of colors; track color.hex) {
-            <div class="border border-primary/40 h-7 w-7 rounded-full" [ngStyle]="{'background': color.hex}"></div>
+            @let isSelected = color.name == selectedColor();
+            <div role="button" (click)="selectedColor.set(isSelected ? '' : color.name)" [ngClass]="{
+              'border-primary border-3': isSelected,
+              'border-primary/40': !isSelected
+            }" class="border transition-all link h-7 w-7 rounded-full" [ngStyle]="{'background': color.hex}"></div>
             }
           </div>
         </div>
@@ -129,7 +135,7 @@
             {{"Add to Cart" | translate}}
           </span>
         </button>
-        <button class="btn flex-1 btn-primary text-white">
+        <button class="btn flex-1 btn-primary text-white" (click)="sendWhatsAppMessage()">
           {{"Buy Now" | translate}}
         </button>
 

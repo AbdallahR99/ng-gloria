@@ -29,6 +29,8 @@ export class ProductDetailsComponent {
   productService = inject(ProductService);
   bundleService = inject(BundleService);
   quantity = signal(1);
+  selectedColor = signal('');
+  selectedSize = signal('');
 
   currentImageIndex = signal(0);
 
@@ -109,6 +111,27 @@ export class ProductDetailsComponent {
   decrease() {
     if (this.quantity() <= 1) return;
     this.quantity.update((value) => value - 1);
+  }
+
+  sendWhatsAppMessage(): void {
+    const productName = this.product().nameEn;
+    const selectedColor = this.selectedColor();
+    const selectedSize = this.selectedSize();
+
+    let message = `Product: ${productName}`;
+    if (selectedColor) {
+      message += `\nColor: ${selectedColor}`;
+    }
+    if (selectedSize) {
+      message += `\nSize: ${selectedSize}`;
+    }
+
+    const phoneNumber = '+971554454159';
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+      message
+    )}`;
+
+    window.open(whatsappUrl, '_blank');
   }
 
   constructor() {}
