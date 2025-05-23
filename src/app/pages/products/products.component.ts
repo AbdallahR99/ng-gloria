@@ -15,6 +15,7 @@ import {
 import { CategoryService } from '@app/core/services/repository/category.service';
 import { FacadeService } from '@app/core/services/facade-service.service';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { c } from 'node_modules/@angular/material/icon-module.d-sA1hmRKS';
 
 @Component({
   selector: 'app-products',
@@ -50,4 +51,10 @@ export class ProductsComponent {
       return this.facadeService.productService.getProducts(request);
     },
   });
+
+  onSearch(query: string) {
+    this.router.navigate([this.routes.PRODUCTS], {
+      queryParams: { search: query, category: this.categorySlug() },
+    });
+  }
 }
