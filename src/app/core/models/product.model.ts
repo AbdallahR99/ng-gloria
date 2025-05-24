@@ -25,4 +25,6 @@ export interface Product {
     descriptionAr: string; // Arabic description of the inspiration
     image: string; // Image of the original product
   };
+  inFavorites?: boolean; // Indicates if the product is in the user's favorites
+  inCart?: boolean; // Indicates if the product is in the user's cart
 }

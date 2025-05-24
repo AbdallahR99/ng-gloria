@@ -1,51 +1,64 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map, delay } from 'rxjs/operators';
-import { Product } from '../../models/product.model';
-
-export interface CartItem {
-  product: Product;
-  quantity: number;
-}
+import { inject, Injectable } from '@angular/core';
+import { SupabaseFunctionsService } from './supabase-functions.service';
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
-  private cart$ = new BehaviorSubject<CartItem[]>([]);
+  private readonly fn = inject(SupabaseFunctionsService);
+  private readonly endpoint = 'cart';
 
-  getCart(): Observable<CartItem[]> {
-    return this.cart$.asObservable().pipe(delay(100));
+  get(userId?: string) {
+    return this.fn.callFunction(`${this.endpoint}/get`, {
+      method: 'GET',
+      queryParams: userId ? { user_id: userId } : undefined,
+    });
   }
 
-  addToCart(product: Product, quantity = 1): Observable<CartItem[]> {
-    const cart = this.cart$.value;
-    const idx = cart.findIndex((item) => item.product.id === product.id);
-    if (idx > -1) {
-      cart[idx].quantity += quantity;
-    } else {
-      cart.push({ product, quantity });
-    }
-    this.cart$.next([...cart]);
-    return of(this.cart$.value).pipe(delay(100));
+  summary(userId?: string) {
+    return this.fn.callFunction(`${this.endpoint}/summary`, {
+      method: 'GET',
+      queryParams: userId ? { user_id: userId } : undefined,
+    });
   }
 
-  removeFromCart(productId: number): Observable<CartItem[]> {
-    const cart = this.cart$.value.filter(
-      (item) => item.product.id !== productId
-    );
-    this.cart$.next(cart);
-    return of(cart).pipe(delay(100));
+  create(item: any) {
+    return this.fn.callFunction(`${this.endpoint}/create`, {
+      method: 'POST',
+      body: item,
+    });
   }
 
-  updateQuantity(productId: number, quantity: number): Observable<CartItem[]> {
-    const cart = this.cart$.value.map((item) =>
-      item.product.id === productId ? { ...item, quantity } : item
-    );
-    this.cart$.next(cart);
-    return of(cart).pipe(delay(100));
+  update(item: any) {
+    return this.fn.callFunction(`${this.endpoint}/update`, {
+      method: 'PUT',
+      body: item,
+    });
   }
 
-  clearCart(): Observable<void> {
-    this.cart$.next([]);
-    return of(undefined).pipe(delay(100));
+  upsert(item: any) {
+    return this.fn.callFunction(`${this.endpoint}/upsert`, {
+      method: 'POST',
+      body: item,
+    });
+  }
+
+  delete(id: string, userId?: string) {
+    return this.fn.callFunction(`${this.endpoint}/delete`, {
+      method: 'DELETE',
+      body: { cart_id: id, user_id: userId },
+    });
+  }
+
+  bulkCreate(items: any[]) {
+    return this.fn.callFunction(`${this.endpoint}/bulk`, {
+      method: 'POST',
+      body: items,
+    });
+  }
+
+  bulkDelete(ids: string[]) {
+    return this.fn.callFunction(`${this.endpoint}/bulk`, {
+      method: 'DELETE',
+      body: ids,
+    });
   }
 }

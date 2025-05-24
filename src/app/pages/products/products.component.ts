@@ -11,8 +11,8 @@ import { SHARED_MODULES } from '@app/core/shared/modules/shared.module';
 import {
   ProductQuery,
   ProductService,
-} from '@app/core/services/repository/product.service';
-import { CategoryService } from '@app/core/services/repository/category.service';
+} from '@app/core/services/repository/products.service';
+import { CategoriesService } from '@app/core/services/repository/categories.service';
 import { FacadeService } from '@app/core/services/facade-service.service';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { c } from 'node_modules/@angular/material/icon-module.d-sA1hmRKS';

@@ -1,10 +1,10 @@
 import { inject, Injectable, Injector } from '@angular/core';
 import { TranslatorService } from './translate/translator.service';
-import { CategoryService } from './repository/category.service';
-import { ProductService } from './repository/product.service';
+import { CategoriesService } from './repository/categories.service';
+import { ProductService } from './repository/products.service';
 import { CartService } from './repository/cart.service';
 import { PaymentService } from './repository/payment.service';
-import { BundleService } from './repository/product-bundle.service';
+import { BundleService } from './repository/bundles.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +13,7 @@ export class FacadeService {
   public inject = inject(Injector);
 
   private _translateService?: TranslatorService;
-  private _categoryService?: CategoryService;
+  private _categoryService?: CategoriesService;
   private _productService?: ProductService;
   private _cartService?: CartService;
   private _paymentService?: PaymentService;
@@ -27,7 +27,7 @@ export class FacadeService {
   }
   get categoryService() {
     if (!this._categoryService) {
-      this._categoryService = this.inject.get(CategoryService);
+      this._categoryService = this.inject.get(CategoriesService);
     }
     return this._categoryService;
   }

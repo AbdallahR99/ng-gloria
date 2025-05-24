@@ -3,7 +3,7 @@ import { APP_ROUTES } from '@app/core/constants/app-routes.enum';
 import { FacadeService } from '@app/core/services/facade-service.service';
 import { SHARED_MODULES } from '@app/core/shared/modules/shared.module';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { ProductQuery } from '@app/core/services/repository/product.service';
+import { ProductQuery } from '@app/core/services/repository/products.service';
 @Component({
   selector: 'app-home',
   imports: [SHARED_MODULES],

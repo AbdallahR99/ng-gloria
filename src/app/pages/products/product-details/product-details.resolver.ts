@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
-import { ProductService } from '@app/core/services/repository/product.service';
+import { ProductService } from '@app/core/services/repository/products.service';
 import { Product } from '@app/core/models/product.model';
 import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';

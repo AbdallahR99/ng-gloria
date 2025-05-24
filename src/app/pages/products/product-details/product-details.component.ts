@@ -1,4 +1,4 @@
-import { ProductService } from '@app/core/services/repository/product.service';
+import { ProductService } from '@app/core/services/repository/products.service';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -10,7 +10,7 @@ import {
 import { rxResource } from '@angular/core/rxjs-interop';
 import { APP_ROUTES } from '@app/core/constants/app-routes.enum';
 import { Product } from '@app/core/models/product.model';
-import { BundleService } from '@app/core/services/repository/product-bundle.service';
+import { BundleService } from '@app/core/services/repository/bundles.service';
 import { TranslatorService } from '@app/core/services/translate/translator.service';
 
 import { SHARED_MODULES } from '@app/core/shared/modules/shared.module';
