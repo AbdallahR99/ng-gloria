@@ -1,3 +1,4 @@
+import { Order } from './../models/order.model';
 const products = '/products';
 export enum APP_ROUTES {
   HOME = '/home',
@@ -7,16 +8,18 @@ export enum APP_ROUTES {
   WOMEN_PERFUME = products + '?category=perfum&gender=female',
   SKIN_CARE = products + '?category=skin_care',
   HAIR_CARE = products + '?category=hair_care',
-  LOGIN = '/login',
-  SIGNUP = '/signup',
+  SignIn = '/login',
+  SignUp = '/signup',
+  AUTH = '/auth',
+  AUTH_LOGIN = '/auth/login',
+  AUTH_SIGNUP = '/auth/signup',
   DASHBOARD = '/dashboard',
   PROFILE = '/profile',
   SETTINGS = '/settings',
   SHOP = '/shop',
   BLOGS = '/blogs',
   Cart = '/cart',
-  SignIn = '/signin',
-  SignUp = '/signup',
+  Orders = '/orders',
   About = '/about',
   Contact = '/contact',
   ReturnPolicy = '/return-policy',

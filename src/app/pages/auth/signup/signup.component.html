@@ -1,0 +1,135 @@
+<div class="border border-primary/60 rounded-lg flex overflow-hidden">
+  <div class="flex-1 p-5 bg-white ">
+    <h1 class="text-3xl font-medium text-primary text-center mb-10 mt-5">
+      {{"Sign Up" | translate}}
+    </h1>
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)" class="flex flex-col gap-2 max-w-[300px] mx-auto">
+      @if (errorMsg() || true) {
+      <div class="text-center">
+        <span class="text-error text-sm">
+          {{errorMsg() | translate}}
+        </span>
+      </div>
+      }
+
+      <!-- First Name -->
+      <label class="form-control floating-label">
+        <span>{{"First Name" | translate}}</span>
+        <input type="text" name="firstName" #firstName="ngModel"
+          class="input input-primary border border-primary/50 w-full" placeholder="{{'Enter First Name' | translate}}"
+          ngModel required />
+        <div class="label">
+          @if (firstName?.invalid && firstName?.touched) {
+          <span class="label-text-alt text-error text-xs">
+            {{"This field is required" | translate}}
+          </span>
+          }
+        </div>
+      </label>
+
+      <!-- Last Name -->
+      <label class="form-control floating-label">
+        <span>{{"Last Name" | translate}}</span>
+        <input type="text" name="lastName" #lastName="ngModel"
+          class="input input-primary border border-primary/50 w-full" placeholder="{{'Enter Last Name' | translate}}"
+          ngModel required />
+        <div class="label">
+          @if (lastName?.invalid && lastName?.touched) {
+          <span class="label-text-alt text-error text-xs">
+            {{"This field is required" | translate}}
+          </span>
+          }
+        </div>
+      </label>
+
+      <!-- Email -->
+      <label class="form-control floating-label">
+        <span>{{"Email" | translate}}</span>
+        <input type="email" name="email" #email="ngModel" class="input input-primary border border-primary/50 w-full"
+          placeholder="{{'Enter Email' | translate}}" ngModel required />
+        <div class="label">
+          @if (email?.invalid && email?.touched) {
+          <span class="label-text-alt text-error text-xs">
+            {{"This field is required" | translate}}
+          </span>
+          }
+        </div>
+      </label>
+
+      <!-- Phone -->
+
+      <label class="form-control input floating-label  input-primary border border-primary/50 w-full !p-0 ">
+
+        <span>{{"Phone" | translate}}</span>
+        <label class="input p-0 bg-transparent">
+          <span class="label !m-0">{{"+971"}}</span>
+          <input type="text" name="phone" #phone="ngModel" placeholder="{{'Enter Phone' | translate}}" ngModel
+            pattern="^5[0-9]{8}$" required />
+        </label>
+
+
+        <!-- <input type="text" name="phone" #phone="ngModel" class="input input-primary border border-primary/50 w-full"
+          placeholder="{{'Enter Phone' | translate}}" ngModel required /> -->
+
+      </label>
+      <div class="label mb-4">
+        @if (phone?.invalid && phone?.touched) {
+        <span class="label-text-alt text-error text-xs">
+          {{"This field is required" | translate}}
+        </span>
+        }
+      </div>
+
+      <!-- Password -->
+      <div class="form-control floating-label">
+        <span>{{"Password" | translate}}</span>
+        <input type="password" #password="ngModel" name="password" [minLength]="8"
+          class="input input-primary border border-primary/50 w-full" placeholder="{{'Enter Password' | translate}}"
+          ngModel required />
+        <div class="label">
+          @if (password?.invalid && password?.touched) {
+          <span class="label-text-alt text-error text-xs">
+            {{"This field is required" | translate}}
+          </span>
+          }
+        </div>
+      </div>
+
+      <!-- Sign Up button -->
+      <button type="submit" [disabled]="isLoading()" class="btn btn-primary text-white mb-6">
+        @if (isLoading()) {
+        <span class="loading loading-spinner text-primary loading-sm"></span>
+        } @else {
+        {{"Sign Up" | translate}}
+        }
+
+      </button>
+
+      <!-- or login (max-md) -->
+      <div class="md:hidden text-center mt-1">
+        <span class="text-sm text-primary/80">
+          {{"Or Login" | translate}}
+        </span>
+        <a [routerLink]="[routes.AUTH_LOGIN]" class="link link-primary link-hover font-medium">
+          {{"Login" | translate}}
+        </a>
+      </div>
+    </form>
+  </div>
+  <div class="order-first p-5 max-md:hidden flex flex-col items-center justify-center bg-primary">
+    <p class="text-2xl font-medium text-center mb-3 text-white">
+      {{"Welcome" | translate}}
+    </p>
+    <p class="text-white max-w-[250px] text-center mb-5">
+      @if (isEn) {
+      Add your personal details to explore beauty with us
+      } @else {
+      أضف تفاصيلك الشخصية لاستكشاف الجمال معنا
+      }
+    </p>
+    <!-- Login button link -->
+    <a [routerLink]="[routes.AUTH_LOGIN]" class="btn btn-white mt-5 px-8">
+      {{"Log In" | translate}}
+    </a>
+  </div>
+</div>

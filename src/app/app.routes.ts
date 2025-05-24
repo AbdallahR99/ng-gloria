@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { APP_ROUTES } from './core/constants/app-routes.enum';
 import { productDetailsResolver } from './pages/products/product-details/product-details.resolver';
 import { NotFoundComponent } from '@app/pages/not-found/not-found.component';
+import { auth_routes } from './pages/auth/auth.routes';
+import { NotAuthGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -33,6 +35,14 @@ export const routes: Routes = [
     //   product: productDetailsResolver,
     // },
     resolve: { product: productDetailsResolver },
+  },
+  {
+    path: APP_ROUTES.AUTH.substring(1),
+    canActivate: [NotAuthGuard],
+    loadComponent: () =>
+      import('./pages/auth/auth.component').then((m) => m.AuthComponent),
+    loadChildren: () =>
+      import('./pages/auth/auth.routes').then((m) => m.auth_routes),
   },
   {
     path: 'not-found',

@@ -5,12 +5,14 @@ import { toSnakeCase, toCamelCase } from '@app/core/utils/case-converter';
 import { environment } from '@environments/environment';
 import { firstValueFrom, map, Observable } from 'rxjs';
 import { PlatformService } from '../platform/platform.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({ providedIn: 'root' })
 export class SupabaseFunctionsService {
   private readonly http = inject(HttpClient);
   private readonly platformService = inject(PlatformService);
   private readonly baseUrl = environment.supabaseFunctions;
+  private readonly jwtHelper = new JwtHelperService();
 
   callFunction<T>(
     path: string,
@@ -78,12 +80,25 @@ export class SupabaseFunctionsService {
 
   private getToken(): string | undefined {
     if (this.platformService.isServer) {
-      // If running on the server, return undefined (no token available)
       return undefined;
     }
-    // Retrieve the token from local storage
     const token = localStorage.getItem(LocalStorageKeys.TOKEN);
-    if (!token) return undefined;
+    if (!token) {
+      return undefined;
+    }
+    if (this.jwtHelper.isTokenExpired(token)) {
+      this.logout(); // Call logout if the token is expired
+      return undefined;
+    }
     return token;
+  }
+
+  public isTokenExpired(token: string): boolean {
+    return this.jwtHelper.isTokenExpired(token);
+  }
+
+  logout() {
+    localStorage.removeItem(LocalStorageKeys.TOKEN);
+    // Additional cleanup logic if needed
   }
 }

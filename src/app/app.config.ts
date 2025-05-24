@@ -21,6 +21,7 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
 import { IconService } from './core/services/utils/icon.service';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatorService } from './core/services/translate/translator.service';
+import { AuthService } from './core/services/repository/auth.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -38,6 +39,7 @@ export const appConfig: ApplicationConfig = {
     provideAppInitializer(() => {
       inject(IconService).registerIcons();
       inject(TranslatorService).setCurrentLang();
+      inject(AuthService).init();
     }),
   ],
 };

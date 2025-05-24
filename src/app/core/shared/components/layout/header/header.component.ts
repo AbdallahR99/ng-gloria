@@ -10,6 +10,8 @@ import { APP_ROUTES } from '@app/core/constants/app-routes.enum';
 import { HeaderNavMenuComponent } from './header-nav-menu/header-nav-menu.component';
 import { TranslatorService } from '@app/core/services/translate/translator.service';
 import { LoadingService } from '@app/core/services/loading.service';
+import { FacadeService } from '@app/core/services/facade-service.service';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -19,8 +21,16 @@ import { LoadingService } from '@app/core/services/loading.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
+  imagePath = environment.supabaseImages;
   loadingService = inject(LoadingService);
   TranslatorService = inject(TranslatorService);
+  facadeService = inject(FacadeService);
+  get isLoggedIn() {
+    return this.facadeService.authService.isLoggedIn;
+  }
+  get user() {
+    return this.facadeService.usersService.user;
+  }
   get isEn(): boolean {
     return this.TranslatorService.isEn();
   }
@@ -37,4 +47,5 @@ export class HeaderComponent {
   toggleLanguage() {
     this.setLang(this.isEn ? 'ar' : 'en');
   }
+  logout() {}
 }
