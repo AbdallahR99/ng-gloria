@@ -15,7 +15,7 @@ export class UsersService {
   }
 
   update(user: Partial<User> & { userId?: string }) {
-    return this.fn.callFunction(`${this.endpoint}/update`, {
+    return this.fn.callFunction(`${this.endpoint}`, {
       method: 'PUT',
       body: user,
     });

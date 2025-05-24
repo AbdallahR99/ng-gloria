@@ -15,21 +15,21 @@ export class StatesService {
   }
 
   create(state: Partial<State>) {
-    return this.fn.callFunction<State>(`${this.endpoint}/create`, {
+    return this.fn.callFunction<State>(`${this.endpoint}`, {
       method: 'POST',
       body: state,
     });
   }
 
   update(state: Partial<State>) {
-    return this.fn.callFunction<State>(`${this.endpoint}/update`, {
+    return this.fn.callFunction<State>(`${this.endpoint}`, {
       method: 'PUT',
       body: state,
     });
   }
 
   delete(id: string) {
-    return this.fn.callFunction(`${this.endpoint}/delete`, {
+    return this.fn.callFunction(`${this.endpoint}`, {
       method: 'DELETE',
       body: { id },
     });

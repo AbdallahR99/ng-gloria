@@ -20,21 +20,21 @@ export class CategoriesService {
   }
 
   create(category: Partial<Category>) {
-    return this.fn.callFunction<Category>(`${this.endpoint}/create`, {
+    return this.fn.callFunction<Category>(`${this.endpoint}`, {
       method: 'POST',
       body: category,
     });
   }
 
   update(category: Partial<Category>) {
-    return this.fn.callFunction<Category>(`${this.endpoint}/update`, {
+    return this.fn.callFunction<Category>(`${this.endpoint}`, {
       method: 'PUT',
       body: category,
     });
   }
 
   delete(id: string) {
-    return this.fn.callFunction(`${this.endpoint}/delete`, {
+    return this.fn.callFunction(`${this.endpoint}`, {
       method: 'DELETE',
       body: { id },
     });

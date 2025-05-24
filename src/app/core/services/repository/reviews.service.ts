@@ -25,21 +25,21 @@ export class ReviewsService {
   }
 
   create(review: Partial<Review>) {
-    return this.fn.callFunction<Review>(`${this.endpoint}/create`, {
+    return this.fn.callFunction<Review>(`${this.endpoint}`, {
       method: 'POST',
       body: review,
     });
   }
 
   update(review: Partial<Review>) {
-    return this.fn.callFunction<Review>(`${this.endpoint}/update`, {
+    return this.fn.callFunction<Review>(`${this.endpoint}`, {
       method: 'PUT',
       body: review,
     });
   }
 
   delete(id: string) {
-    return this.fn.callFunction(`${this.endpoint}/delete`, {
+    return this.fn.callFunction(`${this.endpoint}`, {
       method: 'DELETE',
       body: { id },
     });

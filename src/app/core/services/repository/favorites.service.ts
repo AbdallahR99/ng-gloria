@@ -33,21 +33,21 @@ export class FavoritesService {
   }
 
   create(favorite: Partial<Favorite>) {
-    return this.fn.callFunction(`${this.endpoint}/create`, {
+    return this.fn.callFunction(`${this.endpoint}`, {
       method: 'POST',
       body: favorite,
     });
   }
 
   update(favorite: Partial<Favorite>) {
-    return this.fn.callFunction(`${this.endpoint}/update`, {
+    return this.fn.callFunction(`${this.endpoint}`, {
       method: 'PUT',
       body: favorite,
     });
   }
 
   delete(favorite: Pick<Favorite, 'productId' | 'userId'>) {
-    return this.fn.callFunction(`${this.endpoint}/delete`, {
+    return this.fn.callFunction(`${this.endpoint}`, {
       method: 'DELETE',
       body: favorite,
     });

@@ -66,36 +66,21 @@ export class ProductDetailsComponent {
 
   comments = rxResource({
     request: () => ({
-      productId: this.product().id,
+      slug: this.product().slug,
     }),
     loader: ({ request }) => {
-      return of([
-        {
-          id: 1,
-          name: 'John Doe',
-          date: '2023-10-01',
-          comment: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et
-      dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat.`,
-          stars: 4,
-        },
-        {
-          id: 2,
-          name: 'Jane Smith',
-          date: '2023-10-02',
-          comment: `Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
-          stars: 5,
-        },
-        {
-          id: 3,
-          name: 'Alice Johnson',
-          date: '2023-10-03',
-          comment: `Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam
-      rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.`,
-          stars: 3,
-        },
-      ]);
+      return this.facadeService.reviewsService.get(request.slug);
+    },
+  });
+
+  ratingDistributionStars = rxResource({
+    request: () => ({
+      slug: this.product().slug,
+    }),
+    loader: ({ request }) => {
+      return this.facadeService.reviewsService.getRatingDistribution(
+        request.slug
+      );
     },
   });
 

@@ -61,21 +61,21 @@ export class ProductsService {
   }
 
   create(product: Partial<Product>) {
-    return this.fn.callFunction<Product>(`${this.endpoint}/create`, {
+    return this.fn.callFunction<Product>(`${this.endpoint}`, {
       method: 'POST',
       body: product,
     });
   }
 
   update(product: Partial<Product>) {
-    return this.fn.callFunction<Product>(`${this.endpoint}/update`, {
+    return this.fn.callFunction<Product>(`${this.endpoint}`, {
       method: 'PUT',
       body: product,
     });
   }
 
   delete(id: number) {
-    return this.fn.callFunction<Product>(`${this.endpoint}/delete`, {
+    return this.fn.callFunction<Product>(`${this.endpoint}`, {
       method: 'DELETE',
       body: { id },
     });

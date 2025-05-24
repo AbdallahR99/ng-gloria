@@ -15,21 +15,21 @@ export class BundlesService {
   }
 
   create(bundle: Partial<Bundle>) {
-    return this.fn.callFunction<Bundle>(`${this.endpoint}/create`, {
+    return this.fn.callFunction<Bundle>(`${this.endpoint}`, {
       method: 'POST',
       body: bundle,
     });
   }
 
   update(bundle: Partial<Bundle>) {
-    return this.fn.callFunction<Bundle>(`${this.endpoint}/update`, {
+    return this.fn.callFunction<Bundle>(`${this.endpoint}`, {
       method: 'PUT',
       body: bundle,
     });
   }
 
   delete(id: number) {
-    return this.fn.callFunction<Bundle>(`${this.endpoint}/delete`, {
+    return this.fn.callFunction<Bundle>(`${this.endpoint}`, {
       method: 'DELETE',
       body: { id },
     });

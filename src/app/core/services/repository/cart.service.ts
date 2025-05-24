@@ -21,14 +21,14 @@ export class CartService {
   }
 
   create(item: any) {
-    return this.fn.callFunction(`${this.endpoint}/create`, {
+    return this.fn.callFunction(`${this.endpoint}`, {
       method: 'POST',
       body: item,
     });
   }
 
   update(item: any) {
-    return this.fn.callFunction(`${this.endpoint}/update`, {
+    return this.fn.callFunction(`${this.endpoint}`, {
       method: 'PUT',
       body: item,
     });
@@ -42,7 +42,7 @@ export class CartService {
   }
 
   delete(id: string, userId?: string) {
-    return this.fn.callFunction(`${this.endpoint}/delete`, {
+    return this.fn.callFunction(`${this.endpoint}`, {
       method: 'DELETE',
       body: { cart_id: id, user_id: userId },
     });

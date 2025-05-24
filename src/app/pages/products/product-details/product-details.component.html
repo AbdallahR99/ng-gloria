@@ -179,8 +179,8 @@
     {{"Perfect Bundle" | translate}}
   </p>
   <div class="flex px-2 flex-wrap gap-3 justify-center lg:justify-start max-md:hidden">
-    @for (productBandle of bundle.bundle; track productBandle.productId) {
-    @if (productBandle.product; as item) {
+    @for (product of bundle.products; track product.id) {
+    @if (product; as item) {
     @let name = isEn ? item?.nameEn : item.nameAr;
     <div class="flex">
       @if (!$first) {
@@ -241,8 +241,8 @@
   </div>
   <div class="md:hidden">
     <div class="flex flex-col gap-4 border border-gray-200 rounded-lg p-3">
-      @for (productBandle of bundle.bundle; track productBandle.productId) {
-      @if (productBandle.product; as item) {
+      @for (product of bundle.products; track product.id) {
+      @if (product; as item) {
       @let name = isEn ? item?.nameEn : item.nameAr;
       <div class="flex items-center pb-4 border-b border-gray-200 ">
         <input type="checkbox" checked="checked" class="checkbox checkbox-primary mr-3" />
@@ -415,17 +415,18 @@
       </div>
 
       <div class="flex justify-center max-md:items-center md:items-start flex-col gap-3">
-        @for (starValue of [5, 4, 3, 2, 1]; track starValue) {
+        @for (starValue of ratingDistributionStars.value(); track starValue) {
         <div class="flex items-center gap-2">
           <span class="text-xs font-medium">
             <span>
-              {{starValue}}
+              {{starValue.rating}}
             </span>
             <span>
               {{"Stars" | translate}}
             </span>
           </span>
-          <progress class="progress progress-primary h-3 w-50 md:bg-white" [value]="starValue" [max]="5"></progress>
+          <progress class="progress progress-primary h-3 w-50 md:bg-white" [value]="starValue.count"
+            [max]="reviews"></progress>
 
         </div>
         }
@@ -442,7 +443,7 @@
             <div class="avatar avatar-placeholder">
               <div class="bg-neutral text-neutral-content w-8 rounded-full">
                 <span class="text-xs">
-                  {{comment.name.charAt(0)}}
+                  {{(comment.firstName?? "U").charAt(0)}}
                 </span>
               </div>
             </div>
@@ -451,10 +452,10 @@
         <div class="flex flex-col flex-auto">
           <div class="flex justify-between">
             <span>
-              {{comment.name}}
+              {{comment.firstName}} {{comment.lastName}}
             </span>
             <span class="text-xs text-gray-400 ml-2 max-md:hidden">
-              {{comment.date | date:'short'}}
+              {{comment.createdAt | date:'short'}}
             </span>
           </div>
 
