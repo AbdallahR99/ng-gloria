@@ -78,3 +78,6 @@
   [ngStyle]="{'top.px': topSpace, 'height': menuCollapse() ? 'calc(100% - '+topSpace+'px)' : '0'}">
   <header-nav-menu class="h-full" />
 </div>
+@if (loadingService.isLoading()) {
+<mat-progress-bar mode="indeterminate" class="text-secondary absolute"></mat-progress-bar>
+}

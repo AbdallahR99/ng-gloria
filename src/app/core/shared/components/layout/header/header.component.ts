@@ -9,6 +9,7 @@ import { HeaderBannerComponent } from './header-banner/header-banner.component';
 import { APP_ROUTES } from '@app/core/constants/app-routes.enum';
 import { HeaderNavMenuComponent } from './header-nav-menu/header-nav-menu.component';
 import { TranslatorService } from '@app/core/services/translate/translator.service';
+import { LoadingService } from '@app/core/services/loading.service';
 
 @Component({
   selector: 'app-header',
@@ -18,6 +19,7 @@ import { TranslatorService } from '@app/core/services/translate/translator.servi
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
+  loadingService = inject(LoadingService);
   TranslatorService = inject(TranslatorService);
   get isEn(): boolean {
     return this.TranslatorService.isEn();

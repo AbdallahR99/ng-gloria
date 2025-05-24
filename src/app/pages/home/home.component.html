@@ -6,6 +6,16 @@
     </h3>
 
     <div class="grid grid-cols-4 sm:grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-4 max-w-[1000px] mx-auto">
+      @if (categories.isLoading() ) {
+      @for (item of [1, 2, 3, 4, 5, 6,7 ,8]; track item) {
+      <div class="animate-pulse flex flex-col items-center text-center">
+        <div class="avatar card-app">
+          <div class="w-20 h-20 md:h-24 md:w-24 bg-gray-300 rounded-full"></div>
+        </div>
+        <span class="mt-2 text-sm font-medium bg-gray-300 h-4 w-16 rounded"></span>
+      </div>
+      }
+      }
       @for (item of categories.value(); track item.id) {
       @let name = isEn ? item.nameEn : item.nameAr;
       <a [routerLink]="appRoutes.PRODUCTS" [queryParams]="{category: item.slug}"
@@ -26,6 +36,27 @@
       {{"Today's Discounts" | translate}}
     </h3>
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      @if (productsTodayDiscounts.isLoading() ) {
+      @for (item of [1, 2, 3, 4, 5]; track item) {
+      <div class="animate-pulse">
+        <div class="card bg-base-100 shadow-md rounded-lg">
+          <div class="aspect-square bg-gray-300 rounded-t-lg"></div>
+          <div class="card-body p-4">
+            <h4 class="text-sm font-medium mb-2 bg-gray-300 h-6 w-3/4 rounded"></h4>
+            <div class="flex items
+              justify-between">
+              <div class="flex items
+                gap-2">
+                <span class="bg-gray-300 h-6 w-16 rounded"></span>
+                <span class="bg-gray-300 h-6 w-16 rounded"></span>
+              </div>
+              <span class="bg-gray-300 h-6 w-16 rounded"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      }
+      }
       @for (item of productsTodayDiscounts.value()?.data; track item.id) {
 
       <ng-container *ngTemplateOutlet="productCard; context: {$implicit: item}"></ng-container>
@@ -57,6 +88,27 @@
           </div>
         </div>
       </div>
+      @if (productsNewArrival.isLoading() ) {
+      @for (item of [1, 2, 3, 4]; track item) {
+      <div class="animate-pulse md:col-span-2">
+        <div class="card bg-base-100 shadow-md rounded-lg">
+          <div class="aspect-square bg-gray-300 rounded-t-lg"></div>
+          <div class="card-body p-4">
+            <h4 class="text-sm font-medium mb-2 bg-gray-300 h-6 w-3/4 rounded"></h4>
+            <div class="flex items
+              justify-between">
+              <div class="flex items
+                gap-2">
+                <span class="bg-gray-300 h-6 w-16 rounded"></span>
+                <span class="bg-gray-300 h-6 w-16 rounded"></span>
+              </div>
+              <span class="bg-gray-300 h-6 w-16 rounded"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      }
+      }
       @for (item of productsNewArrival.value()?.data; track item.id) {
       <div class="md:col-span-2"><ng-container
           *ngTemplateOutlet="productCard; context: {$implicit: item}"></ng-container>

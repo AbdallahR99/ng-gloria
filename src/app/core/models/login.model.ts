@@ -1,5 +1,5 @@
 export interface LoginRequest {
-  email: string; // User's email address
+  identifier: string; // User's email address or phone
   password: string; // User's password
 }
 

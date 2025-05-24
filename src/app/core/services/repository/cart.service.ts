@@ -61,4 +61,10 @@ export class CartService {
       body: ids,
     });
   }
+
+  count() {
+    return this.fn.callFunction(`${this.endpoint}/count`, {
+      method: 'GET',
+    });
+  }
 }

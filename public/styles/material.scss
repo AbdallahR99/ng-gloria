@@ -1,6 +1,7 @@
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
+@use "mat_theme-colors" as mat_theme_colors;
 // Define a custom primary palette
 // ng generate @angular/material:theme-color
 
@@ -9,11 +10,11 @@ html {
   @include mat.theme((
     color: (
       theme-type: light,
-      primary: mat.$blue-palette,
+      primary: mat_theme_colors.$primary-palette,
       // primary: mat.$app-primary-palette,
-      tertiary: mat.$blue-palette,
+      tertiary: mat_theme_colors.$tertiary-palette,
     ),
-    typography: Roboto,
+    typography: "Inter",
     density: 0,
   ));
 }
