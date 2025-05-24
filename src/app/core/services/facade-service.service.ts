@@ -18,7 +18,7 @@ import { AuthService } from './repository/auth.service';
 export class FacadeService {
   public inject = inject(Injector);
 
-  private _translateService?: TranslatorService;
+  private _translatorService?: TranslatorService;
   private _categoryService?: CategoriesService;
   private _cartService?: CartService;
   private _usersService?: UsersService;
@@ -31,11 +31,11 @@ export class FacadeService {
   private _bundlesService?: BundlesService;
   private _authService?: AuthService;
 
-  get translateService() {
-    if (!this._translateService) {
-      this._translateService = this.inject.get(TranslatorService);
+  get translatorService() {
+    if (!this._translatorService) {
+      this._translatorService = this.inject.get(TranslatorService);
     }
-    return this._translateService;
+    return this._translatorService;
   }
   get categoryService() {
     if (!this._categoryService) {

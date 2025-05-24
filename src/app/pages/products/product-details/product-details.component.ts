@@ -1,4 +1,3 @@
-import { ProductService } from '@app/core/services/repository/products.service';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -10,8 +9,7 @@ import {
 import { rxResource } from '@angular/core/rxjs-interop';
 import { APP_ROUTES } from '@app/core/constants/app-routes.enum';
 import { Product } from '@app/core/models/product.model';
-import { BundleService } from '@app/core/services/repository/bundles.service';
-import { TranslatorService } from '@app/core/services/translate/translator.service';
+import { FacadeService } from '@app/core/services/facade-service.service';
 
 import { SHARED_MODULES } from '@app/core/shared/modules/shared.module';
 import { of } from 'rxjs';
@@ -25,9 +23,7 @@ import { of } from 'rxjs';
 })
 export class ProductDetailsComponent {
   product = input.required<Product>();
-  translatorService = inject(TranslatorService);
-  productService = inject(ProductService);
-  bundleService = inject(BundleService);
+  facadeService = inject(FacadeService);
   quantity = signal(1);
   selectedColor = signal('');
   selectedSize = signal('');
@@ -45,26 +41,26 @@ export class ProductDetailsComponent {
   }
 
   get isEn(): boolean {
-    return this.translatorService.isEn();
+    return this.facadeService.translatorService.isEn();
   }
 
   routes = APP_ROUTES;
 
   bundle = rxResource({
     request: () => ({
-      productId: this.product().id,
+      slug: this.product().slug,
     }),
     loader: ({ request }) => {
-      return this.bundleService.getBundleByProductId(request.productId);
+      return this.facadeService.bundlesService.getByProductSlug(request.slug);
     },
   });
 
   relatedProducts = rxResource({
     request: () => ({
-      productId: this.product().id,
+      slug: this.product().slug,
     }),
     loader: ({ request }) => {
-      return this.productService.getRelatedProducts(request.productId);
+      return this.facadeService.productsService.related(request.slug);
     },
   });
 

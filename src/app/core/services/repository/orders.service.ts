@@ -7,7 +7,7 @@ export class OrdersService {
   private readonly endpoint = 'orders';
 
   get(orderId: string, userId?: string) {
-    return this.fn.callFunction(`${this.endpoint}/get`, {
+    return this.fn.callFunction(`${this.endpoint}`, {
       method: 'GET',
       queryParams: {
         order_id: orderId,

@@ -6,6 +6,12 @@ export interface Product {
   nameAr: string;
   descriptionEn: string; // English description
   descriptionAr: string; // Arabic description
+  // metas
+  metaTitleEn?: string; // Meta title in English
+  metaTitleAr?: string; // Meta title in Arabic
+  metaDescriptionEn?: string; // Meta description in English
+  metaDescriptionAr?: string; // Meta description in Arabic
+
   stars: number;
   reviews: number;
   price: number;

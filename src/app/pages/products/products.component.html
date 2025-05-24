@@ -16,7 +16,7 @@
     <div class="mt-5">
       <div class="grid grid-cols-4  sm:grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-4 max-w-[1000px] mx-auto">
 
-        @for (item of categories.value()?.items; track item.id) {
+        @for (item of categories.value(); track item.id) {
         @let name = isEn ? item.nameEn : item.nameAr;
         @let isActive = item.slug === categorySlug();
         <a [routerLink]="routes.PRODUCTS"
@@ -63,7 +63,7 @@
   }
 
   @if (products.value(); as productsValue) {
-  @if (productsValue.items.length == 0) {
+  @if (productsValue.data.length == 0) {
   <div class="p-8 mx-auto text-center w-full">
     <h3 class="text-2xl font-medium text-primary mb-4">
       {{"No Products Found" | translate}}
@@ -73,10 +73,10 @@
     </p>
   </div>
   }
-  @if (productsValue.items.length > 0) {
+  @if (productsValue.data.length > 0) {
   <div class="flex items-center justify-between mb-4">
     <div class="text-sm text-gray-500">
-      {{productsValue.total}} {{"Products Found" | translate}}
+      {{productsValue.pagination.total}} {{"Products Found" | translate}}
     </div>
     <div class="flex gap-2">
       <button class="btn btn-link btn-sm px-1 hover:text-secondary">
@@ -101,7 +101,7 @@
 
   <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
 
-    @for (item of productsValue.items; track item.id) {
+    @for (item of productsValue.data; track item.id) {
 
     @let name = isEn ? item.nameEn : item.nameAr;
     <a [routerLink]="[routes.PRODUCT_DETAILS, item.slug]">

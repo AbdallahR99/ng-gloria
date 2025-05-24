@@ -69,7 +69,7 @@ export class SupabaseFunctionsService {
   ): string {
     const url = new URL(`${this.baseUrl}${path}`);
     if (queryParams) {
-      Object.entries(queryParams).forEach(([key, value]) =>
+      Object.entries(toSnakeCase(queryParams)).forEach(([key, value]) =>
         url.searchParams.append(key, String(value))
       );
     }

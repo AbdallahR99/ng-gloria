@@ -15,31 +15,34 @@ export class HomeComponent {
   appRoutes = APP_ROUTES;
   facadeService = inject(FacadeService);
   get isEn() {
-    return this.facadeService.translateService.isEn();
+    return this.facadeService.translatorService.isEn();
   }
   categories = rxResource({
     loader: ({ request }) => {
-      return this.facadeService.categoryService.getCategories();
+      return this.facadeService.categoryService.get();
     },
   });
   productsTodayDiscounts = rxResource({
     request: () =>
       ({
         pageSize: 5,
+        sortBy: 'created_at',
+        sortOrder: 'asc',
       } as Partial<ProductQuery>),
 
     loader: ({ request }) => {
-      return this.facadeService.productService.getProducts(request);
+      return this.facadeService.productsService.filter(request);
     },
   });
   productsNewArrival = rxResource({
     request: () =>
       ({
-        page: 2,
-        pageSize: 4,
+        pageSize: 5,
+        sortBy: 'created_at',
+        sortOrder: 'desc',
       } as Partial<ProductQuery>),
     loader: ({ request }) => {
-      return this.facadeService.productService.getProducts(request);
+      return this.facadeService.productsService.filter(request);
     },
   });
 }

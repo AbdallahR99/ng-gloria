@@ -15,7 +15,7 @@ export class FavoritesService {
   }
 
   get(userId?: string) {
-    return this.fn.callFunction<Favorite[]>(`${this.endpoint}/get`, {
+    return this.fn.callFunction<Favorite[]>(`${this.endpoint}`, {
       method: 'GET',
       queryParams: userId ? { user_id: userId } : undefined,
     });

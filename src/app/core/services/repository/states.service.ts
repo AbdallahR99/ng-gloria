@@ -8,7 +8,7 @@ export class StatesService {
   private readonly endpoint = 'states';
 
   get(countryCode?: string) {
-    return this.fn.callFunction<State[]>(`${this.endpoint}/get`, {
+    return this.fn.callFunction<State[]>(`${this.endpoint}`, {
       method: 'GET',
       queryParams: countryCode ? { country_code: countryCode } : undefined,
     });

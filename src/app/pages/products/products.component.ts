@@ -8,10 +8,7 @@ import {
 import { Router } from '@angular/router';
 import { APP_ROUTES } from '@app/core/constants/app-routes.enum';
 import { SHARED_MODULES } from '@app/core/shared/modules/shared.module';
-import {
-  ProductQuery,
-  ProductService,
-} from '@app/core/services/repository/products.service';
+import { ProductQuery } from '@app/core/services/repository/products.service';
 import { CategoriesService } from '@app/core/services/repository/categories.service';
 import { FacadeService } from '@app/core/services/facade-service.service';
 import { rxResource } from '@angular/core/rxjs-interop';
@@ -33,22 +30,22 @@ export class ProductsComponent {
   categorySlug = input('', { alias: 'category' });
 
   get isEn() {
-    return this.facadeService.translateService.isEn();
+    return this.facadeService.translatorService.isEn();
   }
   categories = rxResource({
     loader: ({ request }) => {
-      return this.facadeService.categoryService.getCategories();
+      return this.facadeService.categoryService.get();
     },
   });
   products = rxResource({
     request: () =>
       ({
-        queryString: this.queryString(),
+        name: this.queryString(),
         categorySlug: this.categorySlug(),
       } as Partial<ProductQuery>),
 
     loader: ({ request }) => {
-      return this.facadeService.productService.getProducts(request);
+      return this.facadeService.productsService.filter(request);
     },
   });
 

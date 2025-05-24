@@ -9,6 +9,8 @@ export interface ProductQuery {
   categoryId?: number;
   minPrice?: number;
   maxPrice?: number;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
 }
 
 @Injectable({ providedIn: 'root' })
@@ -17,13 +19,38 @@ export class ProductsService {
   private readonly endpoint = 'products';
 
   getBySlug(slug: string) {
-    return this.fn.callFunction<Product>(`${this.endpoint}/get`, {
+    return this.fn.callFunction<Product>(`${this.endpoint}`, {
       queryParams: { slug },
       method: 'GET',
     });
   }
+  related(slug: string) {
+    return this.fn.callFunction<Product[]>(`${this.endpoint}/related`, {
+      queryParams: { slug },
+      method: 'GET',
+    });
+  }
+  get(query?: ProductQuery) {
+    return this.fn.callFunction<Product>(`${this.endpoint}`, {
+      method: 'GET',
+      queryParams: query
+        ? (Object.fromEntries(
+            Object.entries({
+              page: query.page,
+              pageSize: query.pageSize,
+              name: query.name,
+              categoryId: query.categoryId,
+              minPrice: query.minPrice,
+              maxPrice: query.maxPrice,
+              sortBy: query.sortBy,
+              sortOrder: query.sortOrder,
+            }).filter(([_, v]) => v !== undefined)
+          ) as Record<string, string | number | boolean>)
+        : undefined,
+    });
+  }
 
-  filterProducts(body: ProductQuery) {
+  filter(body: ProductQuery) {
     return this.fn.callFunction<PaginatedResponse<Product>>(
       `${this.endpoint}/filter`,
       {

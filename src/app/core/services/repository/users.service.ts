@@ -8,7 +8,7 @@ export class UsersService {
   private readonly endpoint = 'users';
 
   get(userId?: string) {
-    return this.fn.callFunction<User | User[]>(`${this.endpoint}/get`, {
+    return this.fn.callFunction<User | User[]>(`${this.endpoint}`, {
       method: 'GET',
       queryParams: userId ? { user_id: userId } : undefined,
     });

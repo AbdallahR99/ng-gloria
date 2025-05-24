@@ -7,10 +7,15 @@ export class CategoriesService {
   private readonly fn = inject(SupabaseFunctionsService);
   private readonly endpoint = 'categories';
 
-  get(slug?: string) {
-    return this.fn.callFunction<Category | Category[]>(`${this.endpoint}/get`, {
+  get() {
+    return this.fn.callFunction<Category[]>(`${this.endpoint}`, {
       method: 'GET',
-      queryParams: slug ? { slug } : undefined,
+    });
+  }
+  getWithSlug(slug: string) {
+    return this.fn.callFunction<Category | Category[]>(`${this.endpoint}`, {
+      method: 'GET',
+      queryParams: { slug },
     });
   }
 

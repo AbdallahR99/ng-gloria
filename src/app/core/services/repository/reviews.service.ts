@@ -8,7 +8,7 @@ export class ReviewsService {
   private readonly endpoint = 'reviews';
 
   get(slug: string) {
-    return this.fn.callFunction<Review[]>(`${this.endpoint}/get`, {
+    return this.fn.callFunction<Review[]>(`${this.endpoint}`, {
       method: 'GET',
       queryParams: { slug },
     });

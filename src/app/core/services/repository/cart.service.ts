@@ -7,7 +7,7 @@ export class CartService {
   private readonly endpoint = 'cart';
 
   get(userId?: string) {
-    return this.fn.callFunction(`${this.endpoint}/get`, {
+    return this.fn.callFunction(`${this.endpoint}`, {
       method: 'GET',
       queryParams: userId ? { user_id: userId } : undefined,
     });

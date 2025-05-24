@@ -8,7 +8,7 @@ export class BundlesService {
   private readonly endpoint = 'bundles';
 
   getByProductSlug(slug: string) {
-    return this.fn.callFunction<Bundle>(`${this.endpoint}/get`, {
+    return this.fn.callFunction<Bundle>(`${this.endpoint}`, {
       method: 'GET',
       queryParams: { slug },
     });
