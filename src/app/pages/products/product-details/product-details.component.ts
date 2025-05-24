@@ -12,6 +12,7 @@ import { Product } from '@app/core/models/product.model';
 import { FacadeService } from '@app/core/services/facade-service.service';
 
 import { SHARED_MODULES } from '@app/core/shared/modules/shared.module';
+import { environment } from '@environments/environment';
 import { of } from 'rxjs';
 
 @Component({
@@ -27,6 +28,7 @@ export class ProductDetailsComponent {
   quantity = signal(1);
   selectedColor = signal('');
   selectedSize = signal('');
+  imagePath = environment.supabaseImages;
 
   currentImageIndex = signal(0);
 

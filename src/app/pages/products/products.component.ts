@@ -13,6 +13,7 @@ import { CategoriesService } from '@app/core/services/repository/categories.serv
 import { FacadeService } from '@app/core/services/facade-service.service';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { c } from 'node_modules/@angular/material/icon-module.d-sA1hmRKS';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-products',
@@ -23,6 +24,8 @@ import { c } from 'node_modules/@angular/material/icon-module.d-sA1hmRKS';
 })
 export class ProductsComponent {
   facadeService = inject(FacadeService);
+
+  imagePath = environment.supabaseImages;
 
   routes = APP_ROUTES;
   router = inject(Router);
