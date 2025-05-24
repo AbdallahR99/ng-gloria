@@ -3,7 +3,7 @@ import { SupabaseFunctionsService } from './supabase-functions.service';
 import { User } from '@app/core/models/user.model';
 
 @Injectable({ providedIn: 'root' })
-export class UsersApiService {
+export class UsersService {
   private readonly fn = inject(SupabaseFunctionsService);
   private readonly endpoint = 'users';
 

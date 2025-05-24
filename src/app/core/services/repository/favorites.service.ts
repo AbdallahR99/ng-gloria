@@ -3,7 +3,7 @@ import { SupabaseFunctionsService } from './supabase-functions.service';
 import { Favorite } from '@app/core/models/favorite.model';
 
 @Injectable({ providedIn: 'root' })
-export class FavoritesApiService {
+export class FavoritesService {
   private readonly fn = inject(SupabaseFunctionsService);
   private readonly endpoint = 'favorites';
 

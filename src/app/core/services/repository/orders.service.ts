@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { SupabaseFunctionsService } from './supabase-functions.service';
 
 @Injectable({ providedIn: 'root' })
-export class OrdersApiService {
+export class OrdersService {
   private readonly fn = inject(SupabaseFunctionsService);
   private readonly endpoint = 'orders';
 
