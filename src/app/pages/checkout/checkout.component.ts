@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   inject,
   input,
   model,
@@ -43,6 +44,12 @@ export class CheckoutComponent {
   selectedAddress = computed(() => {
     return this.addresses()?.find(
       (address) => address.id === this.selectedAddressId()
+    );
+  });
+
+  init = effect(() => {
+    this.selectedAddressId.set(
+      this.defaultAddress()?.id ?? (this.addresses() ?? [])[0]?.id
     );
   });
 

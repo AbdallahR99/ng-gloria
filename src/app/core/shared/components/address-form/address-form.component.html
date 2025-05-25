@@ -8,7 +8,7 @@
   <label class="form-control floating-label">
     <span>{{"Label" | translate}}</span>
     <input type="text" name="label" #label="ngModel" class="input input-primary border border-primary/50 w-full"
-      placeholder="{{'Home, Office, ...' | translate}}" [ngModel]="addressToEdit()?.label" ngModel required />
+      placeholder="{{'Home, Office, ...' | translate}}" [ngModel]="addressToEdit()?.label" required />
     <div class="label">
       @if (label?.invalid && label?.touched) {
       <span class="label-text-alt text-error text-xs">
@@ -26,7 +26,7 @@
       <span>{{"First Name" | translate}}</span>
       <input type="text" name="firstName" #firstName="ngModel"
         class="input input-primary border border-primary/50 w-full" placeholder="{{'Enter First Name' | translate}}"
-        [ngModel]="addressToEdit()?.firstName || user()?.firstName" ngModel required />
+        [ngModel]="addressToEdit()?.firstName || user()?.firstName" required />
       <div class="label">
         @if (firstName?.invalid && firstName?.touched) {
         <span class="label-text-alt text-error text-xs">
@@ -41,7 +41,7 @@
       <span>{{"Last Name" | translate}}</span>
       <input type="text" name="lastName" #lastName="ngModel" class="input input-primary border border-primary/50 w-full"
         placeholder="{{'Enter Last Name' | translate}}" [ngModel]="addressToEdit()?.lastName ?? user()?.lastName"
-        ngModel required />
+        required />
       <div class="label">
         @if (lastName?.invalid && lastName?.touched) {
         <span class="label-text-alt text-error text-xs">
@@ -56,8 +56,7 @@
   <label class="form-control floating-label">
     <span>{{"Phone" | translate}}</span>
     <input type="tel" name="phone" #phone="ngModel" class="input input-primary border border-primary/50 w-full"
-      placeholder="{{'Enter Phone Number' | translate}}" [ngModel]="addressToEdit()?.phone ?? user()?.phone" ngModel
-      required />
+      placeholder="{{'Enter Phone Number' | translate}}" [ngModel]="addressToEdit()?.phone ?? user()?.phone" required />
     <div class="label">
       @if (phone?.invalid && phone?.touched) {
       <span class="label-text-alt text-error text-xs">
@@ -69,28 +68,14 @@
 
   <!-- Location Fields Row -->
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <!-- City -->
-    <label class="form-control floating-label">
-      <span>{{"City" | translate}}</span>
-      <input type="text" name="city" #city="ngModel" class="input input-primary border border-primary/50 w-full"
-        placeholder="{{'Enter City' | translate}}" [ngModel]="addressToEdit()?.city" ngModel required />
-      <div class="label">
-        @if (city?.invalid && city?.touched) {
-        <span class="label-text-alt text-error text-xs">
-          {{"City is required" | translate}}
-        </span>
-        }
-      </div>
-    </label>
-
     <!-- State -->
     <label class="form-control floating-label">
       <span>{{"State" | translate}}</span>
-      <select name="state" #state="ngModel" class="select select-primary border border-primary/50 w-full"
-        [ngModel]="addressToEdit()?.state" ngModel required>
-        <option value="" disabled>{{"Select State" | translate}}</option>
+      <select [ngModel]="addressToEdit()?.state" name="state" #state="ngModel"
+        class="select select-primary border border-primary/50 w-full" required>
+        <option [value]="null" disabled selected>{{"Select State" | translate}}</option>
         @for (stateItem of states.value(); track stateItem.id) {
-        <option [ngModel]="stateItem.id">
+        <option [value]="stateItem.id">
           {{ isEn ? stateItem.nameEn : stateItem.nameAr }}
         </option>
         }
@@ -103,6 +88,21 @@
         }
       </div>
     </label>
+    <!-- City -->
+    <label class="form-control floating-label">
+      <span>{{"City" | translate}}</span>
+      <input type="text" name="city" #city="ngModel" class="input input-primary border border-primary/50 w-full"
+        placeholder="{{'Enter City' | translate}}" [ngModel]="addressToEdit()?.city" required />
+      <div class="label">
+        @if (city?.invalid && city?.touched) {
+        <span class="label-text-alt text-error text-xs">
+          {{"City is required" | translate}}
+        </span>
+        }
+      </div>
+    </label>
+
+
   </div>
 
   <!-- Address Details -->
@@ -114,14 +114,14 @@
     <label class="form-control floating-label">
       <span>{{"Area" | translate}}</span>
       <input type="text" name="area" #area="ngModel" class="input input-primary border border-primary/50 w-full"
-        placeholder="{{'Enter Area' | translate}}" [ngModel]="addressToEdit()?.area" ngModel />
+        placeholder="{{'Enter Area' | translate}}" [ngModel]="addressToEdit()?.area" />
     </label>
 
     <!-- Street -->
     <label class="form-control floating-label">
       <span>{{"Street" | translate}}</span>
       <input type="text" name="street" #street="ngModel" class="input input-primary border border-primary/50 w-full"
-        placeholder="{{'Enter Street' | translate}}" [ngModel]="addressToEdit()?.street" ngModel />
+        placeholder="{{'Enter Street' | translate}}" [ngModel]="addressToEdit()?.street" />
     </label>
   </div>
 
@@ -131,7 +131,7 @@
     <label class="form-control floating-label">
       <span>{{"Building" | translate}}</span>
       <input type="text" name="building" #building="ngModel" class="input input-primary border border-primary/50 w-full"
-        placeholder="{{'Enter Building' | translate}}" [ngModel]="addressToEdit()?.building" ngModel />
+        placeholder="{{'Enter Building' | translate}}" [ngModel]="addressToEdit()?.building" />
     </label>
 
     <!-- Apartment -->
@@ -139,7 +139,7 @@
       <span>{{"Apartment" | translate}}</span>
       <input type="text" name="apartment" #apartment="ngModel"
         class="input input-primary border border-primary/50 w-full" placeholder="{{'Enter Apartment' | translate}}"
-        [ngModel]="addressToEdit()?.apartment" ngModel />
+        [ngModel]="addressToEdit()?.apartment" />
     </label>
   </div>
 
@@ -148,22 +148,22 @@
     <span>{{"Notes" | translate}}</span>
     <textarea name="notes" #notes="ngModel"
       class="textarea textarea-primary border border-primary/50 w-full h-20 resize-none"
-      placeholder="{{'Additional notes or delivery instructions' | translate}}" [ngModel]="addressToEdit()?.notes"
-      ngModel></textarea>
+      placeholder="{{'Additional notes or delivery instructions' | translate}}"
+      [ngModel]="addressToEdit()?.notes"></textarea>
   </label>
 
   <!-- Default Address Checkbox -->
   <!-- <div class="form-control mt-2">
     <label class="label cursor-pointer justify-start gap-3">
       <input type="checkbox" name="isDefault" #isDefault="ngModel" class="checkbox checkbox-primary"
-        [checked]="addressToEdit()?.isDefault" ngModel />
+        [checked]="addressToEdit()?.isDefault" />
       <span class="label-text font-medium">{{"Set as Default Address" | translate}}</span>
     </label>
   </div> -->
 
   <!-- Submit Button -->
-  <div class="form-control mt-6">
-    <button type="submit" class="btn btn-primary text-white" [disabled]="isLoading()">
+  <div class="form-control my-4">
+    <button type="submit" class="btn btn-primary text-white btn-block" [disabled]="isLoading()">
       @if (isLoading()) {
       <span class="loading loading-spinner loading-sm"></span>
       {{"Processing..." | translate}}

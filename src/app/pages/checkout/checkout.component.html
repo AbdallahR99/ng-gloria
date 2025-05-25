@@ -71,6 +71,7 @@
         </h2>
 
         @if (addresses() && addresses()!.length > 0) {
+
         <div class="space-y-3">
           @for (address of addresses(); track address.id) {
           <label class="cursor-pointer">
@@ -84,9 +85,9 @@
               <div class="flex items-start justify-between">
                 <div class="flex-1">
                   <div class="flex items-center gap-2 mb-2">
-                    <span class="badge badge-primary badge-sm">{{ address.label }}</span>
+                    <span class="badge badge-primary badge-sm text-white px-2">{{ address.label }}</span>
                     @if (address.isDefault) {
-                    <span class="badge badge-success badge-sm">{{"Default" | translate}}</span>
+                    <span class="badge badge-success badge-sm px-2 text-white">{{"Default" | translate}}</span>
                     }
                   </div>
 
@@ -111,7 +112,7 @@
                 <div class="flex-shrink-0 ml-4">
                   @if (selectedAddressId() === address.id) {
                   <div class="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                    <mat-icon fontIcon="check" class="text-white text-sm"></mat-icon>
+                    <mat-icon fontIcon="check" class="before:text-white text-sm"></mat-icon>
                   </div>
                   } @else {
                   <div class="w-6 h-6 border-2 border-primary/30 rounded-full"></div>

@@ -354,7 +354,8 @@
   <a [routerLink]="[appRoutes.PRODUCT_DETAILS, item.slug]">
     <div
       class="__product_card hover:shadow-md h-full shadow-gray-300/50 cursor-pointer transition-shadow rounded-lg relative border border-gray-200 flex flex-col">
-      <fav-button class="absolute z-10 right-0 top-0" [product]="item" />
+      <fav-button class="absolute z-10 right-0 top-0" (click)="$event.stopPropagation();$event.preventDefault()"
+        [product]="item" />
 
       <figure class="aspect-square flex items-center justify-center bg-gray-100 p-1 max-h-[250px]">
         <img [src]="imagePath +  item.thumbnail" alt="{{name}}" class="h-full object-contain aspect-square" />
