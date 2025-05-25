@@ -28,7 +28,7 @@ export class SignupComponent {
   errorMsg = signal<string>('');
   isLoading = signal<boolean>(false);
   get isEn() {
-    return this.facadeService.translatorService.isEn();
+    return this.facadeService.translatorService.isEn;
   }
 
   onSubmit(form: NgForm) {

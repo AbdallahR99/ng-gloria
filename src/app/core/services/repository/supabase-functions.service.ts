@@ -97,6 +97,10 @@ export class SupabaseFunctionsService {
     return this.jwtHelper.isTokenExpired(token);
   }
 
+  public decodeToken(token: string): any {
+    return this.jwtHelper.decodeToken(token);
+  }
+
   logout() {
     localStorage.removeItem(LocalStorageKeys.TOKEN);
     // Additional cleanup logic if needed

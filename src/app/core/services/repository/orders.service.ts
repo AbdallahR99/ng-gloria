@@ -1,6 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { SupabaseFunctionsService } from './supabase-functions.service';
+type CheckoutRequest = {
+  addressId?: string;
+  note?: string;
+};
 
+type CheckoutResponse = {
+  orderId: string;
+  orderCode: string;
+};
 @Injectable({ providedIn: 'root' })
 export class OrdersService {
   private readonly fn = inject(SupabaseFunctionsService);
@@ -16,18 +24,26 @@ export class OrdersService {
     });
   }
 
-  checkout(payload: any) {
-    return this.fn.callFunction(`${this.endpoint}/checkout`, {
+  checkout(payload: CheckoutRequest) {
+    return this.fn.callFunction<CheckoutResponse>(`${this.endpoint}/checkout`, {
       method: 'POST',
       body: payload,
     });
   }
 
-  updateStatus(payload: { order_id: string; status: string; note?: string }) {
-    return this.fn.callFunction(`${this.endpoint}/status`, {
-      method: 'PUT',
-      body: payload,
-    });
+  updateStatus(payload: {
+    orderId?: string;
+    orderCode?: string;
+    status: string;
+    note?: string;
+  }) {
+    return this.fn.callFunction<{ status: 'updated' }>(
+      `${this.endpoint}/status`,
+      {
+        method: 'PUT',
+        body: payload,
+      }
+    );
   }
 
   list(filters?: any) {

@@ -43,7 +43,7 @@ export class ProductDetailsComponent {
   }
 
   get isEn(): boolean {
-    return this.facadeService.translatorService.isEn();
+    return this.facadeService.translatorService.isEn;
   }
 
   routes = APP_ROUTES;

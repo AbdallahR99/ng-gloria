@@ -1,11 +1,16 @@
 export interface Address {
+  id: string; // UUID of the address
   userId?: string; // UUID of the user
   label: string; // Label for the address (e.g., Home, Work)
   firstName: string; // First name of the user
   lastName: string; // Last name of the user
+  deliveryFee?: number; // Last name of the user
   phone: string; // Phone number
   city: string; // City name
-  state?: string; // State name (optional)
+  state: string; // State id
+  stateCode: string; // State id
+  stateNameAr: string; // State name in Arabic
+  stateNameEn: string; // State name in English
   area?: string; // Area name (optional)
   street?: string; // Street name (optional)
   building?: string; // Building name or number (optional)

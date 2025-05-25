@@ -33,7 +33,7 @@ export class ProductsComponent {
   categorySlug = input('', { alias: 'category' });
 
   get isEn() {
-    return this.facadeService.translatorService.isEn();
+    return this.facadeService.translatorService.isEn;
   }
   categories = rxResource({
     loader: ({ request }) => {

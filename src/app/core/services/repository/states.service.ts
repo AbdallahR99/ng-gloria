@@ -10,7 +10,7 @@ export class StatesService {
   get(countryCode?: string) {
     return this.fn.callFunction<State[]>(`${this.endpoint}`, {
       method: 'GET',
-      queryParams: countryCode ? { country_code: countryCode } : undefined,
+      queryParams: countryCode ? { countryCode } : undefined,
     });
   }
 

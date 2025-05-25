@@ -30,6 +30,7 @@ export class AuthService {
             // Store the access token in local storage or a service
             localStorage.setItem(LocalStorageKeys.TOKEN, response.token);
             this.isLoggedIn.set(true);
+            this.usersService.setUser();
           }
         })
       );

@@ -4,6 +4,9 @@ import { productDetailsResolver } from './pages/products/product-details/product
 import { NotFoundComponent } from '@app/pages/not-found/not-found.component';
 import { auth_routes } from './pages/auth/auth.routes';
 import { NotAuthGuard } from './core/guards/auth.guard';
+import { checkoutAddressResolver } from './pages/checkout/checkout.address.resolver';
+import { checkoutItemsResolver } from './pages/checkout/checkout-items.resolver';
+import { checkoutSummaryResolver } from './pages/checkout/checkout-summary.resolver';
 
 export const routes: Routes = [
   {
@@ -35,6 +38,26 @@ export const routes: Routes = [
     //   product: productDetailsResolver,
     // },
     resolve: { product: productDetailsResolver },
+  },
+  {
+    title: 'Cart',
+    path: APP_ROUTES.Cart.substring(1),
+
+    loadComponent: () =>
+      import('./pages/cart/cart.component').then((m) => m.CartComponent),
+  },
+  {
+    title: 'Checkout',
+    path: APP_ROUTES.CheckOut.substring(1),
+    loadComponent: () =>
+      import('./pages/checkout/checkout.component').then(
+        (m) => m.CheckoutComponent
+      ),
+    resolve: {
+      addresses: checkoutAddressResolver,
+      items: checkoutItemsResolver,
+      summary: checkoutSummaryResolver,
+    },
   },
   {
     path: APP_ROUTES.AUTH.substring(1),

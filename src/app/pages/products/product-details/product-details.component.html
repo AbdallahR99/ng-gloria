@@ -179,7 +179,7 @@
     {{"Perfect Bundle" | translate}}
   </p>
   <div class="flex px-2 flex-wrap gap-3 justify-center lg:justify-start max-md:hidden">
-    @for (product of bundle.products; track product.id) {
+    @for (product of bundle.bundles; track product.id) {
     @if (product; as item) {
     @let name = isEn ? item?.nameEn : item.nameAr;
     <div class="flex">
@@ -241,7 +241,7 @@
   </div>
   <div class="md:hidden">
     <div class="flex flex-col gap-4 border border-gray-200 rounded-lg p-3">
-      @for (product of bundle.products; track product.id) {
+      @for (product of bundle.bundles; track product.id) {
       @if (product; as item) {
       @let name = isEn ? item?.nameEn : item.nameAr;
       <div class="flex items-center pb-4 border-b border-gray-200 ">

@@ -1,7 +1,8 @@
 import { Category } from './category.model';
 
 export interface Product {
-  id: number;
+  id: string; // UUID for the product
+  createdAt?: string; // Timestamp of creation
   nameEn: string;
   nameAr: string;
   descriptionEn: string; // English description
@@ -33,4 +34,5 @@ export interface Product {
   };
   inFavorites?: boolean; // Indicates if the product is in the user's favorites
   inCart?: boolean; // Indicates if the product is in the user's cart
+  cartQuantity?: number; // Quantity of the product in the user's cart
 }

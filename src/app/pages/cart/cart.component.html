@@ -1,0 +1,186 @@
+<div class="container mx-auto px-3 max-w-[1000px]">
+  <h1 class="m-6 text-3xl text-primary font-medium">
+    <span>{{"Cart"}}</span>
+    @if (cartCount.value(); as cartCountValue) {
+    @if (cartCountValue > 0) {
+    <span class="text-gray-500">{{ cartCountValue }}</span>
+    }
+    }
+
+  </h1>
+
+
+  <div class="flex">
+    @if (cartItems.isLoading()) {
+
+    } @else {
+    @if (cartItems.value(); as items) {
+    @if (items.length > 0) {
+
+    <div class="flex-1 flex-col gap-2">
+      <div class="text-gray-700 text-xl font-medium mb-4">
+        {{"Delivery in 3-2 days" | translate}}
+      </div>
+      @for (item of items; track item.id) {
+      @let name = isEn ? item.nameEn : item.nameAr;
+      @let isQuantityUpdating = isUpdatingId() == item.id;
+      @let isRemoving = isRemovingId() == item.id;
+      <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm border border-primary/40">
+        <div class="flex">
+          <figure>
+            <img [src]="imagePath + item.thumbnail" alt="{{ name }}"
+              class="w-16 h-16 object-cover rounded-lg shadow-sm border border-primary/40">
+          </figure>
+          <div class="flex flex-col h-full justify-between">
+            <span class="text-lg font-semibold">{{ name }}</span>
+            <!-- quantity control -->
+            <div class="join w-full">
+              <button (click)="decreaseQuantity(item)" [disabled]="isQuantityUpdating || isRemoving"
+                class="btn btn-sm btn-ghost join-item">
+                <mat-icon fontIcon="remove" class="scale-75" />
+              </button>
+              <span class="text-center bg-neutral-content/80 w-8 join-item">
+                @if (isQuantityUpdating) {
+                <span class="loading loading-spinner text-primary loading-sm"></span>
+                } @else {
+                {{ item.quantity }}
+                }
+              </span>
+              <button (click)="increaseQuantity(item)" [disabled]="isQuantityUpdating || isRemoving"
+                class="btn btn-sm btn-ghost join-item">
+                <mat-icon fontIcon="add" class="scale-75" />
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="flex flex-col items-center gap-4">
+          <span class="text-md font-medium text-primary">
+            {{ "AED" | translate}} {{ item.price }}
+          </span>
+          <button (click)="removeItem(item)" [disabled]="isRemoving" class="btn btn-link hover:text-error">
+            @if (isRemoving) {
+            <span class="loading loading-spinner text-error loading-sm"></span>
+            } @else {
+            <span>{{"Remove" | translate | uppercase}}</span>
+            }
+          </button>
+        </div>
+      </div>
+      }
+    </div>
+    @if (cartSummary.value(); as summary) {
+    <div>
+      <h3 class="text-xl font-medium text-primary mb-4">
+        {{"Order Summary" | translate}}
+      </h3>
+      <div class="bg-white rounded-lg shadow-sm p-4 border border-primary/40">
+        <div class="flex justify-between mb-2 text-primary font-medium">
+          <span>{{"Subtotal" | translate}}</span>
+          <span>{{ "AED" | translate}} {{ summary.oldSubtotal }}</span>
+        </div>
+        <div class="flex justify-between mb-2 text-gray-500">
+          <span>{{"Discount" | translate}}</span>
+          <span>{{ "AED" | translate}} {{ summary.discount }}</span>
+        </div>
+        <div class="flex justify-between mb-5">
+          <span class="text-primary/70 font-medium">{{"Total" | translate}}</span>
+          <span class="text-xl font-semibold">{{ "AED" | translate}} {{ summary.total }}</span>
+        </div>
+        <a [routerLink]="[routes.CheckOut]" class="btn btn-primary btn-block mt-4 max-md:hidden">
+          {{ "Checkout" | translate }}
+        </a>
+      </div>
+
+      <div class="max-md:hidden fixed bg-white p-4 bottom-0 right-0 left-0">
+        <p class="mb-4">
+          <span class="text-primary/60 font-medium">{{ "Total" | translate }}:</span>
+          <span class="text-xl font-semibold">
+            {{ "AED" | translate}} {{ summary.total | number: '1.2-2' }}
+          </span>
+        </p>
+        <a [routerLink]="[routes.CheckOut]" class="btn btn-primary btn-block">
+          {{ "Checkout" | translate }}
+        </a>
+      </div>
+
+    </div>
+    }
+
+
+
+    } @else {
+    <div class="flex-1 flex flex-col items-center justify-center gap-4">
+      <mat-icon fontIcon="shopping_cart" class="text-6xl before:scale-400 before:text-gray-400" />
+      <span class="text-gray-500">{{ "Your cart is empty" | translate }}</span>
+      <a [routerLink]="routes.HOME" class="btn btn-primary btn-sm">
+        <mat-icon fontIcon="arrow_back" class="scale-75" />
+        <span>{{ "Continue Shopping" | translate }}</span>
+      </a>
+    </div>
+
+    }
+    }}
+
+
+
+  </div>
+</div>
+
+<div class="container mx-auto">
+  <section class="mb-8 why-choose-us">
+    <h3 class="text-center mb-6 text-3xl font-medium">
+      {{"Why Choose Us" | translate}}
+    </h3>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      @for (item of [{
+      icon: "w_nature",
+      title: "100% Natural",
+      description: "High quality products"
+      },
+      {
+      icon: "w_shipped",
+      title: "Free shipping",
+      description: "On all orders over $50"
+      },
+      {
+      icon: "w_headset",
+      title: "24/7 Support",
+      description: "Dedicated support"
+      },
+      {
+      icon: "w_box",
+      title: "Return policy",
+      description: "Easy returns"
+      }
+      ]; track item.title) {
+      <div class="flex max-md:flex-col items-center gap-2 max-md:hidden justify-center">
+        <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center relative">
+          <mat-icon class="scale-300 absolute top-4 end-8" [svgIcon]="item.icon" />
+        </div>
+        <div class="md:text-start">
+          <h4 class="font-medium ">{{item.title | translate}}</h4>
+          <p class="text-sm text-base-content/70">{{item.description | translate}}</p>
+        </div>
+      </div>
+      <div class="md:hidden grid gird-cols-2 px-2">
+        <div class="flex max-sm:flex-col items-center gap-2 p-3 border border-primary/80 rounded-md">
+          <div>
+            <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center relative">
+              <mat-icon class="sm:scale-150 absolute top-1 sm:end-2" [svgIcon]="item.icon" />
+            </div>
+          </div>
+          <div class="max-sm:text-center sm:text-start">
+            <h4 class="font-medium ">{{item.title | translate}}</h4>
+            <p class="text-sm text-base-content/70">{{item.description | translate}}</p>
+          </div>
+        </div>
+      </div>
+      }
+
+
+    </div>
+  </section>
+</div>
+<div class="p-8"></div>

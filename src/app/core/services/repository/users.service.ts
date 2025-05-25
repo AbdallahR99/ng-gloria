@@ -3,11 +3,14 @@ import { SupabaseFunctionsService } from './supabase-functions.service';
 import { User } from '@app/core/models/user.model';
 import { firstValueFrom } from 'rxjs';
 import { LocalStorageKeys } from '@app/core/constants/local_storage';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({ providedIn: 'root' })
 export class UsersService {
   private readonly fn = inject(SupabaseFunctionsService);
   private readonly endpoint = 'users';
+  private readonly jwtHelper = new JwtHelperService();
+
   user = signal<User | null>(null);
 
   async setUser() {
@@ -15,6 +18,24 @@ export class UsersService {
     if (cachedUser) {
       this.user.set(JSON.parse(cachedUser));
     } else {
+      const token = localStorage.getItem(LocalStorageKeys.TOKEN);
+      if (token) {
+        const decodedToken = this.jwtHelper.decodeToken(token);
+        const userMetadata = decodedToken?.user_metadata;
+        if (userMetadata) {
+          const user: User = {
+            id: decodedToken.sub,
+            firstName: userMetadata.first_name,
+            lastName: userMetadata.last_name,
+            email: userMetadata.email,
+            phone: decodedToken.phone,
+            avatar: userMetadata.avatar,
+          };
+          this.user.set(user);
+          localStorage.setItem(LocalStorageKeys.USER, JSON.stringify(user));
+          return;
+        }
+      }
       const user = await firstValueFrom(this.getCurrent());
       this.user.set(user);
       localStorage.setItem(LocalStorageKeys.USER, JSON.stringify(user));
@@ -47,6 +68,13 @@ export class UsersService {
     return this.fn.callFunction(`${this.endpoint}`, {
       method: 'PUT',
       body: user,
+    });
+  }
+
+  updateAvatar(avatarBase64: string) {
+    return this.fn.callFunction(`${this.endpoint}/avatar`, {
+      method: 'PUT',
+      body: { avatarBase64 },
     });
   }
 

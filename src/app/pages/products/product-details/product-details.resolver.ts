@@ -19,7 +19,7 @@ export const productDetailsResolver: ResolveFn<
   if (slug) {
     return facadeService.productsService.getBySlug(slug).pipe(
       map((product) => {
-        const isEn = facadeService.translatorService.isEn();
+        const isEn = facadeService.translatorService.isEn;
         if (isEn) {
           title.setTitle(
             product?.metaTitleEn || product?.nameEn || 'Product Details'

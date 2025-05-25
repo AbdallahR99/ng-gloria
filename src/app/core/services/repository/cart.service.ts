@@ -1,54 +1,86 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { SupabaseFunctionsService } from './supabase-functions.service';
-
+import { AuthService } from './auth.service';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { map, of, tap } from 'rxjs';
+import { CartItem } from '@app/core/models/cart-item.model';
+import { CartSummary } from '@app/core/models/cart-summary.model';
+type CartInput = {
+  productId: string;
+  userId?: string;
+  color?: string;
+  size?: string;
+  quantity?: number;
+};
 @Injectable({ providedIn: 'root' })
 export class CartService {
   private readonly fn = inject(SupabaseFunctionsService);
+  authService = inject(AuthService);
   private readonly endpoint = 'cart';
 
+  cartCount = rxResource({
+    request: () => ({
+      isAuth: this.authService.isLoggedIn(),
+    }),
+    loader: ({ request }) => {
+      if (!request.isAuth) {
+        return of(0);
+      }
+      return this.count().pipe(map((count) => count.count || 0));
+    },
+  });
+
   get(userId?: string) {
-    return this.fn.callFunction(`${this.endpoint}`, {
+    return this.fn.callFunction<CartItem[]>(`${this.endpoint}`, {
       method: 'GET',
-      queryParams: userId ? { user_id: userId } : undefined,
+      queryParams: userId ? { userId } : undefined,
     });
   }
 
   summary(userId?: string) {
-    return this.fn.callFunction(`${this.endpoint}/summary`, {
+    return this.fn.callFunction<CartSummary>(`${this.endpoint}/summary`, {
       method: 'GET',
-      queryParams: userId ? { user_id: userId } : undefined,
+      queryParams: userId ? { userId } : undefined,
     });
   }
 
-  create(item: any) {
-    return this.fn.callFunction(`${this.endpoint}`, {
-      method: 'POST',
-      body: item,
-    });
+  create(item: CartInput) {
+    return this.fn
+      .callFunction(`${this.endpoint}`, {
+        method: 'POST',
+        body: item,
+      })
+      .pipe(tap(this.updateCartCount));
   }
 
   update(item: any) {
-    return this.fn.callFunction(`${this.endpoint}`, {
-      method: 'PUT',
-      body: item,
-    });
+    return this.fn
+      .callFunction(`${this.endpoint}`, {
+        method: 'PUT',
+        body: item,
+      })
+      .pipe(tap(this.updateCartCount));
   }
 
-  upsert(item: any) {
-    return this.fn.callFunction(`${this.endpoint}/upsert`, {
-      method: 'POST',
-      body: item,
-    });
+  upsert(item: CartInput) {
+    return this.fn
+      .callFunction(`${this.endpoint}/upsert`, {
+        method: 'POST',
+        body: item,
+      })
+      .pipe(tap(this.updateCartCount));
   }
 
-  delete(id: string, userId?: string) {
-    return this.fn.callFunction(`${this.endpoint}`, {
-      method: 'DELETE',
-      body: { cart_id: id, user_id: userId },
-    });
+  delete({ productId, color, size }: CartInput, userId?: string) {
+    return this.fn
+      .callFunction(`${this.endpoint}`, {
+        method: 'DELETE',
+        body: { productId, color, size, userId },
+      })
+      .pipe(tap(this.updateCartCount));
   }
 
-  bulkCreate(items: any[]) {
+  bulkCreate(items: CartInput[]) {
     return this.fn.callFunction(`${this.endpoint}/bulk`, {
       method: 'POST',
       body: items,
@@ -63,8 +95,29 @@ export class CartService {
   }
 
   count() {
-    return this.fn.callFunction(`${this.endpoint}/count`, {
-      method: 'GET',
+    return this.fn.callFunction<{ count: number | null }>(
+      `${this.endpoint}/count`,
+      {
+        method: 'GET',
+      }
+    );
+  }
+
+  updateQuantity(item: CartInput & { userId?: string }) {
+    return this.fn.callFunction(`${this.endpoint}/update-quantity`, {
+      method: 'POST',
+      body: item,
     });
+  }
+
+  addBundle(bundleId: string, userId?: string) {
+    return this.fn.callFunction(`${this.endpoint}/add-bundle`, {
+      method: 'POST',
+      body: { bundleId, ...(userId ? { bundleId } : {}) },
+    });
+  }
+
+  updateCartCount() {
+    this.cartCount.reload();
   }
 }

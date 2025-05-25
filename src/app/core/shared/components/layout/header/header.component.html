@@ -44,7 +44,8 @@
     <div class="flex gap-3">
       <a class="btn btn-link link-hover p-0 text-white hover:text-secondary" [routerLink]="[appRoutes.Cart]"
         routerLinkActive="!text-secondary">
-        <mat-icon svgIcon="cart" class="scale-75" [inline]="true" />
+        <mat-icon [matBadge]="cartCount.value()" [matBadgeHidden]="(cartCount.value() ?? 0) < 1" svgIcon="cart"
+          class="scale-75" [inline]="true" />
       </a>
       <!-- Language Switch Button -->
       <label class="swap swap-rotate">

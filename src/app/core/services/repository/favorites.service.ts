@@ -7,7 +7,7 @@ export class FavoritesService {
   private readonly fn = inject(SupabaseFunctionsService);
   private readonly endpoint = 'favorites';
 
-  toggle(productId: number, userId?: string) {
+  toggle(productId: string, userId?: string) {
     return this.fn.callFunction<Favorite>(`${this.endpoint}/toggle`, {
       method: 'POST',
       body: { productId, userId },
