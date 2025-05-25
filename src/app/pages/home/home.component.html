@@ -385,8 +385,8 @@
           <span class="font-normal">AED {{item.price}}</span>
           <span class="line-through text-gray-400">AED {{item.oldPrice}}</span>
         </div>
-        }
-        <cart-button [product]="item" />
+        } <cart-button class="mt-2" (click)="$event.stopPropagation(); $event.preventDefault()" [product]="item" />
+
 
       </div>
     </div>

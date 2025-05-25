@@ -10,10 +10,10 @@ import {
 import { SHARED_MODULES } from '../../modules/shared.module';
 import { Product } from '@app/core/models/product.model';
 import { FacadeService } from '@app/core/services/facade-service.service';
-import { sign } from 'crypto';
 import { CartButtonAddCustomDirective } from './cart-button-add-custom.directive';
 import { Router } from '@angular/router';
 import { APP_ROUTES } from '@app/core/constants/app-routes.enum';
+import { single } from 'rxjs';
 
 @Component({
   selector: 'cart-button',
@@ -30,10 +30,14 @@ export class CartButtonComponent {
   color = input<string | undefined>(undefined);
   size = input<string | undefined>(undefined);
   isLoading = signal<boolean>(false);
-  isAddedToCart = computed(() => this.product().inCart);
+  isAddedManually = signal<boolean>(false); // To track if the product was added manually
+
+  isAddedToCart = computed(
+    () => this.isAddedManually() || this.product().inCart
+  );
   customQuantity = signal<number | null>(null);
   quantity = computed(
-    () => this.customQuantity() || this.product().quantity || 0
+    () => this.customQuantity() || this.product().cartQuantity || 1
   );
   className = input<string>();
   additionalClasses = input<string>('');
@@ -67,7 +71,9 @@ export class CartButtonComponent {
       .subscribe({
         next: (response) => {
           console.log('Added to cart', response);
+          this.product().inCart = true; // Update the product's inCart status
           this.isLoading.set(false);
+          this.isAddedManually.set(true); // Set the flag to true
         },
         error: (error) => {
           console.error('Error adding to cart', error);
@@ -127,12 +133,12 @@ export class CartButtonComponent {
 
   increaseQuantity() {
     const newQuantity =
-      (this.customQuantity() || this.product().quantity || 0) + 1;
+      (this.customQuantity() || this.product().cartQuantity || 0) + 1;
     this.onQuantityChange(newQuantity);
   }
   decreaseQuantity() {
     const newQuantity =
-      (this.customQuantity() || this.product().quantity || 0) - 1;
+      (this.customQuantity() || this.product().cartQuantity || 0) - 1;
     if (newQuantity <= 0) {
       this.removeFromCart();
     } else {

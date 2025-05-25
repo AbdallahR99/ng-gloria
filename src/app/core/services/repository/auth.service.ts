@@ -9,6 +9,7 @@ import { Observable, switchMap, tap } from 'rxjs';
 import { LocalStorageKeys } from '@app/core/constants/local_storage';
 import { PlatformService } from '../platform/platform.service';
 import { UsersService } from './users.service';
+import { FacadeService } from '../facade-service.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -16,7 +17,7 @@ export class AuthService {
   private readonly fn = inject(SupabaseFunctionsService);
   isLoggedIn = signal<boolean>(this.checkLoginStatus());
   private readonly endpoint = 'auth';
-  usersService = inject(UsersService);
+  facadeService = inject(FacadeService);
 
   login(body: LoginRequest) {
     return this.fn
@@ -30,7 +31,8 @@ export class AuthService {
             // Store the access token in local storage or a service
             localStorage.setItem(LocalStorageKeys.TOKEN, response.token);
             this.isLoggedIn.set(true);
-            this.usersService.setUser();
+            this.facadeService.usersService.setUser();
+            this.facadeService.cartService.updateCartCount();
           }
         })
       );
@@ -50,7 +52,8 @@ export class AuthService {
         this.logout(); // Call logout if the token is expired
       } else {
         this.isLoggedIn.set(true);
-        this.usersService.setUser();
+        this.facadeService.usersService.setUser();
+        this.facadeService.cartService.updateCartCount();
       }
     } else {
       this.isLoggedIn.set(false);
@@ -88,6 +91,6 @@ export class AuthService {
   logout() {
     localStorage.removeItem(LocalStorageKeys.TOKEN);
     this.isLoggedIn.set(false);
-    this.usersService.clearCachedUser();
+    this.facadeService.usersService.clearCachedUser();
   }
 }

@@ -50,7 +50,7 @@ export class CartService {
         method: 'POST',
         body: item,
       })
-      .pipe(tap(this.updateCartCount));
+      .pipe(tap(() => this.updateCartCount()));
   }
 
   update(item: any) {
@@ -59,7 +59,7 @@ export class CartService {
         method: 'PUT',
         body: item,
       })
-      .pipe(tap(this.updateCartCount));
+      .pipe(tap(() => this.updateCartCount()));
   }
 
   upsert(item: CartInput) {
@@ -68,7 +68,7 @@ export class CartService {
         method: 'POST',
         body: item,
       })
-      .pipe(tap(this.updateCartCount));
+      .pipe(tap(() => this.updateCartCount()));
   }
 
   delete({ productId, color, size }: CartInput, userId?: string) {
@@ -77,7 +77,7 @@ export class CartService {
         method: 'DELETE',
         body: { productId, color, size, userId },
       })
-      .pipe(tap(this.updateCartCount));
+      .pipe(tap(() => this.updateCartCount()));
   }
 
   bulkCreate(items: CartInput[]) {

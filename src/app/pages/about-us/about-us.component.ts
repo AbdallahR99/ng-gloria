@@ -12,6 +12,6 @@ import { SHARED_MODULES } from '@app/core/shared/modules/shared.module';
 export class AboutUsComponent {
   translatorService = inject(TranslatorService);
   get isEn(): boolean {
-    return this.translatorService.isEn();
+    return this.translatorService.isEn;
   }
 }

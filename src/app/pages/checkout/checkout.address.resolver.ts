@@ -12,10 +12,11 @@ export const checkoutAddressResolver: ResolveFn<Address[]> = async (
 ) => {
   const facadeService = inject(FacadeService);
   const router = inject(Router);
+  const plateFormService = inject(PlatformService);
   const addresses = await firstValueFrom(
     facadeService.addressesService.getAll()
   );
-  const plateFormService = inject(PlatformService);
+
   if (plateFormService.isServer) return [];
   if (!addresses || addresses.length === 0) {
     return new RedirectCommand(

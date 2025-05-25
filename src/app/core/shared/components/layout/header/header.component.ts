@@ -41,7 +41,7 @@ export class HeaderComponent {
     return this.facadeService.usersService.user;
   }
   get isEn(): boolean {
-    return this.TranslatorService.isEn();
+    return this.TranslatorService.isEn;
   }
   menuCollapse = model(false);
   appRoutes = APP_ROUTES;

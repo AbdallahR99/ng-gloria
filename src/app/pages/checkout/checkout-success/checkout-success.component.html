@@ -1,1 +1,38 @@
-<p>checkout-success works!</p>,
+<div class="container mx-auto p-10 max-w-[1000px]">
+  <div class="flex items-center justify-center mb-8">
+    <img src="images/checkout-success.png" alt="" class="object-contain h-160 w-160">
+  </div>
+  <div class="flex flex-col gap-3 justify-center items-center text-center">
+    <h1 class="text-3xl font-semibold text-primary text-center mb-4">
+      {{"Your order has been placed!" | translate}}
+    </h1>
+    <p class="text-gray-800 text-lg">
+      <span>
+        {{"Expected delivery" | translate}}
+      </span>
+      <span>
+        {{ expectedDeliveryTime() | date: 'shortDate' }}
+      </span>
+    </p>
+    <span class="mb-8">
+      <span class="text-gray-600">
+        {{"Order Code" | translate}}
+      </span>
+      <span class="text-primary font-semibold">
+        {{ orderCode() }}
+      </span>
+    </span>
+    <small class="text-sm">
+      <span>
+        {{"You for your order" | translate}}
+      </span>
+      <span>
+        {{"You can contact us at" | translate}}
+
+      </span>
+      <a class="link link-hover text-primary font-semibold" href="tel:+971509700715">
+        {{"+971 50 970 0715" }}
+      </a>
+    </small>
+  </div>
+</div>
