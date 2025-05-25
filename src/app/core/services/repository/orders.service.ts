@@ -1,5 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { SupabaseFunctionsService } from './supabase-functions.service';
+import { FacadeService } from '../facade-service.service';
+import { tap } from 'rxjs';
 type CheckoutRequest = {
   addressId?: string;
   note?: string;
@@ -13,6 +15,7 @@ type CheckoutResponse = {
 export class OrdersService {
   private readonly fn = inject(SupabaseFunctionsService);
   private readonly endpoint = 'orders';
+  facadeService = inject(FacadeService);
 
   get(orderId: string, userId?: string) {
     return this.fn.callFunction(`${this.endpoint}`, {
@@ -25,10 +28,16 @@ export class OrdersService {
   }
 
   checkout(payload: CheckoutRequest) {
-    return this.fn.callFunction<CheckoutResponse>(`${this.endpoint}/checkout`, {
-      method: 'POST',
-      body: payload,
-    });
+    return this.fn
+      .callFunction<CheckoutResponse>(`${this.endpoint}/checkout`, {
+        method: 'POST',
+        body: payload,
+      })
+      .pipe(
+        tap(() => {
+          this.facadeService.cartService.updateCartCount();
+        })
+      );
   }
 
   updateStatus(payload: {
