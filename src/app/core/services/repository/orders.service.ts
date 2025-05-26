@@ -2,6 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { SupabaseFunctionsService } from './supabase-functions.service';
 import { FacadeService } from '../facade-service.service';
 import { tap } from 'rxjs';
+import { OrderStatus } from '@app/core/constants/order-status.enum';
+import { Order } from '@app/core/models/order.model';
 type CheckoutRequest = {
   addressId?: string;
   note?: string;
@@ -11,18 +13,33 @@ type CheckoutResponse = {
   orderId: string;
   orderCode: string;
 };
+
+export interface OrderFilters {
+  page?: number;
+  pageSize?: number;
+  status?: OrderStatus | '';
+}
+
+export interface OrdersResponse {
+  page: number;
+  pageSize: number;
+  total: number;
+  totalPages: number;
+  items: Order[];
+}
+
 @Injectable({ providedIn: 'root' })
 export class OrdersService {
   private readonly fn = inject(SupabaseFunctionsService);
   private readonly endpoint = 'orders';
   facadeService = inject(FacadeService);
 
-  get(orderId: string, userId?: string) {
-    return this.fn.callFunction(`${this.endpoint}`, {
+  get(orderCode: string, userId?: string) {
+    return this.fn.callFunction<Order>(`${this.endpoint}`, {
       method: 'GET',
       queryParams: {
-        order_id: orderId,
-        ...(userId ? { user_id: userId } : {}),
+        orderCode,
+        ...(userId ? { userId } : {}),
       },
     });
   }
@@ -55,8 +72,8 @@ export class OrdersService {
     );
   }
 
-  list(filters?: any) {
-    return this.fn.callFunction(`${this.endpoint}/list`, {
+  list(filters?: OrderFilters) {
+    return this.fn.callFunction<OrdersResponse>(`${this.endpoint}/filter`, {
       method: 'POST',
       body: filters,
     });

@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { SupabaseFunctionsService } from './supabase-functions.service';
 import { User } from '@app/core/models/user.model';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, tap } from 'rxjs';
 import { LocalStorageKeys } from '@app/core/constants/local_storage';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
@@ -42,6 +42,12 @@ export class UsersService {
     }
   }
 
+  async refreshUser() {
+    const user = await firstValueFrom(this.getCurrent());
+    this.user.set(user);
+    localStorage.setItem(LocalStorageKeys.USER, JSON.stringify(user));
+  }
+
   clearCachedUser() {
     localStorage.removeItem(LocalStorageKeys.USER);
     this.user.set(null);
@@ -65,17 +71,21 @@ export class UsersService {
   }
 
   update(user: Partial<User> & { userId?: string }) {
-    return this.fn.callFunction(`${this.endpoint}`, {
-      method: 'PUT',
-      body: user,
-    });
+    return this.fn
+      .callFunction(`${this.endpoint}`, {
+        method: 'PUT',
+        body: user,
+      })
+      .pipe(tap(() => this.refreshUser()));
   }
 
   updateAvatar(avatarBase64: string) {
-    return this.fn.callFunction(`${this.endpoint}/avatar`, {
-      method: 'PUT',
-      body: { avatarBase64 },
-    });
+    return this.fn
+      .callFunction(`${this.endpoint}/avatar`, {
+        method: 'PUT',
+        body: { avatarBase64 },
+      })
+      .pipe(tap(() => this.refreshUser()));
   }
 
   bulkUpdate(users: Partial<User>[]) {

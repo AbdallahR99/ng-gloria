@@ -7,6 +7,7 @@ import { authGuard, NotAuthGuard } from './core/guards/auth.guard';
 import { checkoutAddressResolver } from './pages/checkout/checkout.address.resolver';
 import { checkoutItemsResolver } from './pages/checkout/checkout-items.resolver';
 import { checkoutSummaryResolver } from './pages/checkout/checkout-summary.resolver';
+import { orderDetailsResolver } from './pages/orders/order-details/order-details.resolver';
 
 export const routes: Routes = [
   {
@@ -81,6 +82,25 @@ export const routes: Routes = [
       ).then((m) => m.CheckoutSuccessComponent),
   },
   {
+    title: 'Orders',
+    canActivate: [authGuard],
+    path: APP_ROUTES.Orders.substring(1),
+    loadComponent: () =>
+      import('./pages/orders/orders.component').then((m) => m.OrdersComponent),
+  },
+  {
+    title: 'Order Details',
+    canActivate: [authGuard],
+    path: `${APP_ROUTES.OrderDetails.substring(1)}/:orderCode`,
+    loadComponent: () =>
+      import('./pages/orders/order-details/order-details.component').then(
+        (m) => m.OrderDetailsComponent
+      ),
+    resolve: {
+      order: orderDetailsResolver,
+    },
+  },
+  {
     path: APP_ROUTES.AUTH.substring(1),
     canActivate: [NotAuthGuard],
     loadComponent: () =>
@@ -89,16 +109,27 @@ export const routes: Routes = [
       import('./pages/auth/auth.routes').then((m) => m.auth_routes),
   },
   {
-    path: 'not-found',
-    component: NotFoundComponent,
+    title: 'Profile',
+    path: APP_ROUTES.Profile.substring(1),
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/profile/profile.component').then(
+        (m) => m.ProfileComponent
+      ),
+    loadChildren: () =>
+      import('./pages/profile/profile.route').then((m) => m.profile_routes),
   },
   {
-    path: '**',
-    redirectTo: 'not-found',
+    path: 'not-found',
+    component: NotFoundComponent,
   },
   {
     path: '',
     redirectTo: APP_ROUTES.HOME.substring(1),
     pathMatch: 'full',
+  },
+  {
+    path: '**',
+    redirectTo: 'not-found',
   },
 ];

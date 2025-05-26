@@ -1,1 +1,175 @@
-<p>user-info works!</p>,
+<!-- User Information Section -->
+<div class="space-y-6">
+  <!-- Page Header -->
+  <div class="flex items-center justify-between">
+    <h2 class="text-2xl font-bold text-primary">{{"Profile Information" | translate}}</h2>
+    <button class="btn btn-primary btn-sm" (click)="toggleEditMode()">
+      <mat-icon [fontIcon]="isEditMode() ? 'save' : 'edit'" class="scale-75"></mat-icon>
+      {{(isEditMode() ? "Save Changes" : "Edit Profile") | translate}}
+    </button>
+  </div>
+
+  <!-- Avatar Section -->
+  <div class="card bg-base-100 shadow-sm border border-primary/20">
+    <div class="card-body">
+      <h3 class="card-title text-lg text-primary mb-4">
+        <mat-icon fontIcon="photo_camera" class="scale-90"></mat-icon>
+        {{"Profile Picture" | translate}}
+      </h3>
+
+      <div class="flex flex-col md:flex-row items-center gap-6">
+        <!-- Avatar Display -->
+        <div class="avatar">
+          <div class="w-24 h-24 rounded-full border-4 border-primary/20">
+            @if (user()?.avatar) {
+            <img [src]="imagePath + user()!.avatar" [alt]="user()!.firstName" />
+            } @else {
+            <div class="bg-primary/10 w-full h-full flex items-center justify-center">
+              <span class="text-2xl font-bold text-primary">{{user()?.firstName?.charAt(0) || 'U'}}</span>
+            </div>
+            }
+          </div>
+        </div>
+
+        <!-- Avatar Upload Controls -->
+        <div class="flex flex-col gap-2">
+          <input type="file" accept="image/*"
+            class="file-input file-input-bordered file-input-primary border border-primary/40 file-input-sm w-full max-w-xs"
+            (change)="onAvatarSelect($event)" [disabled]="isAvatarUploading()" />
+          <p class="text-xs text-base-content/70">
+            {{"Supported formats: JPG, PNG. Max size: 2MB" | translate}}
+          </p>
+          @if (user()?.avatar) {
+          <button class="btn btn-outline btn-error btn-xs" (click)="removeAvatar()" [disabled]="isAvatarUploading()">
+            @if (isAvatarUploading()) {
+            <span class="loading loading-spinner loading-sm"></span>
+            } @else {
+            <mat-icon fontIcon="delete" class="scale-75"></mat-icon>
+            }
+            {{"Remove Photo" | translate}}
+          </button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Personal Information Form -->
+  <div class="card bg-base-100 shadow-sm border border-primary/20">
+    <div class="card-body">
+      <h3 class="card-title text-lg text-primary mb-4">
+        <mat-icon fontIcon="badge" class="scale-90"></mat-icon>
+        {{"Personal Information" | translate}}
+      </h3>
+
+      <form #userForm="ngForm" (ngSubmit)="saveUserInfo(userForm)" class="space-y-4">
+        <!-- First Name & Last Name -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-medium">{{"First Name" | translate}} *</span>
+            </label>
+            <input type="text" name="firstName" [ngModel]="formData().firstName"
+              (ngModelChange)="updateFormData('firstName', $event)" [readonly]="!isEditMode()"
+              class="input input-bordered input-primary" [class.input-ghost]="!isEditMode()"
+              placeholder="{{'Enter your first name' | translate}}" required />
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-medium">{{"Last Name" | translate}} *</span>
+            </label>
+            <input type="text" name="lastName" [ngModel]="formData().lastName"
+              (ngModelChange)="updateFormData('lastName', $event)" [readonly]="!isEditMode()"
+              class="input input-bordered input-primary" [class.input-ghost]="!isEditMode()"
+              placeholder="{{'Enter your last name' | translate}}" required />
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text font-medium">{{"Email Address" | translate}} *</span>
+          </label>
+          <input type="email" name="email" [ngModel]="formData().email"
+            (ngModelChange)="updateFormData('email', $event)" readonly class="input input-bordered input-ghost"
+            placeholder="{{'Your email address' | translate}}" />
+          <label class="label">
+            <span class="label-text-alt text-base-content/60">
+              {{"Email cannot be changed" | translate}}
+            </span>
+          </label>
+        </div>
+
+        <!-- Phone -->
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text font-medium">{{"Phone Number" | translate}}</span>
+          </label>
+          <input type="tel" name="phone" [ngModel]="formData().phone" (ngModelChange)="updateFormData('phone', $event)"
+            [readonly]="!isEditMode()" class="input input-bordered input-primary" [class.input-ghost]="!isEditMode()"
+            placeholder="{{'Enter your phone number' | translate}}" />
+        </div>
+
+        <!-- Save Button (only visible in edit mode) -->
+        @if (isEditMode()) {
+        <div class="card-actions justify-end pt-4">
+          <button type="button" class="btn btn-outline btn-primary" (click)="cancelEdit()">
+            {{"Cancel" | translate}}
+          </button>
+          <button type="submit" class="btn btn-primary" [disabled]="!userForm.valid || isLoading()">
+            @if (isLoading()) {
+            <span class="loading loading-spinner loading-sm"></span>
+            }
+            {{"Save Changes" | translate}}
+          </button>
+        </div>
+        }
+      </form>
+    </div>
+  </div>
+
+  <!-- Account Stats Card -->
+  <div class="card bg-base-100 shadow-sm border border-primary/20">
+    <div class="card-body">
+      <h3 class="card-title text-lg text-primary mb-4">
+        <mat-icon fontIcon="analytics" class="scale-90"></mat-icon>
+        {{"Account Overview" | translate}}
+      </h3>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="stat bg-primary/5 rounded-lg">
+          <div class="stat-figure text-primary">
+            <mat-icon fontIcon="receipt_long" class="scale-150"></mat-icon>
+          </div>
+          <div class="stat-title text-xs">{{"Total Orders" | translate}}</div>
+          <div class="stat-value text-lg text-primary">{{orderStatsComputed().total}}</div>
+        </div>
+
+        <div class="stat bg-success/5 rounded-lg">
+          <div class="stat-figure text-success">
+            <mat-icon fontIcon="check_circle" class="scale-150"></mat-icon>
+          </div>
+          <div class="stat-title text-xs">{{"Completed" | translate}}</div>
+          <div class="stat-value text-lg text-success">{{orderStatsComputed().completed}}</div>
+        </div>
+
+        <div class="stat bg-warning/5 rounded-lg">
+          <div class="stat-figure text-warning">
+            <mat-icon fontIcon="pending" class="scale-150"></mat-icon>
+          </div>
+          <div class="stat-title text-xs">{{"Pending" | translate}}</div>
+          <div class="stat-value text-lg text-warning">{{orderStatsComputed().pending}}</div>
+        </div>
+
+        <div class="stat bg-secondary/5 rounded-lg">
+          <div class="stat-figure text-secondary">
+            <mat-icon fontIcon="favorite" class="scale-150"></mat-icon>
+          </div>
+          <div class="stat-title text-xs">{{"Favorites" | translate}}</div>
+          <div class="stat-value text-lg text-secondary">{{favoriteStatsComputed().total}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

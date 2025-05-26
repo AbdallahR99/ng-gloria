@@ -12,7 +12,20 @@ import { Order } from '@app/core/models/order.model';
 import { OrderStatus } from '@app/core/constants/order-status.enum';
 import { environment } from '@environments/environment';
 import { APP_ROUTES } from '@app/core/constants/app-routes.enum';
-import { OrderFilters } from '@app/core/services/repository/orders.service';
+
+interface OrderFilters {
+  page?: number;
+  page_size?: number;
+  status?: OrderStatus | '';
+}
+
+interface OrdersResponse {
+  page: number;
+  page_size: number;
+  total: number;
+  total_pages: number;
+  items: Order[];
+}
 
 @Component({
   selector: 'app-orders',
@@ -26,15 +39,15 @@ export class OrdersComponent {
   imagePath = environment.supabaseImages;
   routes = APP_ROUTES;
 
-  // Reactive signals for filters - smaller page size for profile view
+  // Reactive signals for filters
   currentPage = signal(1);
-  pageSize = signal(5);
+  pageSize = signal(10);
   selectedStatus = signal<OrderStatus | ''>('');
 
   // Computed filter object
   filters = computed<OrderFilters>(() => ({
     page: this.currentPage(),
-    pageSize: this.pageSize(),
+    page_size: this.pageSize(),
     status: this.selectedStatus() || undefined,
   }));
 
@@ -47,24 +60,17 @@ export class OrdersComponent {
   });
 
   // Available order statuses for filtering
-  orderStatuses = OrderStatus;
+  orderStatuses = Object.values(OrderStatus);
 
-  // Computed filtered orders for displaying count
-  filteredOrders = computed(() => {
-    return this.orders.value()?.items || [];
+  results = computed(() => {
+    return Math.min(
+      (this.orders.value()?.page ?? 0) * (this.orders.value()?.pageSize ?? 0),
+      this.orders.value()?.total ?? 0
+    );
   });
 
   get isEn() {
     return this.facadeService.translatorService.isEn;
-  }
-
-  // Get count for specific status
-  getStatusCount(status: OrderStatus | ''): number {
-    const allOrders = this.orders.value()?.items || [];
-    if (status === '') {
-      return allOrders.length;
-    }
-    return allOrders.filter((order) => order.status === status).length;
   }
 
   // Status filter methods
@@ -125,31 +131,37 @@ export class OrdersComponent {
     });
   }
 
-  // Generate page numbers for pagination - simplified for profile view
+  // Generate page numbers for pagination
   getVisiblePages(): number[] {
     const totalPages = this.orders.value()?.totalPages || 1;
     const current = this.currentPage();
     const pages: number[] = [];
 
-    if (totalPages <= 5) {
-      // Show all pages if total is 5 or less
+    if (totalPages <= 7) {
+      // Show all pages if total is 7 or less
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
       }
     } else {
-      // Show simplified pagination for profile view
-      if (current <= 3) {
-        pages.push(1, 2, 3);
-        if (totalPages > 3) pages.push(-1); // ellipsis
+      // Show smart pagination
+      if (current <= 4) {
+        pages.push(1, 2, 3, 4, 5);
+        if (totalPages > 5) pages.push(-1); // ellipsis
         pages.push(totalPages);
-      } else if (current >= totalPages - 2) {
+      } else if (current >= totalPages - 3) {
         pages.push(1);
-        if (totalPages > 4) pages.push(-1); // ellipsis
-        for (let i = totalPages - 2; i <= totalPages; i++) {
+        if (totalPages > 6) pages.push(-1); // ellipsis
+        for (let i = totalPages - 4; i <= totalPages; i++) {
           pages.push(i);
         }
       } else {
-        pages.push(1, -1, current, -1, totalPages);
+        pages.push(1);
+        pages.push(-1); // ellipsis
+        for (let i = current - 1; i <= current + 1; i++) {
+          pages.push(i);
+        }
+        pages.push(-1); // ellipsis
+        pages.push(totalPages);
       }
     }
 
