@@ -2,6 +2,12 @@ import { Routes } from '@angular/router';
 import { APP_ROUTES } from './core/constants/app-routes.enum';
 import { productDetailsResolver } from './pages/products/product-details/product-details.resolver';
 import { NotFoundComponent } from '@app/pages/not-found/not-found.component';
+import { auth_routes } from './pages/auth/auth.routes';
+import { authGuard, NotAuthGuard } from './core/guards/auth.guard';
+import { checkoutAddressResolver } from './pages/checkout/checkout.address.resolver';
+import { checkoutItemsResolver } from './pages/checkout/checkout-items.resolver';
+import { checkoutSummaryResolver } from './pages/checkout/checkout-summary.resolver';
+import { orderDetailsResolver } from './pages/orders/order-details/order-details.resolver';
 
 export const routes: Routes = [
   {
@@ -35,16 +41,95 @@ export const routes: Routes = [
     resolve: { product: productDetailsResolver },
   },
   {
-    path: 'not-found',
-    component: NotFoundComponent,
+    title: 'Cart',
+    path: APP_ROUTES.Cart.substring(1),
+    canActivate: [authGuard],
+
+    loadComponent: () =>
+      import('./pages/cart/cart.component').then((m) => m.CartComponent),
   },
   {
-    path: '**',
-    redirectTo: 'not-found',
+    title: 'Add Address',
+    path: APP_ROUTES.AddAddress.substring(1),
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/add-address/add-address.component').then(
+        (m) => m.AddAddressComponent
+      ),
+  },
+  {
+    title: 'Checkout',
+    canActivate: [authGuard],
+
+    path: APP_ROUTES.CheckOut.substring(1),
+    loadComponent: () =>
+      import('./pages/checkout/checkout.component').then(
+        (m) => m.CheckoutComponent
+      ),
+    resolve: {
+      addresses: checkoutAddressResolver,
+      items: checkoutItemsResolver,
+      summary: checkoutSummaryResolver,
+    },
+  },
+  {
+    title: 'Checkout Success',
+    canActivate: [authGuard],
+    path: APP_ROUTES.CheckoutSuccess.substring(1),
+    loadComponent: () =>
+      import(
+        './pages/checkout/checkout-success/checkout-success.component'
+      ).then((m) => m.CheckoutSuccessComponent),
+  },
+  {
+    title: 'Orders',
+    canActivate: [authGuard],
+    path: APP_ROUTES.Orders.substring(1),
+    loadComponent: () =>
+      import('./pages/orders/orders.component').then((m) => m.OrdersComponent),
+  },
+  {
+    title: 'Order Details',
+    canActivate: [authGuard],
+    path: `${APP_ROUTES.OrderDetails.substring(1)}/:orderCode`,
+    loadComponent: () =>
+      import('./pages/orders/order-details/order-details.component').then(
+        (m) => m.OrderDetailsComponent
+      ),
+    resolve: {
+      order: orderDetailsResolver,
+    },
+  },
+  {
+    path: APP_ROUTES.AUTH.substring(1),
+    canActivate: [NotAuthGuard],
+    loadComponent: () =>
+      import('./pages/auth/auth.component').then((m) => m.AuthComponent),
+    loadChildren: () =>
+      import('./pages/auth/auth.routes').then((m) => m.auth_routes),
+  },
+  {
+    title: 'Profile',
+    path: APP_ROUTES.Profile.substring(1),
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/profile/profile.component').then(
+        (m) => m.ProfileComponent
+      ),
+    loadChildren: () =>
+      import('./pages/profile/profile.route').then((m) => m.profile_routes),
+  },
+  {
+    path: 'not-found',
+    component: NotFoundComponent,
   },
   {
     path: '',
     redirectTo: APP_ROUTES.HOME.substring(1),
     pathMatch: 'full',
+  },
+  {
+    path: '**',
+    redirectTo: 'not-found',
   },
 ];

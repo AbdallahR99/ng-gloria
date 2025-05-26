@@ -6,14 +6,24 @@
     </h3>
 
     <div class="grid grid-cols-4 sm:grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-4 max-w-[1000px] mx-auto">
-      @for (item of categories.value()?.items; track item.id) {
+      @if (categories.isLoading() ) {
+      @for (item of [1, 2, 3, 4, 5, 6,7 ,8]; track item) {
+      <div class="animate-pulse flex flex-col items-center text-center">
+        <div class="avatar card-app">
+          <div class="w-20 h-20 md:h-24 md:w-24 bg-gray-300 rounded-full"></div>
+        </div>
+        <span class="mt-2 text-sm font-medium bg-gray-300 h-4 w-16 rounded"></span>
+      </div>
+      }
+      }
+      @for (item of categories.value(); track item.id) {
       @let name = isEn ? item.nameEn : item.nameAr;
       <a [routerLink]="appRoutes.PRODUCTS" [queryParams]="{category: item.slug}"
         class="group flex flex-col items-center text-center ">
         <div class="avatar card-app ">
           <div
             class="w-20 h-20 md:h-24 md:w-24  group-hover:shadow-md shadow-gray-300/50 transition-shadow rounded-full border border-gray-300 bg-gray-100 overflow-hidden">
-            <img [src]="item.image" alt="{{name}}" class="object-contain w-full h-full" />
+            <img [src]="imagePath + item.image" alt="{{name}}" class="object-contain w-full h-full" />
           </div>
         </div>
         <span class="mt-2 text-sm font-medium group-hover:text-secondary transition-colors">{{name}}</span>
@@ -26,7 +36,28 @@
       {{"Today's Discounts" | translate}}
     </h3>
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-      @for (item of productsTodayDiscounts.value()?.items; track item.id) {
+      @if (productsTodayDiscounts.isLoading() ) {
+      @for (item of [1, 2, 3, 4, 5]; track item) {
+      <div class="animate-pulse">
+        <div class="card bg-base-100 shadow-md rounded-lg">
+          <div class="aspect-square bg-gray-300 rounded-t-lg"></div>
+          <div class="card-body p-4">
+            <h4 class="text-sm font-medium mb-2 bg-gray-300 h-6 w-3/4 rounded"></h4>
+            <div class="flex items
+              justify-between">
+              <div class="flex items
+                gap-2">
+                <span class="bg-gray-300 h-6 w-16 rounded"></span>
+                <span class="bg-gray-300 h-6 w-16 rounded"></span>
+              </div>
+              <span class="bg-gray-300 h-6 w-16 rounded"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      }
+      }
+      @for (item of productsTodayDiscounts.value()?.data; track item.id) {
 
       <ng-container *ngTemplateOutlet="productCard; context: {$implicit: item}"></ng-container>
 
@@ -57,7 +88,28 @@
           </div>
         </div>
       </div>
-      @for (item of productsNewArrival.value()?.items; track item.id) {
+      @if (productsNewArrival.isLoading() ) {
+      @for (item of [1, 2, 3, 4]; track item) {
+      <div class="animate-pulse md:col-span-2">
+        <div class="card bg-base-100 shadow-md rounded-lg">
+          <div class="aspect-square bg-gray-300 rounded-t-lg"></div>
+          <div class="card-body p-4">
+            <h4 class="text-sm font-medium mb-2 bg-gray-300 h-6 w-3/4 rounded"></h4>
+            <div class="flex items
+              justify-between">
+              <div class="flex items
+                gap-2">
+                <span class="bg-gray-300 h-6 w-16 rounded"></span>
+                <span class="bg-gray-300 h-6 w-16 rounded"></span>
+              </div>
+              <span class="bg-gray-300 h-6 w-16 rounded"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      }
+      }
+      @for (item of productsNewArrival.value()?.data; track item.id) {
       <div class="md:col-span-2"><ng-container
           *ngTemplateOutlet="productCard; context: {$implicit: item}"></ng-container>
       </div>
@@ -302,11 +354,11 @@
   <a [routerLink]="[appRoutes.PRODUCT_DETAILS, item.slug]">
     <div
       class="__product_card hover:shadow-md h-full shadow-gray-300/50 cursor-pointer transition-shadow rounded-lg relative border border-gray-200 flex flex-col">
-      <button class="btn btn-link btn-sm px-1 hover:text-secondary absolute z-10 right-0 top-0">
-        <mat-icon class="scale-75" svgIcon="heart" />
-      </button>
+      <fav-button class="absolute z-10 right-0 top-0" (click)="$event.stopPropagation();$event.preventDefault()"
+        [product]="item" />
+
       <figure class="aspect-square flex items-center justify-center bg-gray-100 p-1 max-h-[250px]">
-        <img [src]="item.thumbnail" alt="{{name}}" class="h-full object-contain aspect-square" />
+        <img [src]="imagePath +  item.thumbnail" alt="{{name}}" class="h-full object-contain aspect-square" />
       </figure>
       <div class="__card-body flex-1 flex flex-col p-3">
 
@@ -334,16 +386,9 @@
           <span class="font-normal">AED {{item.price}}</span>
           <span class="line-through text-gray-400">AED {{item.oldPrice}}</span>
         </div>
-        }
+        } <cart-button class="mt-2" (click)="$event.stopPropagation(); $event.preventDefault()" [product]="item" />
 
-        <button
-          class="btn btn-primary font-normal btn-sm mt-2 text-white flex items-center gap-1 shadow-none hover:text-secondary">
-          <mat-icon class="scale-65" svgIcon="cart" />
-          <span>
-            {{"Add to Cart" | translate}}
-          </span>
 
-        </button>
       </div>
     </div>
   </a>

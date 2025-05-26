@@ -1,0 +1,258 @@
+<div class="container mx-auto px-3 max-w-[1200px] min-h-screen py-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center gap-3">
+      <button (click)="goBackToOrders()" class="btn btn-ghost btn-sm">
+        <mat-icon fontIcon="arrow_back" class="scale-75"></mat-icon>
+      </button>
+      <h1 class="text-2xl font-bold text-primary">
+        {{"Order Details" | translate}}
+      </h1>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="badge badge-lg px-3" [class]="getStatusColor(order().status)">
+        {{getStatusText(order().status) | translate}}
+      </span>
+    </div>
+  </div>
+
+  <!-- Order Information Card -->
+  <div class="bg-white rounded-lg shadow-sm border border-primary/20 p-6 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div>
+        <h3 class="text-lg font-semibold text-primary mb-2">
+          {{"Order Information" | translate}}
+        </h3>
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between">
+            <span class="text-base-content/70">{{"Order Code" | translate}}:</span>
+            <span class="font-medium">#{{order().orderCode}}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-base-content/70">{{"Order Date" | translate}}:</span>
+            <span class="font-medium">{{formatDate(order().createdAt)}}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-base-content/70">{{"Status" | translate}}:</span>
+            <span class="badge badge-sm px-3" [class]="getStatusColor(order().status)">
+              {{getStatusText(order().status) | translate}}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Delivery Address -->
+      @if (order().address) {
+      <div>
+        <h3 class="text-lg font-semibold text-primary mb-2 flex items-center gap-2">
+          <mat-icon fontIcon="location_on" class="scale-75"></mat-icon>
+          {{"Delivery Address" | translate}}
+        </h3>
+        @let address = order().address!;
+        <div class="text-sm space-y-1">
+          <div class="font-medium">{{ address.firstName }} {{ address.lastName }}</div>
+          <div class="text-base-content/70">{{ address.phone }}</div>
+          <div class="text-base-content/70">
+            @if (address.building) {{{ address.building }}, }
+            @if (address.street) {{{ address.street }}, }
+            @if (address.area) {{{ address.area }}, }
+            {{ address.city }}, {{ isEn ? address.stateNameEn : address.stateNameAr }}
+          </div>
+          @if (address.notes) {
+          <div class="text-primary/60 italic">"{{ address.notes }}"</div>
+          }
+        </div>
+      </div>
+      }
+
+      <!-- Order Total -->
+      <div>
+        <h3 class="text-lg font-semibold text-primary mb-2">
+          {{"Order Summary" | translate}}
+        </h3>
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between">
+            <span class="text-base-content/70">{{"Subtotal" | translate}}:</span>
+            <span class="font-medium">{{ "AED" | translate}} {{ subtotal() | number: '1.2-2' }}</span>
+          </div>
+          @if (order().address?.deliveryFee) {
+          <div class="flex justify-between">
+            <span class="text-base-content/70">{{"Delivery Fee" | translate}}:</span>
+            <span class="font-medium">{{ "AED" | translate}} {{ order().address!.deliveryFee | number: '1.2-2' }}</span>
+          </div>
+          }
+          <div class="divider my-2"></div>
+          <div class="flex justify-between text-lg font-bold text-primary">
+            <span>{{"Total" | translate}}:</span>
+            <span>{{ "AED" | translate}} {{ order().totalPrice | number: '1.2-2' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Notes -->
+    @if (order().userNote) {
+    <div class="mt-6 p-4 bg-primary/5 rounded-lg">
+      <h4 class="font-medium text-primary mb-2 flex items-center gap-2">
+        <mat-icon fontIcon="note_alt" class="scale-75"></mat-icon>
+        {{"Order Notes" | translate}}
+      </h4>
+      <p class="text-sm text-base-content/80 italic">"{{ order().userNote }}"</p>
+    </div>
+    }
+  </div>
+
+  <!-- Order Progress Timeline -->
+  <div class="bg-white rounded-lg shadow-sm border border-primary/20 p-6 mb-6">
+    <h3 class="text-lg font-semibold text-primary mb-4 flex items-center gap-2">
+      <mat-icon fontIcon="timeline" class="scale-75"></mat-icon>
+      {{"Order Progress" | translate}}
+    </h3>
+
+    <div class="space-y-4">
+      @for (step of getOrderProgress(); track step.step; let isLast = $last) {
+      <div class="flex items-center gap-4">
+        <!-- Status Icon -->
+        <div class="flex-shrink-0">
+          @if (step.status === 'completed') {
+          <div class="w-8 h-8 bg-success rounded-full flex items-center justify-center">
+            <mat-icon fontIcon="check" class="text-white text-sm"></mat-icon>
+          </div>
+          } @else if (step.status === 'current') {
+          <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+            <div class="w-3 h-3 bg-white rounded-full"></div>
+          </div>
+          } @else {
+          <div class="w-8 h-8 bg-base-300 rounded-full flex items-center justify-center">
+            <div class="w-3 h-3 bg-base-content/30 rounded-full"></div>
+          </div>
+          }
+        </div>
+
+        <!-- Step Content -->
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center justify-between">
+            <h4 class="font-medium" [class]="step.status === 'completed' ? 'text-success' :
+                         step.status === 'current' ? 'text-primary' : 'text-base-content/50'">
+              {{step.step | translate}}
+            </h4>
+            @if (step.date) {
+            <span class="text-xs text-base-content/60">{{formatDate(step.date)}}</span>
+            }
+          </div>
+        </div>
+
+        <!-- Connecting Line -->
+        @if (!isLast) {
+        <div class="absolute left-4 mt-8 w-0.5 h-8 bg-base-300"></div>
+        }
+      </div>
+      }
+    </div>
+  </div>
+
+  <!-- Order Items -->
+  <div class="bg-white rounded-lg shadow-sm border border-primary/20 p-6 mb-6">
+    <h3 class="text-lg font-semibold text-primary mb-4 flex items-center gap-2">
+      <mat-icon fontIcon="shopping_cart" class="scale-75"></mat-icon>
+      {{"Order Items" | translate}}
+      <span class="badge badge-primary badge-sm px-1">{{ order().items?.length || 0 }}</span>
+    </h3>
+
+    @if (order().items && (order().items?.length ?? 0) > 0) {
+    <div class="space-y-4">
+      @for (item of order().items; track item.productId) {
+      @if (item.product) {
+      @let name = isEn ? item.product.nameEn : item.product.nameAr;
+      @let description = isEn ? item.product.descriptionEn : item.product.descriptionAr;
+
+      <div class="flex items-center gap-4 p-4 border border-primary/10 rounded-lg hover:shadow-sm transition-shadow">
+        <!-- Product Image -->
+        @if (item.product.thumbnail) {
+        <div class="flex-shrink-0">
+          <img [src]="imagePath + item.product.thumbnail" [alt]="name"
+            class="w-20 h-20 object-cover rounded-lg border border-primary/10">
+        </div>
+        }
+
+        <!-- Product Details -->
+        <div class="flex-1 min-w-0">
+          <h4 class="font-semibold text-primary truncate">{{ name }}</h4>
+          @if (description) {
+          <p class="text-sm text-base-content/70 line-clamp-2 mt-1">{{ description }}</p>
+          }
+
+          <!-- Product Attributes -->
+          <div class="flex flex-wrap gap-3 mt-2 text-xs">
+            @if (item.size) {
+            <span class="badge badge-outline badge-sm">
+              <mat-icon fontIcon="straighten" class="mr-1 scale-50"></mat-icon>
+              {{item.size}}
+            </span>
+            }
+            @if (item.color) {
+            <span class="badge badge-outline badge-sm">
+              <mat-icon fontIcon="palette" class="mr-1 scale-50"></mat-icon>
+              {{item.color}}
+            </span>
+            }
+            <span class="badge badge-outline badge-sm">
+              <mat-icon fontIcon="inventory" class="mr-1 scale-50"></mat-icon>
+              {{"Qty" | translate}}: {{item.quantity}}
+            </span>
+          </div>
+        </div>
+
+        <!-- Price Details -->
+        <div class="text-right flex-shrink-0">
+          <div class="text-lg font-semibold text-primary">
+            {{ "AED" | translate}} {{ (item.product.price || 0) * item.quantity | number: '1.2-2' }}
+          </div>
+          @if (item.product.oldPrice && item.product.oldPrice > (item.product.price || 0)) {
+          <div class="text-sm text-base-content/50 line-through">
+            {{ "AED" | translate}} {{ item.product.oldPrice * item.quantity | number: '1.2-2' }}
+          </div>
+          }
+          <div class="text-sm text-base-content/70">
+            {{ "AED" | translate}} {{ item.product.price || 0 | number: '1.2-2' }} {{"each" | translate}}
+          </div>
+        </div>
+      </div>
+      }
+      }
+    </div>
+    } @else {
+    <div class="text-center py-8 text-base-content/60">
+      <mat-icon fontIcon="shopping_cart" class="text-4xl mb-2"></mat-icon>
+      <p>{{"No items found" | translate}}</p>
+    </div>
+    }
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="flex flex-wrap gap-3 justify-center">
+    <button (click)="goBackToOrders()" class="btn btn-outline btn-primary">
+      <mat-icon fontIcon="arrow_back" class="scale-75"></mat-icon>
+      {{"Back to Orders" | translate}}
+    </button>
+
+    @if (canCancelOrder()) {
+    <button (click)="cancelOrder()" class="btn btn-error btn-outline">
+      <mat-icon fontIcon="cancel" class="scale-75"></mat-icon>
+      {{"Cancel Order" | translate}}
+    </button>
+    }
+
+    <button (click)="reorderItems()" class="btn btn-primary"
+      [disabled]="!order().items ||( order().items?.length ?? 0) === 0">
+      <mat-icon fontIcon="refresh" class="scale-75"></mat-icon>
+      {{"Reorder Items" | translate}}
+    </button>
+
+    <!-- Contact Support -->
+    <a href="tel:+971509700715" class="btn btn-secondary btn-outline">
+      <mat-icon fontIcon="support_agent" class="scale-75"></mat-icon>
+      {{"Contact Support" | translate}}
+    </a>
+  </div>
+</div>

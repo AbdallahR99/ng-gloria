@@ -1,0 +1,124 @@
+@reference "tailwindcss";
+@reference "#tailwindtheme";
+
+// Order Details Component Styles
+
+.order-status-timeline {
+  position: relative;
+
+  .timeline-step {
+    position: relative;
+
+    &:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 1rem;
+      top: 2rem;
+      width: 2px;
+      height: 2rem;
+      background: hsl(var(--bc) / 0.3);
+    }
+
+    &.completed::after {
+      background: hsl(var(--su));
+    }
+
+    &.current::after {
+      background: hsl(var(--p));
+    }
+  }
+}
+
+.order-items-grid {
+  .item-card {
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .order-summary-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .order-action-buttons {
+    flex-direction: column;
+
+    .btn {
+      width: 100%;
+    }
+  }
+}
+
+// Print styles for order details
+@media print {
+  .order-action-buttons {
+    display: none;
+  }
+
+  .order-progress-timeline {
+    break-inside: avoid;
+  }
+
+  .order-items-list {
+    break-inside: avoid;
+  }
+}
+
+// Enhanced status badges
+.status-badge {
+  &.pending {
+    @apply bg-warning/20 text-warning-content border-warning/40;
+  }
+
+  &.confirmed {
+    @apply bg-info/20 text-info-content border-info/40;
+  }
+
+  &.processing {
+    @apply bg-primary/20 text-primary-content border-primary/40;
+  }
+
+  &.shipped {
+    @apply bg-accent/20 text-accent-content border-accent/40;
+  }
+
+  &.delivered {
+    @apply bg-success/20 text-success-content border-success/40;
+  }
+
+  &.cancelled {
+    @apply bg-error/20 text-error-content border-error/40;
+  }
+}
+
+// Address card styling
+.address-card {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: hsl(var(--p));
+    border-radius: 0 2px 2px 0;
+  }
+}
+
+// Product image styling
+.product-image {
+  transition: transform 0.2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}

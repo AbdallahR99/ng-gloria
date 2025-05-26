@@ -3,43 +3,51 @@ import { APP_ROUTES } from '@app/core/constants/app-routes.enum';
 import { FacadeService } from '@app/core/services/facade-service.service';
 import { SHARED_MODULES } from '@app/core/shared/modules/shared.module';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { ProductQuery } from '@app/core/services/repository/product.service';
+import { ProductQuery } from '@app/core/services/repository/products.service';
+import { environment } from '@environments/environment';
+import { CartButtonComponent } from '@app/core/shared/components/cart-button/cart-button.component';
+import { FavButtonComponent } from '@app/core/shared/components/fav-button/fav-button.component';
 @Component({
   selector: 'app-home',
-  imports: [SHARED_MODULES],
+  imports: [SHARED_MODULES, CartButtonComponent, FavButtonComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
   appRoutes = APP_ROUTES;
+  imagePath = environment.supabaseImages;
+
   facadeService = inject(FacadeService);
   get isEn() {
-    return this.facadeService.translateService.isEn();
+    return this.facadeService.translatorService.isEn;
   }
   categories = rxResource({
     loader: ({ request }) => {
-      return this.facadeService.categoryService.getCategories();
+      return this.facadeService.categoryService.get();
     },
   });
   productsTodayDiscounts = rxResource({
     request: () =>
       ({
         pageSize: 5,
+        sortBy: 'created_at',
+        sortOrder: 'asc',
       } as Partial<ProductQuery>),
 
     loader: ({ request }) => {
-      return this.facadeService.productService.getProducts(request);
+      return this.facadeService.productsService.filter(request);
     },
   });
   productsNewArrival = rxResource({
     request: () =>
       ({
-        page: 2,
         pageSize: 4,
+        sortBy: 'created_at',
+        sortOrder: 'desc',
       } as Partial<ProductQuery>),
     loader: ({ request }) => {
-      return this.facadeService.productService.getProducts(request);
+      return this.facadeService.productsService.filter(request);
     },
   });
 }

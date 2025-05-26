@@ -1,4 +1,3 @@
-import { ProductService } from '@app/core/services/repository/product.service';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -10,10 +9,10 @@ import {
 import { rxResource } from '@angular/core/rxjs-interop';
 import { APP_ROUTES } from '@app/core/constants/app-routes.enum';
 import { Product } from '@app/core/models/product.model';
-import { BundleService } from '@app/core/services/repository/product-bundle.service';
-import { TranslatorService } from '@app/core/services/translate/translator.service';
+import { FacadeService } from '@app/core/services/facade-service.service';
 
 import { SHARED_MODULES } from '@app/core/shared/modules/shared.module';
+import { environment } from '@environments/environment';
 import { of } from 'rxjs';
 
 @Component({
@@ -25,12 +24,11 @@ import { of } from 'rxjs';
 })
 export class ProductDetailsComponent {
   product = input.required<Product>();
-  translatorService = inject(TranslatorService);
-  productService = inject(ProductService);
-  bundleService = inject(BundleService);
+  facadeService = inject(FacadeService);
   quantity = signal(1);
   selectedColor = signal('');
   selectedSize = signal('');
+  imagePath = environment.supabaseImages;
 
   currentImageIndex = signal(0);
 
@@ -45,61 +43,46 @@ export class ProductDetailsComponent {
   }
 
   get isEn(): boolean {
-    return this.translatorService.isEn();
+    return this.facadeService.translatorService.isEn;
   }
 
   routes = APP_ROUTES;
 
   bundle = rxResource({
     request: () => ({
-      productId: this.product().id,
+      slug: this.product().slug,
     }),
     loader: ({ request }) => {
-      return this.bundleService.getBundleByProductId(request.productId);
+      return this.facadeService.bundlesService.getByProductSlug(request.slug);
     },
   });
 
   relatedProducts = rxResource({
     request: () => ({
-      productId: this.product().id,
+      slug: this.product().slug,
     }),
     loader: ({ request }) => {
-      return this.productService.getRelatedProducts(request.productId);
+      return this.facadeService.productsService.related(request.slug);
     },
   });
 
   comments = rxResource({
     request: () => ({
-      productId: this.product().id,
+      slug: this.product().slug,
     }),
     loader: ({ request }) => {
-      return of([
-        {
-          id: 1,
-          name: 'John Doe',
-          date: '2023-10-01',
-          comment: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et
-      dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat.`,
-          stars: 4,
-        },
-        {
-          id: 2,
-          name: 'Jane Smith',
-          date: '2023-10-02',
-          comment: `Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
-          stars: 5,
-        },
-        {
-          id: 3,
-          name: 'Alice Johnson',
-          date: '2023-10-03',
-          comment: `Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam
-      rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.`,
-          stars: 3,
-        },
-      ]);
+      return this.facadeService.reviewsService.get(request.slug);
+    },
+  });
+
+  ratingDistributionStars = rxResource({
+    request: () => ({
+      slug: this.product().slug,
+    }),
+    loader: ({ request }) => {
+      return this.facadeService.reviewsService.getRatingDistribution(
+        request.slug
+      );
     },
   });
 

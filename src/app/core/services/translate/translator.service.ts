@@ -86,7 +86,7 @@ export class TranslatorService {
     return this.translate.instant(key || '');
   }
 
-  isEn(): boolean {
+  get isEn(): boolean {
     return this.getCurrentLang() === TranslatorService.LANG_EN;
   }
 }
