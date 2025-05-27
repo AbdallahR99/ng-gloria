@@ -1,7 +1,6 @@
 export const environment = {
   production: false,
 
-  supabaseFunctions: 'https://kretsyuezkxtctzztcsp.supabase.co/functions/v1/',
-  supabaseImages:
-    'https://kretsyuezkxtctzztcsp.supabase.co/storage/v1/object/public/images/',
+  supabaseFunctions: 'http://127.0.0.1:54321/functions/v1/',
+  supabaseImages: 'http://127.0.0.1:54321/storage/v1/object/public/images/',
 };
