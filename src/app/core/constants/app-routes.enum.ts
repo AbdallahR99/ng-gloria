@@ -21,6 +21,7 @@ export enum APP_ROUTES {
   CheckOut = '/checkout',
   CheckoutSuccess = '/checkout-success',
   CheckoutFailure = '/checkout-failure',
+  CheckoutDirect = '/checkout-direct',
   Orders = '/orders',
   OrderDetails = '/order-details',
   About = '/about',
@@ -40,5 +41,6 @@ export enum APP_ROUTES {
   ProfileOrders = '/profile/orders',
   ProfileAddresses = '/profile/addresses',
   ProfileFavorites = '/profile/favorites',
+
   NOT_FOUND = '**',
 }

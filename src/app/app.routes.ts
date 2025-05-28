@@ -73,6 +73,20 @@ export const routes: Routes = [
     },
   },
   {
+    title: 'Direct Checkout',
+    canActivate: [authGuard],
+    path: APP_ROUTES.CheckoutDirect.substring(1) + '/:productSlug',
+    loadComponent: () =>
+      import('./pages/direct-checkout/direct-checkout.component').then(
+        (m) => m.DirectCheckoutComponent
+      ),
+    resolve: {
+      addresses: checkoutAddressResolver,
+      product: productDetailsResolver,
+    },
+  },
+
+  {
     title: 'Checkout Success',
     canActivate: [authGuard],
     path: APP_ROUTES.CheckoutSuccess.substring(1),

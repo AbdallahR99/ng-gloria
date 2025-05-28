@@ -135,9 +135,11 @@
             {{"Add to Cart" | translate}}
           </span>
         </button>
-        <button class="btn flex-1 btn-primary text-white" (click)="sendWhatsAppMessage()">
+        <a [routerLink]="[routes.CheckoutDirect, product().id]"
+          [queryParams]="{color: selectedColor() ? selectedColor() : undefined, size: selectedSize() ? selectedSize() : undefined}"
+          class="btn flex-1 btn-primary text-white" (click)="sendWhatsAppMessage()">
           {{"Buy Now" | translate}}
-        </button>
+        </a>
 
       </div>
     </div>
@@ -228,13 +230,33 @@
           <span class="font-normal">AED {{bundle.price}}</span>
           <span class="line-through text-gray-400">AED {{bundle.oldPrice}}</span>
         </div>
-        <button
+        @if (bundle.id; as bundleId) {
+        @if (bundle.inCart || isBundleInCart()) {
+        <a [routerLink]="routes.Cart"
+          class="btn btn-ghost bg-neutral-content font-normal btn-sm mt-2 text-primary flex items-center gap-1 shadow-none hover:text-secondary">
+          <mat-icon class="scale-65" fontIcon="check" />
+          <span>
+            {{"In Cart" | translate}}
+          </span>
+        </a>
+        } @else {
+        <button (click)="addBundleToCart(bundleId)" [disabled]="isAddingBundleToCart()"
           class="btn btn-primary font-normal btn-sm mt-2 text-white flex items-center gap-1 shadow-none hover:text-secondary">
+          @if (isAddingBundleToCart()) {
+          <span class="loading loading-spinner loading-primary loading-sm"></span>
+          } @else {
           <mat-icon class="scale-65" svgIcon="cart" />
           <span>
             {{"Add to Cart" | translate}}
           </span>
+          }
+
         </button>
+        }
+
+        }
+
+
       </div>
     </div>
 

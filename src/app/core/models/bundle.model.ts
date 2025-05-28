@@ -8,7 +8,7 @@ export interface Bundle {
   price?: number; // Current price of the bundle
   oldPrice?: number; // Old price of the bundle (optional)
   isActive?: boolean; // Whether the bundle is active
-  id?: number; // ID of the created bundle
+  id?: string; // ID of the created bundle
   createdAt?: string; // Timestamp of creation
   updatedAt?: string; // Timestamp of last update
   createdBy?: string; // Email of the user who created the bundle

@@ -14,6 +14,25 @@ type CheckoutResponse = {
   orderCode: string;
 };
 
+type DirectCheckoutRequest = {
+  productId: string;
+  quantity?: number;
+  size?: string;
+  color?: string;
+  addressId: string;
+  note?: string;
+  userId?: string;
+};
+
+type DirectCheckoutResponse = {
+  orderId: string;
+  orderCode: string;
+  totalPrice: number;
+  deliveryFee: number;
+  productId: string;
+  quantity: number;
+};
+
 export interface OrderFilters {
   page?: number;
   pageSize?: number;
@@ -50,6 +69,22 @@ export class OrdersService {
         method: 'POST',
         body: payload,
       })
+      .pipe(
+        tap(() => {
+          this.facadeService.cartService.updateCartCount();
+        })
+      );
+  }
+
+  directCheckout(payload: DirectCheckoutRequest) {
+    return this.fn
+      .callFunction<DirectCheckoutResponse>(
+        `${this.endpoint}/direct-checkout`,
+        {
+          method: 'POST',
+          body: payload,
+        }
+      )
       .pipe(
         tap(() => {
           this.facadeService.cartService.updateCartCount();

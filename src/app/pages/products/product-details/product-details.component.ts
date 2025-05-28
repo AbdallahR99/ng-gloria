@@ -30,14 +30,16 @@ export class ProductDetailsComponent {
   selectedColor = signal('');
   selectedSize = signal('');
   imagePath = environment.supabaseImages;
+  isAddingBundleToCart = signal(false);
+  isBundleInCart = signal(false);
 
   init = effect(() => {
-    if (this.product().colors && (this.product().colors?.length ?? 0) > 0) {
-      this.selectedColor.set(this.product().colors?.[0].name ?? '');
-    }
-    if (this.product().sizes && (this.product().sizes?.length ?? 0) > 0) {
-      this.selectedSize.set(this.product().sizes?.[0] ?? '');
-    }
+    // if (this.product().colors && (this.product().colors?.length ?? 0) > 0) {
+    //   this.selectedColor.set(this.product().colors?.[0].name ?? '');
+    // }
+    // if (this.product().sizes && (this.product().sizes?.length ?? 0) > 0) {
+    //   this.selectedSize.set(this.product().sizes?.[0] ?? '');
+    // }
   });
 
   currentImageIndex = signal(0);
@@ -104,6 +106,32 @@ export class ProductDetailsComponent {
   decrease() {
     if (this.quantity() <= 1) return;
     this.quantity.update((value) => value - 1);
+  }
+
+  addBundleToCart(bundleId: string): void {
+    if (this.isAddingBundleToCart()) return;
+    if (!this.facadeService.authService.isLoggedIn()) return;
+    this.isAddingBundleToCart.set(true);
+    this.facadeService.cartService.addBundle(bundleId).subscribe({
+      next: () => {
+        this.isAddingBundleToCart.set(false);
+        this.isBundleInCart.set(true);
+        // this.facadeService.toastrService.success(
+        //   this.isEn
+        //     ? 'Bundle added to cart successfully'
+        //     : 'تم إضافة الباقة إلى السلة بنجاح'
+        // );
+      },
+      error: (error) => {
+        this.isAddingBundleToCart.set(false);
+        // this.facadeService.toastrService.error(
+        //   this.isEn
+        //     ? 'Failed to add bundle to cart'
+        //     : 'فشل إضافة الباقة إلى السلة'
+        // );
+        // console.error('Error adding bundle to cart:', error);
+      },
+    });
   }
 
   sendWhatsAppMessage(): void {

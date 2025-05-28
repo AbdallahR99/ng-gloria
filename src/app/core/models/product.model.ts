@@ -25,6 +25,7 @@ export interface Product {
   categoryId: number;
   category?: Category;
   slug: string; // URL-friendly identifier
+  slugAr: string; // URL-friendly identifier
   inspiredBy?: {
     nameEn: string; // English name of the original product
     nameAr: string; // Arabic name of the original product
