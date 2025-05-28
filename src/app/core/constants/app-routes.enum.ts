@@ -25,7 +25,7 @@ export enum APP_ROUTES {
   Orders = '/orders',
   OrderDetails = '/order-details',
   Invoices = '/invoices',
-  InvoiceDetails = '/invoice-details',
+  InvoiceDetails = '/invoices',
   InvoicesCreate = '/invoices-create',
   About = '/about',
   Contact = '/contact',

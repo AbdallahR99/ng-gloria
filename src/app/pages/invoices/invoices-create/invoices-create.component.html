@@ -44,10 +44,10 @@
           <!-- User Email -->
           <div class="form-control">
             <label class="label">
-              <span class="label-text">{{ "User Email" | translate }} *</span>
+              <span class="label-text">{{ "Customer Email" | translate }} *</span>
             </label>
-            <input type="email" class="input input-bordered" [placeholder]="'Enter customer email' | translate"
-              name="userEmail" [(ngModel)]="userEmail" required />
+            <input type="email" class="input input-primary border-1 border-primary/40"
+              [placeholder]="'Enter customer email' | translate" name="userEmail" [(ngModel)]="userEmail" required />
           </div>
 
           <!-- Customer Name -->
@@ -55,8 +55,8 @@
             <label class="label">
               <span class="label-text">{{ "Customer Name" | translate }}</span>
             </label>
-            <input type="text" class="input input-bordered" [placeholder]="'Enter customer name' | translate"
-              [(ngModel)]="customerName" name="customerName" />
+            <input type="text" class="input input-primary border-1 border-primary/40"
+              [placeholder]="'Enter customer name' | translate" [(ngModel)]="customerName" name="customerName" />
           </div>
 
           <!-- Customer Phone -->
@@ -64,8 +64,8 @@
             <label class="label">
               <span class="label-text">{{ "Customer Phone" | translate }}</span>
             </label>
-            <input type="tel" class="input input-bordered" [placeholder]="'Enter phone number' | translate"
-              [(ngModel)]="customerPhone" name="customerPhone" />
+            <input type="tel" class="input input-primary border-1 border-primary/40"
+              [placeholder]="'Enter phone number' | translate" [(ngModel)]="customerPhone" name="customerPhone" />
           </div>
 
           <!-- Order ID -->
@@ -73,7 +73,7 @@
             <label class="label">
               <span class="label-text">{{ "Related Order ID" | translate }}</span>
             </label>
-            <input type="text" class="input input-bordered" [placeholder]="'Enter order ID (optional)' | translate"
+            <input type="text" class="input input-primary border-1 border-primary/40" [placeholder]="'Enter order ID (optional)' | translate"
               [value]="orderId() || ''" (input)="orderId.set($event.target.value || null)" />
           </div> -->
         </div>
@@ -88,13 +88,33 @@
           {{ "Products" | translate }}
         </h2>
 
-        <!-- Product Search -->
+        <!-- Product Entry Mode Toggle -->
+        <div class="form-control mb-4">
+          <label class="label">
+            <span class="label-text">{{ "Product Entry Method" | translate }}</span>
+          </label>
+          <div class="tabs tabs-box">
+            <button type="button" class="tab" [class.tab-active]="productEntryMode() === 'search'"
+              (click)="switchProductEntryMode('search')">
+              <mat-icon fontIcon="search" class="mr-2" />
+              {{ "Search Existing" | translate }}
+            </button>
+            <button type="button" class="tab" [class.tab-active]="productEntryMode() === 'manual'"
+              (click)="switchProductEntryMode('manual')">
+              <mat-icon fontIcon="add" class="mr-2" />
+              {{ "Add Manually" | translate }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Product Search Mode -->
+        @if (productEntryMode() === 'search') {
         <div class="form-control mb-4">
           <label class="label">
             <span class="label-text">{{ "Search Products" | translate }}</span>
           </label>
           <div class="dropdown dropdown-open w-full">
-            <input type="text" class="input input-bordered w-full" #productSearchInput
+            <input type="text" class="input input-primary border-1 border-primary/40 w-full" #productSearchInput
               [placeholder]="'Search for products to add' | translate" [(ngModel)]="searchQuery"
               [ngModelOptions]="{standalone: true}" />
 
@@ -121,6 +141,76 @@
             }
           </div>
         </div>
+        }
+
+        <!-- Manual Product Entry Mode -->
+        @if (productEntryMode() === 'manual') {
+        <div class="card bg-base-200 p-4 mb-4">
+          <h3 class="text-lg font-medium mb-4">{{ "Add Product Manually" | translate }}</h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Product Name -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">{{ "Product Name" | translate }} *</span>
+              </label>
+              <input type="text" class="input input-primary border-1 border-primary/40"
+                [placeholder]="'Enter product name' | translate" [(ngModel)]="manualProductName"
+                [ngModelOptions]="{standalone: true}" />
+            </div>
+
+            <!-- Product SKU -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">{{ "Product SKU" | translate }} *</span>
+              </label>
+              <input type="text" class="input input-primary border-1 border-primary/40"
+                [placeholder]="'Enter product SKU' | translate" [(ngModel)]="manualProductSku"
+                [ngModelOptions]="{standalone: true}" />
+            </div>
+
+            <!-- Product Price -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">{{ "Price (AED)" | translate }} *</span>
+              </label>
+              <input type="number" class="input input-primary border-1 border-primary/40" min="0" step="0.01"
+                [placeholder]="'Enter price' | translate" [(ngModel)]="manualProductPrice"
+                [ngModelOptions]="{standalone: true}" />
+            </div>
+
+            <!-- Product Old Price (Optional) -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">{{ "Old Price (AED)" | translate }}</span>
+                <span class="label-text-alt">{{ "Optional" | translate }}</span>
+              </label>
+              <input type="number" class="input input-primary border-1 border-primary/40" min="0" step="0.01"
+                [placeholder]="'Enter old price' | translate" [(ngModel)]="manualProductOldPrice"
+                [ngModelOptions]="{standalone: true}" />
+            </div>
+
+            <!-- Quantity -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">{{ "Quantity" | translate }} *</span>
+              </label>
+              <input type="number" class="input input-primary border-1 border-primary/40" min="1"
+                [placeholder]="'Enter quantity' | translate" [(ngModel)]="manualProductQuantity"
+                [ngModelOptions]="{standalone: true}" />
+            </div>
+          </div>
+
+          <!-- Add Manual Product Button -->
+          <div class="form-control mt-4">
+            <button type="button" class="btn btn-primary" [disabled]="!isManualProductValid()"
+              (click)="addManualProduct()">
+              <mat-icon fontIcon="add" />
+              {{ "Add Product" | translate }}
+            </button>
+          </div>
+        </div>
+        }
 
         <!-- Selected Products -->
         @if ((products()?? []).length > 0) {
@@ -132,6 +222,8 @@
                 <th class="text-center">{{ "Quantity" | translate }}</th>
                 <th class="text-right">{{ "Unit Price" | translate }}</th>
                 <th class="text-right">{{ "Total" | translate }}</th>
+                <th>{{ "SKU" | translate }}</th>
+
                 <th class="text-center">{{ "Actions" | translate }}</th>
               </tr>
             </thead>
@@ -154,8 +246,8 @@
                   </div>
                 </td>
                 <td class="text-center">
-                  <input type="number" class="input input-bordered input-sm w-20 text-center" min="1"
-                    [value]="product.quantity" #quantityInput
+                  <input type="number" class="input input-primary border-1 border-primary/40 input-sm w-20 text-center"
+                    min="1" [value]="product.quantity" #quantityInput
                     (input)="updateProductQuantity(i, +quantityInput.value)" />
                 </td>
                 <td class="text-right">
@@ -163,6 +255,10 @@
                 </td>
                 <td class="text-right font-medium">
                   {{ (product.price * product.quantity) | currency:'AED':'symbol':'1.2-2' }}
+                </td>
+                <td>
+                  <div class="font-bold">{{ product.sku }}</div>
+
                 </td>
                 <td class="text-center">
                   <button type="button" class="btn btn-sm btn-error" (click)="removeProduct(i)">
@@ -199,7 +295,7 @@
               <label class="label">
                 <span class="label-text">{{ "Discount" | translate }}</span>
               </label>
-              <input type="number" class="input input-bordered" min="0" step="0.01"
+              <input type="number" class="input input-primary border-1 border-primary/40" min="0" step="0.01"
                 [placeholder]="'Enter discount amount' | translate" #dicountAmountInput [value]="discount()"
                 (input)="discount.set(+dicountAmountInput.value)" />
             </div>
@@ -208,7 +304,7 @@
               <label class="label">
                 <span class="label-text">{{ "Delivery Fees" | translate }}</span>
               </label>
-              <input type="number" class="input input-bordered" min="0" step="0.01"
+              <input type="number" class="input input-primary border-1 border-primary/40" min="0" step="0.01"
                 [placeholder]="'Enter delivery fees' | translate" #deliveryFeesInput [value]="deliveryFees()"
                 (input)="deliveryFees.set(+deliveryFeesInput.value)" />
             </div>
@@ -254,9 +350,8 @@
         </h2>
 
         <div class="form-control">
-          <textarea class="textarea textarea-bordered h-24" #notesInput
-            [placeholder]="'Enter any additional notes for this invoice' | translate" [value]="notes()"
-            (input)="notes.set(notesInput.value)"></textarea>
+          <textarea class="textarea textarea-primary border-1 border-primary/40 h-24 w-full" #notesInput name="notes"
+            [placeholder]="'Enter any additional notes for this invoice' | translate" [(ngModel)]="notes"></textarea>
         </div>
       </div>
     </div>

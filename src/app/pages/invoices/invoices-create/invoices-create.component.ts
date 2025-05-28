@@ -40,7 +40,7 @@ export class InvoicesCreateComponent {
   discount = model(0);
   deliveryFees = model(0);
   notes = model('');
-  products = model<InvoiceProduct[]>([]);
+  products = signal<InvoiceProduct[]>([]);
 
   // UI state signals
   isSubmitting = model(false);
@@ -84,7 +84,16 @@ export class InvoicesCreateComponent {
   });
 
   total = computed(() => {
-    return this.subtotal() - this.discount() + this.deliveryFees();
+    if (!this.products()?.length) return 0;
+    if (this.subtotal() < 0) return 0; // Ensure subtotal is not negative
+    let total = this.subtotal();
+    if ((this.discount() ?? 0) > 0) {
+      total -= this.discount();
+    }
+    if ((this.deliveryFees() ?? 0) > 0) {
+      total += this.deliveryFees();
+    }
+    return total;
   });
 
   isFormValid = computed(() => {
@@ -96,7 +105,7 @@ export class InvoicesCreateComponent {
   });
 
   // Form methods
-  addProduct(product: any) {
+  addProduct(product: Product) {
     const existingIndex = this.products().findIndex(
       (p) => p.sku === product.sku
     );
@@ -111,8 +120,8 @@ export class InvoicesCreateComponent {
     } else {
       // Add new product
       const newProduct: InvoiceProduct = {
-        name: product.name,
-        sku: product.sku,
+        name: product.nameEn,
+        sku: product.sku ?? product.nameEn,
         quantity: 1,
         price: product.price,
         oldPrice: product.oldPrice,
@@ -127,7 +136,7 @@ export class InvoicesCreateComponent {
   addManualProduct() {
     if (!this.isManualProductValid()) return;
 
-    const existingIndex = this.products().findIndex(
+    const existingIndex = this.products()?.findIndex(
       (p) => p.sku === this.manualProductSku()
     );
 
@@ -223,8 +232,8 @@ export class InvoicesCreateComponent {
 
       // Navigate to the created invoice
       this.router.navigate([
-        APP_ROUTES.Invoices,
-        'view',
+        APP_ROUTES.InvoiceDetails,
+
         result.invoice.invoiceCode,
       ]);
     } catch (error) {

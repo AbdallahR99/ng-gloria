@@ -154,10 +154,10 @@
                 <span class="badge badge-ghost">{{ product.quantity }}</span>
               </td>
               <td class="text-right">
-                {{ product.price | currency:'USD':'symbol':'1.2-2' }}
+                {{ product.price | currency:'AED':'symbol':'1.2-2' }}
               </td>
               <td class="text-right font-medium">
-                {{ (product.price * product.quantity) | currency:'USD':'symbol':'1.2-2' }}
+                {{ (product.price * product.quantity) | currency:'AED':'symbol':'1.2-2' }}
               </td>
             </tr>
             }
@@ -192,27 +192,27 @@
         <div class="space-y-3">
           <div class="flex justify-between">
             <span>{{ "Subtotal" | translate }}:</span>
-            <span>{{ subtotal() | currency:'USD':'symbol':'1.2-2' }}</span>
+            <span>{{ subtotal() | currency:'AED':'symbol':'1.2-2' }}</span>
           </div>
 
           @if (totalDiscount() > 0) {
           <div class="flex justify-between text-success">
             <span>{{ "Discount" | translate }}:</span>
-            <span>-{{ totalDiscount() | currency:'USD':'symbol':'1.2-2' }}</span>
+            <span>-{{ totalDiscount() | currency:'AED':'symbol':'1.2-2' }}</span>
           </div>
           }
 
           @if (deliveryFees() > 0) {
           <div class="flex justify-between">
             <span>{{ "Delivery Fees" | translate }}:</span>
-            <span>{{ deliveryFees() | currency:'USD':'symbol':'1.2-2' }}</span>
+            <span>{{ deliveryFees() | currency:'AED':'symbol':'1.2-2' }}</span>
           </div>
           }
 
           <div class="divider"></div>
           <div class="flex justify-between text-lg font-bold">
             <span>{{ "Total" | translate }}:</span>
-            <span>{{ grandTotal() | currency:'USD':'symbol':'1.2-2' }}</span>
+            <span>{{ grandTotal() | currency:'AED':'symbol':'1.2-2' }}</span>
           </div>
         </div>
       </div>
