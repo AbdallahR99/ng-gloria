@@ -8,6 +8,7 @@ import { checkoutAddressResolver } from './pages/checkout/checkout.address.resol
 import { checkoutItemsResolver } from './pages/checkout/checkout-items.resolver';
 import { checkoutSummaryResolver } from './pages/checkout/checkout-summary.resolver';
 import { orderDetailsResolver } from './pages/orders/order-details/order-details.resolver';
+import { directCheckoutProductResolver } from './pages/direct-checkout/direct-checkout-product.resolver';
 
 export const routes: Routes = [
   {
@@ -82,7 +83,7 @@ export const routes: Routes = [
       ),
     resolve: {
       addresses: checkoutAddressResolver,
-      product: productDetailsResolver,
+      product: directCheckoutProductResolver,
     },
   },
 

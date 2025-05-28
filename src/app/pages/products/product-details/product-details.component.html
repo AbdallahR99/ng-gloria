@@ -135,9 +135,9 @@
             {{"Add to Cart" | translate}}
           </span>
         </button>
-        <a [routerLink]="[routes.CheckoutDirect, product().id]"
+        <a [routerLink]="[routes.CheckoutDirect, product().slug]"
           [queryParams]="{color: selectedColor() ? selectedColor() : undefined, size: selectedSize() ? selectedSize() : undefined}"
-          class="btn flex-1 btn-primary text-white" (click)="sendWhatsAppMessage()">
+          class="btn flex-1 btn-primary text-white">
           {{"Buy Now" | translate}}
         </a>
 

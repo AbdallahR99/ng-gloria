@@ -61,8 +61,8 @@ export class SupabaseFunctionsService {
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
     };
-    headers['Authorization'] = `Bearer ${token ?? environment.anonymousJwt}`;
-    headers['apikey'] = environment.apiKey;
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
     return new HttpHeaders(headers);
   }
 

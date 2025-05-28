@@ -34,12 +34,12 @@ export class ProductDetailsComponent {
   isBundleInCart = signal(false);
 
   init = effect(() => {
-    // if (this.product().colors && (this.product().colors?.length ?? 0) > 0) {
-    //   this.selectedColor.set(this.product().colors?.[0].name ?? '');
-    // }
-    // if (this.product().sizes && (this.product().sizes?.length ?? 0) > 0) {
-    //   this.selectedSize.set(this.product().sizes?.[0] ?? '');
-    // }
+    if (this.product().colors && (this.product().colors?.length ?? 0) > 0) {
+      this.selectedColor.set(this.product().colors?.[0].name ?? '');
+    }
+    if (this.product().sizes && (this.product().sizes?.length ?? 0) > 0) {
+      this.selectedSize.set(this.product().sizes?.[0] ?? '');
+    }
   });
 
   currentImageIndex = signal(0);
