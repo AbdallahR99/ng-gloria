@@ -18,6 +18,18 @@ export interface Review {
 }
 
 export interface RatingDistribution {
-  rating: number; // The rating value (e.g., 1, 2, 3, 4, 5)
-  count: number; // Number of reviews with this rating
+  slug: string; // Product slug
+  totalReviews: number; // Total number of reviews
+  averageRating: number; // Average rating score
+  distribution: {
+    [key: string]: {
+      count: number; // Number of reviews for this rating
+      percentage: number; // Percentage of reviews for this rating
+    };
+  };
+  breakdown: {
+    stars: number; // Star rating (1-5)
+    count: number; // Number of reviews with this rating
+    percentage: number; // Percentage of reviews with this rating
+  }[];
 }

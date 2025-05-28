@@ -18,6 +18,14 @@ This guide covers the key new features and enhancements in Angular 19, focusing 
 
 ---
 
+## HTML Text Content with NGX translator
+
+use the "translate" pipe always with any text and write normal text like {{ "Home Page" | translate }} or {{ "Welcome to our website!" | translate }}
+
+## Forms
+
+Always use the `ngModel` directive for two-way data binding in forms, and use the `model` function to create reactive form controls.
+
 ## rxResource
 
 The `rxResource` function creates a reactive resource that automatically manages loading states and updates based on request changes. It's perfect for data fetching scenarios where you need automatic loading states and reactive updates.
@@ -32,37 +40,34 @@ import { rxResource } from "@angular/core/rxjs-interop";
   template: `
     <!-- Loading State -->
     @if (liveViewCards.isLoading()) {
-      <div class="flex justify-center items-center w-full h-full">
-        <span class="text-primary loading loading-infinity loading-lg"></span>
-      </div>
+    <div class="flex justify-center items-center w-full h-full">
+      <span class="text-primary loading loading-infinity loading-lg"></span>
+    </div>
     }
 
     <!-- Content State -->
-    @if (liveViewCards.hasValue()) {
-      @let cards = liveViewCards.value();
-      @if (cards.length === 0) {
-        <div class="flex justify-center items-center w-full h-full">
-          <h4>No Data Available</h4>
+    @if (liveViewCards.hasValue()) { @let cards = liveViewCards.value(); @if (cards.length === 0) {
+    <div class="flex justify-center items-center w-full h-full">
+      <h4>No Data Available</h4>
+    </div>
+    } @else {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      @for (card of cards; track card.id) {
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title">{{ card.title }}</h2>
+          <p>{{ card.description }}</p>
         </div>
-      } @else {
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          @for (card of cards; track card.id) {
-            <div class="card bg-base-100 shadow-xl">
-              <div class="card-body">
-                <h2 class="card-title">{{ card.title }}</h2>
-                <p>{{ card.description }}</p>
-              </div>
-            </div>
-          }
-        </div>
+      </div>
       }
-    }
+    </div>
+    } }
 
     <!-- Error State -->
     @if (liveViewCards.hasError()) {
-      <div class="alert alert-error">
-        <span>Error loading data: {{ liveViewCards.error() }}</span>
-      </div>
+    <div class="alert alert-error">
+      <span>Error loading data: {{ liveViewCards.error() }}</span>
+    </div>
     }
   `,
 })
@@ -108,7 +113,7 @@ userProfile = rxResource({
       catchError((error) => {
         console.error("Failed to load profile:", error);
         return throwError(() => error);
-      }),
+      })
     );
   },
 });
@@ -161,29 +166,29 @@ Angular 19 introduces new control flow syntax that replaces `*ngIf`, `*ngFor`, a
 @Component({
   template: `
     @if (user.role === "admin") {
-      <admin-dashboard />
+    <admin-dashboard />
     } @else if (user.role === "editor") {
-      <editor-dashboard />
+    <editor-dashboard />
     } @else {
-      <user-dashboard />
+    <user-dashboard />
     }
 
     <!-- With variable assignment -->
     @if (user.profile?.settings?.preferences; as prefs) {
-      <div>
-        <h3>User Preferences</h3>
-        <p>Theme: {{ prefs.theme }}</p>
-        <p>Language: {{ prefs.language }}</p>
-      </div>
+    <div>
+      <h3>User Preferences</h3>
+      <p>Theme: {{ prefs.theme }}</p>
+      <p>Language: {{ prefs.language }}</p>
+    </div>
     }
 
     <!-- Loading pattern -->
     @if (data.isLoading()) {
-      <div class="loading-spinner">Loading...</div>
+    <div class="loading-spinner">Loading...</div>
     } @else if (data.hasError()) {
-      <div class="error-message">{{ data.error() }}</div>
+    <div class="error-message">{{ data.error() }}</div>
     } @else {
-      <div class="content">{{ data.value() }}</div>
+    <div class="content">{{ data.value() }}</div>
     }
   `,
 })
@@ -203,43 +208,43 @@ export class DashboardComponent {
   template: `
     <!-- Basic for loop -->
     @for (item of items(); track item.id) {
-      <div class="item">
-        <h3>{{ item.name }}</h3>
-        <p>{{ item.description }}</p>
-      </div>
+    <div class="item">
+      <h3>{{ item.name }}</h3>
+      <p>{{ item.description }}</p>
+    </div>
     }
 
     <!-- With empty fallback -->
     @for (post of posts(); track post.id) {
-      <article class="post">
-        <h2>{{ post.title }}</h2>
-        <p>{{ post.content }}</p>
-        <small>Posted on {{ post.date | date }}</small>
-      </article>
+    <article class="post">
+      <h2>{{ post.title }}</h2>
+      <p>{{ post.content }}</p>
+      <small>Posted on {{ post.date | date }}</small>
+    </article>
     } @empty {
-      <div class="no-posts">
-        <p>No posts available yet.</p>
-        <button (click)="createFirstPost()">Create Your First Post</button>
-      </div>
+    <div class="no-posts">
+      <p>No posts available yet.</p>
+      <button (click)="createFirstPost()">Create Your First Post</button>
+    </div>
     }
 
     <!-- With contextual variables -->
     @for (user of users(); track user.id; let i = $index, isFirst = $first, isLast = $last) {
-      <div class="user-card" [class.first]="isFirst" [class.last]="isLast">
-        <span class="user-number">{{ i + 1 }}</span>
-        <h4>{{ user.name }}</h4>
-        <p>{{ user.email }}</p>
-      </div>
+    <div class="user-card" [class.first]="isFirst" [class.last]="isLast">
+      <span class="user-number">{{ i + 1 }}</span>
+      <h4>{{ user.name }}</h4>
+      <p>{{ user.email }}</p>
+    </div>
     }
 
     <!-- Nested loops with aliasing -->
     @for (category of categories(); track category.id; let categoryIndex = $index) {
-      <div class="category">
-        <h3>{{ category.name }}</h3>
-        @for (product of category.products; track product.id; let productIndex = $index) {
-          <div class="product">Category {{ categoryIndex + 1 }}, Product {{ productIndex + 1 }}: {{ product.name }}</div>
-        }
-      </div>
+    <div class="category">
+      <h3>{{ category.name }}</h3>
+      @for (product of category.products; track product.id; let productIndex = $index) {
+      <div class="product">Category {{ categoryIndex + 1 }}, Product {{ productIndex + 1 }}: {{ product.name }}</div>
+      }
+    </div>
     }
   `,
 })
@@ -273,47 +278,38 @@ export class ProductListComponent {
 ```typescript
 @Component({
   template: `
-    @switch (userPermission()) {
-      @case ("admin") {
-        <admin-panel>
-          <h2>Admin Dashboard</h2>
-          <button>Manage Users</button>
-          <button>System Settings</button>
-        </admin-panel>
-      }
-      @case ("editor") {
-        <editor-panel>
-          <h2>Content Editor</h2>
-          <button>Create Post</button>
-          <button>Edit Content</button>
-        </editor-panel>
-      }
-      @case ("viewer") {
-        <viewer-panel>
-          <h2>View Only</h2>
-          <p>You have read-only access</p>
-        </viewer-panel>
-      }
-      @default {
-        <div class="access-denied">
-          <h2>Access Denied</h2>
-          <p>Please contact your administrator</p>
-        </div>
-      }
-    }
+    @switch (userPermission()) { @case ("admin") {
+    <admin-panel>
+      <h2>Admin Dashboard</h2>
+      <button>Manage Users</button>
+      <button>System Settings</button>
+    </admin-panel>
+    } @case ("editor") {
+    <editor-panel>
+      <h2>Content Editor</h2>
+      <button>Create Post</button>
+      <button>Edit Content</button>
+    </editor-panel>
+    } @case ("viewer") {
+    <viewer-panel>
+      <h2>View Only</h2>
+      <p>You have read-only access</p>
+    </viewer-panel>
+    } @default {
+    <div class="access-denied">
+      <h2>Access Denied</h2>
+      <p>Please contact your administrator</p>
+    </div>
+    } }
 
     <!-- With complex expressions -->
-    @switch (getStatusLevel(order.status, order.priority)) {
-      @case ("critical") {
-        <div class="alert alert-error"><strong>Critical:</strong> Immediate attention required</div>
-      }
-      @case ("warning") {
-        <div class="alert alert-warning"><strong>Warning:</strong> Needs review</div>
-      }
-      @default {
-        <div class="alert alert-info">Status: {{ order.status }}</div>
-      }
-    }
+    @switch (getStatusLevel(order.status, order.priority)) { @case ("critical") {
+    <div class="alert alert-error"><strong>Critical:</strong> Immediate attention required</div>
+    } @case ("warning") {
+    <div class="alert alert-warning"><strong>Warning:</strong> Needs review</div>
+    } @default {
+    <div class="alert alert-info">Status: {{ order.status }}</div>
+    } }
   `,
 })
 export class PermissionComponent {
@@ -399,7 +395,7 @@ export class UserFormComponent {
   selector: "app-card-list",
   template: `
     @for (card of cards(); track card.id) {
-      <app-card [title]="card.title" [content]="card.content"> </app-card>
+    <app-card [title]="card.title" [content]="card.content"> </app-card>
     }
 
     <div class="card-summary">
@@ -457,9 +453,9 @@ export class CardComponent {
   template: `
     <div class="tab-headers">
       @for (tab of tabComponents(); track tab.id; let i = $index) {
-        <button class="tab-header" [class.active]="i === activeTabIndex()" (click)="selectTab(i)">
-          {{ tab.title }}
-        </button>
+      <button class="tab-header" [class.active]="i === activeTabIndex()" (click)="selectTab(i)">
+        {{ tab.title }}
+      </button>
       }
     </div>
 
@@ -638,7 +634,7 @@ export class ParentComponent {
         <label>Email:</label>
         <input type="email" [value]="email()" (input)="email.set($event.target.value)" [class.invalid]="!isEmailValid()" />
         @if (!isEmailValid() && email()) {
-          <span class="error">Please enter a valid email</span>
+        <span class="error">Please enter a valid email</span>
         }
       </div>
 
@@ -742,14 +738,14 @@ Computed signals derive reactive values from other signals and automatically upd
       <h2>Shopping Cart</h2>
 
       @for (item of items(); track item.id) {
-        <div class="cart-item">
-          <span>{{ item.name }}</span>
-          <span>\${{ item.price }}</span>
-          <span>Qty: {{ item.quantity }}</span>
-          <button (click)="updateQuantity(item.id, item.quantity + 1)">+</button>
-          <button (click)="updateQuantity(item.id, item.quantity - 1)">-</button>
-          <button (click)="removeItem(item.id)">Remove</button>
-        </div>
+      <div class="cart-item">
+        <span>{{ item.name }}</span>
+        <span>\${{ item.price }}</span>
+        <span>Qty: {{ item.quantity }}</span>
+        <button (click)="updateQuantity(item.id, item.quantity + 1)">+</button>
+        <button (click)="updateQuantity(item.id, item.quantity - 1)">-</button>
+        <button (click)="removeItem(item.id)">Remove</button>
+      </div>
       }
 
       <div class="cart-summary">
@@ -762,7 +758,7 @@ Computed signals derive reactive values from other signals and automatically upd
         <p>Average Item Price: \${{ averageItemPrice() }}</p>
 
         @if (hasDiscount()) {
-          <p class="discount">Discount Applied: -\${{ discountAmount() }}</p>
+        <p class="discount">Discount Applied: -\${{ discountAmount() }}</p>
         }
       </div>
 
@@ -893,13 +889,13 @@ export class ShoppingCartComponent {
           <h3>Statistics</h3>
           <p>Average: {{ averageValue() | number }}</p>
           <p>Peak: {{ peakValue() | number }}</p>
-          <p>Growth Rate: {{ growthRate() | number: "1.2-2" }}%</p>
+          <p>Growth Rate: {{ growthRate() | number : "1.2-2" }}%</p>
         </div>
 
         <div class="metric-card">
           <h3>Projections</h3>
           <p>Next Period: {{ projectedValue() | number }}</p>
-          <p>Confidence: {{ projectionConfidence() | number: "1.0-0" }}%</p>
+          <p>Confidence: {{ projectionConfidence() | number : "1.0-0" }}%</p>
         </div>
       </div>
 
@@ -914,11 +910,11 @@ export class ShoppingCartComponent {
         </thead>
         <tbody>
           @for (item of processedData(); track item.period) {
-            <tr>
-              <td>{{ item.period }}</td>
-              <td>{{ item.value | number }}</td>
-              <td [class]="item.changeClass">{{ item.change }}%</td>
-            </tr>
+          <tr>
+            <td>{{ item.period }}</td>
+            <td>{{ item.value | number }}</td>
+            <td [class]="item.changeClass">{{ item.change }}%</td>
+          </tr>
           }
         </tbody>
       </table>
@@ -1107,7 +1103,7 @@ Effects run side effects when their signal dependencies change. They're perfect 
           <input type="checkbox" [checked]="autoSave()" (change)="autoSave.set($event.target.checked)" />
         </label>
         @if (autoSave()) {
-          <p class="auto-save-status">{{ saveStatus() }}</p>
+        <p class="auto-save-status">{{ saveStatus() }}</p>
         }
       </div>
 
@@ -1248,10 +1244,10 @@ export class UserSettingsComponent {
         <h3>Sync Log</h3>
         <div class="log-entries">
           @for (entry of syncLog(); track entry.timestamp) {
-            <div class="log-entry" [class]="entry.type">
-              <span class="timestamp">{{ entry.timestamp | date: "short" }}</span>
-              <span class="message">{{ entry.message }}</span>
-            </div>
+          <div class="log-entry" [class]="entry.type">
+            <span class="timestamp">{{ entry.timestamp | date : "short" }}</span>
+            <span class="message">{{ entry.message }}</span>
+          </div>
           }
         </div>
       </div>
@@ -1467,10 +1463,10 @@ export class DataSyncComponent {
         <h3>Messages</h3>
         <div class="message-list">
           @for (message of messages(); track message.id) {
-            <div class="message" [class]="message.type">
-              <span class="time">{{ message.timestamp | date: "HH:mm:ss" }}</span>
-              <span class="content">{{ message.content }}</span>
-            </div>
+          <div class="message" [class]="message.type">
+            <span class="time">{{ message.timestamp | date : "HH:mm:ss" }}</span>
+            <span class="content">{{ message.content }}</span>
+          </div>
           }
         </div>
       </div>
@@ -1657,10 +1653,10 @@ export class DataComponent implements OnInit, OnDestroy {
             catchError((error) => {
               this.error = error.message;
               return of([]);
-            }),
+            })
           );
         }),
-        takeUntil(this.destroy$),
+        takeUntil(this.destroy$)
       )
       .subscribe((data) => {
         this.loading = false;

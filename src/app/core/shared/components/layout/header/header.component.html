@@ -1,5 +1,5 @@
 <app-header-banner class="p-1 bg-secondary text-white text-xs m-0" domElement #banner="domElement" />
-<header #header class="navbar bg-primary text-white">
+<header #header class="navbar bg-primary text-white relative">
   <div class="navbar-start">
     <div class="md:hidden">
       <label class="swap swap-rotate">
@@ -136,12 +136,14 @@
 
     </div>
   </div>
+  @if (loadingService.isLoading() ) {
+  <div class="absolute left-0 right-0 bottom-0">
+    <mat-progress-bar mode="indeterminate" class="text-secondary" />
+  </div>
+  }
 </header>
 @let topSpace = (header?.clientHeight ?? 0) + (banner?.element?.nativeElement?.clientHeight ?? 0);
 <div (window:resize)="0" class="fixed left-0 right-0 bottom-0 transition-all  overflow-hidden bg-white z-50"
   [ngStyle]="{'top.px': topSpace, 'height': menuCollapse() ? 'calc(100% - '+topSpace+'px)' : '0'}">
   <header-nav-menu class="h-full" />
 </div>
-@if (loadingService.isLoading()) {
-<mat-progress-bar mode="indeterminate" class="text-secondary absolute"></mat-progress-bar>
-}

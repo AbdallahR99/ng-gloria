@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   inject,
   input,
   signal,
@@ -29,6 +30,15 @@ export class ProductDetailsComponent {
   selectedColor = signal('');
   selectedSize = signal('');
   imagePath = environment.supabaseImages;
+
+  init = effect(() => {
+    if (this.product().colors && (this.product().colors?.length ?? 0) > 0) {
+      this.selectedColor.set(this.product().colors?.[0].name ?? '');
+    }
+    if (this.product().sizes && (this.product().sizes?.length ?? 0) > 0) {
+      this.selectedSize.set(this.product().sizes?.[0] ?? '');
+    }
+  });
 
   currentImageIndex = signal(0);
 
@@ -121,6 +131,4 @@ export class ProductDetailsComponent {
 
     window.open(whatsappUrl, '_blank');
   }
-
-  constructor() {}
 }

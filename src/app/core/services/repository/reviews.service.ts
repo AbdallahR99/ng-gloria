@@ -13,9 +13,8 @@ export class ReviewsService {
       queryParams: { slug },
     });
   }
-
   getRatingDistribution(slug: string) {
-    return this.fn.callFunction<RatingDistribution[]>(
+    return this.fn.callFunction<RatingDistribution>(
       `${this.endpoint}/rating-distribution`,
       {
         method: 'GET',
