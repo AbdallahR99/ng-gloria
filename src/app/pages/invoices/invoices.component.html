@@ -244,14 +244,14 @@
           </td>
           <td>
             <div class="flex gap-2">
-              <a [routerLink]="[routes.Invoices, 'view', invoice.invoiceCode]" class="btn btn-ghost btn-sm"
+              <a [routerLink]="[routes.Invoices, invoice.invoiceCode]" class="btn btn-ghost btn-sm"
                 [title]="'View Invoice' | translate">
                 <mat-icon fontIcon="visibility" />
               </a>
-              <a [routerLink]="[routes.Invoices, 'edit', invoice.invoiceCode]" class="btn btn-ghost btn-sm"
+              <!-- <a [routerLink]="[routes.Invoices, 'edit', invoice.invoiceCode]" class="btn btn-ghost btn-sm"
                 [title]="'Edit Invoice' | translate">
                 <mat-icon fontIcon="edit" />
-              </a>
+              </a> -->
             </div>
           </td>
         </tr>
