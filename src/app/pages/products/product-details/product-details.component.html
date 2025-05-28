@@ -15,9 +15,9 @@
         <span class="font-medium">
           {{productName}}
         </span>
-        <button class="btn btn-link btn-sm px-1 hover:text-secondary ">
-          <mat-icon class="scale-75" svgIcon="heart" />
-        </button>
+        <fav-button class="btn btn-link btn-sm px-1 hover:text-secondary " [product]="product()" />
+
+
       </div>
 
       <div class="flex m-auto ">
@@ -128,17 +128,24 @@
 
       </div>
 
-      <div class="flex flex-wrap gap-5 max-w-85">
-        <button class="btn flex-1 border-1 btn-outline btn-primary shadow-sm">
-          <mat-icon class="scale-65" svgIcon="cart" />
+      <div class="flex flex-col">
+        <div class="grid grid-cols-2 gap-5 max-w-85">
+          <cart-button [fitHeight]="true" [product]="product()"
+            [className]="'btn flex-1 border-1 btn-outline btn-primary shadow-sm'" />
+
+          <a [routerLink]="[routes.CheckoutDirect, product().slug]"
+            [queryParams]="{color: selectedColor() ? selectedColor() : undefined, size: selectedSize() ? selectedSize() : undefined}"
+            class="btn flex-1 btn-primary text-white">
+            {{"Buy Now" | translate}}
+          </a>
+
+        </div>
+        <a (click)="sendWhatsAppMessage()" class="link link-primary link-hover text-xs flex items-center">
           <span>
-            {{"Add to Cart" | translate}}
+            {{"Or Order via WhatsApp" | translate}}
           </span>
-        </button>
-        <a [routerLink]="[routes.CheckoutDirect, product().slug]"
-          [queryParams]="{color: selectedColor() ? selectedColor() : undefined, size: selectedSize() ? selectedSize() : undefined}"
-          class="btn flex-1 btn-primary text-white">
-          {{"Buy Now" | translate}}
+          <mat-icon class="scale-75" svgIcon="whatsapp" />
+
         </a>
 
       </div>
@@ -279,9 +286,35 @@
       </div>
       }
       }
-      <button class="btn btn-block btn-primary text-white">
+      @if (bundle.id; as bundleId) {
+
+      @if (bundle.inCart || isBundleInCart()) {
+      <a [routerLink]="routes.Cart"
+        class="btn btn-ghost bg-neutral-content font-normal btn-sm mt-2 text-primary flex items-center gap-1 shadow-none hover:text-secondary">
+        <mat-icon class="scale-65" fontIcon="check" />
+        <span>
+          {{"In Cart" | translate}}
+        </span>
+      </a>
+      } @else {
+      <button (click)="addBundleToCart(bundleId)" [disabled]="isAddingBundleToCart()"
+        class="btn btn-block btn-primary text-white">
+
+        @if (isAddingBundleToCart()) {
+        <span class="loading loading-spinner loading-primary loading-sm"></span>
+        } @else {
         {{isEn ? "Total AED" : "الإجمالي بالدرهم"}}
-        {{bundle.price}}</button>
+        {{bundle.price}}
+        }
+
+
+
+      </button>
+
+      }
+
+      }
+
     </div>
   </div>
 </section>

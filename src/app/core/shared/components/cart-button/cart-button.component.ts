@@ -29,9 +29,10 @@ export class CartButtonComponent {
   product = input.required<Product>();
   color = input<string | undefined>(undefined);
   size = input<string | undefined>(undefined);
+  customText = input<string | undefined>(undefined);
   isLoading = signal<boolean>(false);
   isAddedManually = signal<boolean>(false); // To track if the product was added manually
-
+  fitHeight = input<boolean>(false);
   isAddedToCart = computed(
     () => this.isAddedManually() || this.product().inCart
   );

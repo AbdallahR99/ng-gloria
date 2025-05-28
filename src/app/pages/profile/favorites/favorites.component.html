@@ -82,12 +82,12 @@
         <a [routerLink]="[routes.PRODUCT_DETAILS, item.slug]" class="absolute inset-0 z-0"></a>
       </figure>
 
-      <div class="card-body p-3">
+      <div class="card-body px-3 py-2">
         <!-- Product Name -->
-        <h4 class="text-sm font-medium mb-2 line-clamp-2 min-h-[2.5rem]">{{name}}</h4>
+        <h4 class="text-sm font-medium line-clamp-2 min-h-[2.5rem]">{{name}}</h4>
 
         <!-- Rating -->
-        <div class="flex items-center gap-1 mb-2">
+        <div class="flex items-center gap-1">
           @for (star of [1, 2, 3, 4, 5]; track star) {
           <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" [class.text-yellow-400]="star <= item.stars"
             [class.text-gray-300]="star > item.stars" viewBox="0 0 20 20" fill="currentColor">
@@ -99,7 +99,7 @@
         </div>
 
         <!-- Price and Availability -->
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center gap-2">
           @if (item.quantity === 0) {
           <div class="flex items-center gap-1 text-error">
             <div class="badge badge-error badge-xs h-2 w-2"></div>
@@ -114,12 +114,12 @@
           </div>
           }
 
-          <!-- Cart Button -->
-          <div class="flex items-center gap-1">
-            <cart-button [product]="item" className="btn btn-primary btn-xs" (click)="$event.stopPropagation()">
-            </cart-button>
-          </div>
+
+
         </div>
+        <!-- Cart Button -->
+        <cart-button [product]="item" class="w-full" className="btn btn-primary btn-xs btn-block w-full"
+          (click)="$event.stopPropagation(); $event.preventDefault()" />
       </div>
     </div>
     }

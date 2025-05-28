@@ -12,12 +12,13 @@ import { ProductQuery } from '@app/core/services/repository/products.service';
 import { CategoriesService } from '@app/core/services/repository/categories.service';
 import { FacadeService } from '@app/core/services/facade-service.service';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { c } from 'node_modules/@angular/material/icon-module.d-sA1hmRKS';
 import { environment } from '@environments/environment';
+import { FavButtonComponent } from '@app/core/shared/components/fav-button/fav-button.component';
+import { CartButtonComponent } from '@app/core/shared/components/cart-button/cart-button.component';
 
 @Component({
   selector: 'app-products',
-  imports: [SHARED_MODULES],
+  imports: [SHARED_MODULES, FavButtonComponent, CartButtonComponent],
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

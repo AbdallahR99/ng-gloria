@@ -11,6 +11,8 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { APP_ROUTES } from '@app/core/constants/app-routes.enum';
 import { Product } from '@app/core/models/product.model';
 import { FacadeService } from '@app/core/services/facade-service.service';
+import { CartButtonComponent } from '@app/core/shared/components/cart-button/cart-button.component';
+import { FavButtonComponent } from '@app/core/shared/components/fav-button/fav-button.component';
 
 import { SHARED_MODULES } from '@app/core/shared/modules/shared.module';
 import { environment } from '@environments/environment';
@@ -18,7 +20,7 @@ import { of } from 'rxjs';
 
 @Component({
   selector: 'app-product-details',
-  imports: [SHARED_MODULES],
+  imports: [SHARED_MODULES, FavButtonComponent, CartButtonComponent],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

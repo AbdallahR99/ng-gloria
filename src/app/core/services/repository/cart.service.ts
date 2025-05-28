@@ -111,10 +111,12 @@ export class CartService {
   }
 
   addBundle(bundleId: string, userId?: string) {
-    return this.fn.callFunction(`${this.endpoint}/add-bundle`, {
-      method: 'POST',
-      body: { bundleId, ...(userId ? { bundleId } : {}) },
-    });
+    return this.fn
+      .callFunction(`${this.endpoint}/bundle`, {
+        method: 'POST',
+        body: { bundleId, ...(userId ? { bundleId } : {}) },
+      })
+      .pipe(tap(() => this.updateCartCount()));
   }
 
   updateCartCount() {
