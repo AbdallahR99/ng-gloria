@@ -10,7 +10,7 @@ export const directCheckoutProductResolver: ResolveFn<
   const facadeService = inject(FacadeService);
   const router = inject(Router);
 
-  const slug = route.paramMap.get('slug');
+  const slug = route.paramMap.get('productSlug');
   if (slug) {
     return facadeService.productsService.getBySlug(slug);
   }

@@ -15,7 +15,7 @@ export const productDetailsResolver: ResolveFn<
   const meta = inject(Meta);
   const title = inject(Title);
 
-  const slug = route.paramMap.get('productSlug');
+  const slug = route.paramMap.get('slug');
   if (slug) {
     return facadeService.productsService.getBySlug(slug).pipe(
       map((product) => {
