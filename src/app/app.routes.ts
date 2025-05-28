@@ -24,6 +24,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: APP_ROUTES.Services.substring(1),
+    loadComponent: () =>
+      import('./pages/g-services/g-services.component').then(
+        (m) => m.GServicesComponent
+      ),
+  },
+  {
     path: APP_ROUTES.About.substring(1),
     loadComponent: () =>
       import('./pages/about-us/about-us.component').then(

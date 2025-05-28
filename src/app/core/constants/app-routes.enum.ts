@@ -42,5 +42,7 @@ export enum APP_ROUTES {
   ProfileAddresses = '/profile/addresses',
   ProfileFavorites = '/profile/favorites',
 
+  Services = '/services',
+
   NOT_FOUND = '**',
 }
