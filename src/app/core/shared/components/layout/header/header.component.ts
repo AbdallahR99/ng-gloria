@@ -48,7 +48,7 @@ export class HeaderComponent {
   navItems: { name: string; route: string }[] = [
     { name: 'Home', route: APP_ROUTES.HOME },
     { name: 'Shop', route: APP_ROUTES.PRODUCTS },
-    { name: 'Services', route: APP_ROUTES.BLOGS },
+    { name: 'Services', route: APP_ROUTES.Services },
   ];
   setLang(lang: 'en' | 'ar') {
     this.TranslatorService.setCurrentLang(lang);

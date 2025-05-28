@@ -17,6 +17,6 @@ export class HeaderNavMenuComponent {
     { name: `Women's Perfume`, route: APP_ROUTES.WOMEN_PERFUME },
     { name: `Skin Care`, route: APP_ROUTES.SKIN_CARE },
     { name: `Hair Care`, route: APP_ROUTES.HAIR_CARE },
-    { name: `Blogs`, route: APP_ROUTES.BLOGS },
+    { name: `Services`, route: APP_ROUTES.Services },
   ];
 }
