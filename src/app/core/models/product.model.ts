@@ -12,7 +12,7 @@ export interface Product {
   metaTitleAr?: string; // Meta title in Arabic
   metaDescriptionEn?: string; // Meta description in English
   metaDescriptionAr?: string; // Meta description in Arabic
-
+  sku?: string;
   stars: number;
   reviews: number;
   price: number;

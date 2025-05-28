@@ -12,6 +12,7 @@ import { FavoritesService } from './repository/favorites.service';
 import { BundlesService } from './repository/bundles.service';
 import { AuthService } from './repository/auth.service';
 import { AddressesService } from './repository/addresses.service';
+import { InvoicesService } from './repository/invoices.service';
 
 @Injectable({
   providedIn: 'root',
@@ -32,6 +33,7 @@ export class FacadeService {
   private _bundlesService?: BundlesService;
   private _authService?: AuthService;
   private _addressesService?: AddressesService;
+  private _invoicesService?: InvoicesService;
 
   get translatorService() {
     if (!this._translatorService) {
@@ -116,11 +118,17 @@ export class FacadeService {
     }
     return this._authService;
   }
-
   get addressesService() {
     if (!this._addressesService) {
       this._addressesService = this.inject.get(AddressesService);
     }
     return this._addressesService;
+  }
+
+  get invoicesService() {
+    if (!this._invoicesService) {
+      this._invoicesService = this.inject.get(InvoicesService);
+    }
+    return this._invoicesService;
   }
 }

@@ -1,0 +1,263 @@
+<!-- Create Invoice Template -->
+<div class="container mx-auto p-4">
+  <!-- Header -->
+  <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
+    <div>
+      <button class="btn btn-ghost btn-sm mb-2" (click)="goBack()">
+        <mat-icon fontIcon="arrow_back" />
+        {{ "Back to Invoices" | translate }}
+      </button>
+      <h1 class="text-3xl font-bold text-base-content">
+        {{ "Create New Invoice" | translate }}
+      </h1>
+      <p class="text-base-content/70">
+        {{ "Fill in the details to create a new invoice" | translate }}
+      </p>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-2 mt-4 lg:mt-0">
+      <button class="btn btn-outline" (click)="clearForm()">
+        <mat-icon fontIcon="clear" />
+        {{ "Clear Form" | translate }}
+      </button>
+      <button class="btn btn-primary" [disabled]="!isFormValid() || isSubmitting()" (click)="onSubmit()">
+        @if (isSubmitting()) {
+        <span class="loading loading-spinner loading-sm"></span>
+        } @else {
+        <mat-icon fontIcon="save" />
+        }
+        {{ "Create Invoice" | translate }}
+      </button>
+    </div>
+  </div>
+
+  <form (ngSubmit)="onSubmit()" class="space-y-6">
+    <!-- Customer Information -->
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body">
+        <h2 class="card-title">
+          <mat-icon fontIcon="person" />
+          {{ "Customer Information" | translate }}
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- User Email -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">{{ "User Email" | translate }} *</span>
+            </label>
+            <input type="email" class="input input-bordered" [placeholder]="'Enter customer email' | translate"
+              name="userEmail" [(ngModel)]="userEmail" required />
+          </div>
+
+          <!-- Customer Name -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">{{ "Customer Name" | translate }}</span>
+            </label>
+            <input type="text" class="input input-bordered" [placeholder]="'Enter customer name' | translate"
+              [(ngModel)]="customerName" name="customerName" />
+          </div>
+
+          <!-- Customer Phone -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">{{ "Customer Phone" | translate }}</span>
+            </label>
+            <input type="tel" class="input input-bordered" [placeholder]="'Enter phone number' | translate"
+              [(ngModel)]="customerPhone" name="customerPhone" />
+          </div>
+
+          <!-- Order ID -->
+          <!-- <div class="form-control">
+            <label class="label">
+              <span class="label-text">{{ "Related Order ID" | translate }}</span>
+            </label>
+            <input type="text" class="input input-bordered" [placeholder]="'Enter order ID (optional)' | translate"
+              [value]="orderId() || ''" (input)="orderId.set($event.target.value || null)" />
+          </div> -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Products Section -->
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body">
+        <h2 class="card-title">
+          <mat-icon fontIcon="inventory" />
+          {{ "Products" | translate }}
+        </h2>
+
+        <!-- Product Search -->
+        <div class="form-control mb-4">
+          <label class="label">
+            <span class="label-text">{{ "Search Products" | translate }}</span>
+          </label>
+          <div class="dropdown dropdown-open w-full">
+            <input type="text" class="input input-bordered w-full" #productSearchInput
+              [placeholder]="'Search for products to add' | translate" [(ngModel)]="searchQuery"
+              [ngModelOptions]="{standalone: true}" />
+
+            @if (productSearch.hasValue() && (searchQuery() ?? '').length >= 2) {
+            <ul class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-full mt-1">
+              @if ((productSearch.value().data ?? []).length === 0) {
+              <li><span class="text-base-content/50">{{ "No products found" | translate }}</span></li>
+              } @else {
+              @for (product of productSearch.value().data; track product.id) {
+              <li>
+                <a (click)="addProduct(product)" class="flex items-center gap-3">
+                  @if (product.thumbnail) {
+                  <img [src]="imagePath + product.thumbnail" [alt]="product.nameEn" class="w-10 h-10 rounded" />
+                  }
+                  <div class="flex-1">
+                    <div class="font-medium">{{ product.nameEn }}</div>
+                    <div class="text-sm opacity-70">{{ product.price | currency:'USD':'symbol':'1.2-2' }}</div>
+                  </div>
+                </a>
+              </li>
+              }
+              }
+            </ul>
+            }
+          </div>
+        </div>
+
+        <!-- Selected Products -->
+        @if ((products()?? []).length > 0) {
+        <div class="overflow-x-auto">
+          <table class="table table-zebra">
+            <thead>
+              <tr>
+                <th>{{ "Product" | translate }}</th>
+                <th class="text-center">{{ "Quantity" | translate }}</th>
+                <th class="text-right">{{ "Unit Price" | translate }}</th>
+                <th class="text-right">{{ "Total" | translate }}</th>
+                <th class="text-center">{{ "Actions" | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (product of products(); track product.sku; let i = $index) {
+              <tr>
+                <td>
+                  <div class="flex items-center space-x-3">
+                    <!-- @if (product.productImage) {
+                    <div class="avatar">
+                      <div class="mask mask-squircle w-12 h-12">
+                        <img [src]="product.productImage" [alt]="product.productName" />
+                      </div>
+                    </div>
+                    } -->
+                    <div>
+                      <div class="font-bold">{{ product.name }}</div>
+
+                    </div>
+                  </div>
+                </td>
+                <td class="text-center">
+                  <input type="number" class="input input-bordered input-sm w-20 text-center" min="1"
+                    [value]="product.quantity" #quantityInput
+                    (input)="updateProductQuantity(i, +quantityInput.value)" />
+                </td>
+                <td class="text-right">
+                  {{ product.price | currency:'USD':'symbol':'1.2-2' }}
+                </td>
+                <td class="text-right font-medium">
+                  {{ (product.price * product.quantity) | currency:'USD':'symbol':'1.2-2' }}
+                </td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-sm btn-error" (click)="removeProduct(i)">
+                    <mat-icon fontIcon="delete" />
+                  </button>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        } @else {
+        <div class="text-center py-8 text-base-content/50">
+          <mat-icon fontIcon="inventory_2" class="text-4xl mb-2" />
+          <p>{{ "No products added yet" | translate }}</p>
+          <p class="text-sm">{{ "Search and add products above" | translate }}</p>
+        </div>
+        }
+      </div>
+    </div>
+
+    <!-- Financial Details -->
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body">
+        <h2 class="card-title">
+          <mat-icon fontIcon="calculate" />
+          {{ "Financial Details" | translate }}
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Left side - Adjustments -->
+          <div class="space-y-4">
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">{{ "Discount" | translate }}</span>
+              </label>
+              <input type="number" class="input input-bordered" min="0" step="0.01"
+                [placeholder]="'Enter discount amount' | translate" #dicountAmountInput [value]="discount()"
+                (input)="discount.set(+dicountAmountInput.value)" />
+            </div>
+
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">{{ "Delivery Fees" | translate }}</span>
+              </label>
+              <input type="number" class="input input-bordered" min="0" step="0.01"
+                [placeholder]="'Enter delivery fees' | translate" #deliveryFeesInput [value]="deliveryFees()"
+                (input)="deliveryFees.set(+deliveryFeesInput.value)" />
+            </div>
+          </div>
+
+          <!-- Right side - Summary -->
+          <div class="space-y-3">
+            <div class="flex justify-between">
+              <span>{{ "Subtotal" | translate }}:</span>
+              <span>{{ subtotal() | currency:'USD':'symbol':'1.2-2' }}</span>
+            </div>
+
+            @if (discount() > 0) {
+            <div class="flex justify-between text-success">
+              <span>{{ "Discount" | translate }}:</span>
+              <span>-{{ discount() | currency:'USD':'symbol':'1.2-2' }}</span>
+            </div>
+            }
+
+            @if (deliveryFees() > 0) {
+            <div class="flex justify-between">
+              <span>{{ "Delivery Fees" | translate }}:</span>
+              <span>{{ deliveryFees() | currency:'USD':'symbol':'1.2-2' }}</span>
+            </div>
+            }
+
+            <div class="divider"></div>
+            <div class="flex justify-between text-lg font-bold">
+              <span>{{ "Total" | translate }}:</span>
+              <span>{{ total() | currency:'USD':'symbol':'1.2-2' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional Notes -->
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body">
+        <h2 class="card-title">
+          <mat-icon fontIcon="notes" />
+          {{ "Additional Notes" | translate }}
+        </h2>
+
+        <div class="form-control">
+          <textarea class="textarea textarea-bordered h-24" #notesInput
+            [placeholder]="'Enter any additional notes for this invoice' | translate" [value]="notes()"
+            (input)="notes.set(notesInput.value)"></textarea>
+        </div>
+      </div>
+    </div>
+  </form>

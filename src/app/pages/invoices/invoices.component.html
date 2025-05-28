@@ -1,0 +1,308 @@
+<div class="container mx-auto p-4">
+  <!-- Header -->
+  <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
+    <div>
+      <h1 class="text-3xl font-bold text-base-content mb-2">
+        {{ "Invoices Management" | translate }}
+      </h1>
+      <p class="text-base-content/70">
+        {{ "Manage and track all invoices" | translate }}
+      </p>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-2 mt-4 lg:mt-0">
+      <a [routerLink]="routes.InvoicesCreate" class="btn btn-primary">
+        <mat-icon fontIcon="add" />
+        {{ "Create Invoice" | translate }}
+      </a>
+      <button class="btn btn-outline" (click)="clearFilters()">
+        <mat-icon fontIcon="filter_alt_off" />
+        {{ "Clear Filters" | translate }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="card bg-base-100 shadow-xl mb-6">
+    <div class="card-body">
+      <div class="collapse collapse-arrow">
+        <input type="checkbox" class="peer" />
+        <div class="collapse-title text-lg font-medium">
+          {{ "Filters" | translate }}
+        </div>
+        <div class="collapse-content">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <!-- User Email Filter -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">{{ "User Email" | translate }}</span>
+              </label>
+              <input type="email" class="input input-bordered" [placeholder]="'Search by email' | translate"
+                [value]="userEmailFilter()" (input)="onUserEmailFilterChange($any($event.target).value)" />
+            </div>
+
+            <!-- Invoice Code Filter -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">{{ "Invoice Code" | translate }}</span>
+              </label>
+              <input type="text" class="input input-bordered" [placeholder]="'Search by code' | translate"
+                [value]="invoiceCodeFilter()" (input)="onInvoiceCodeFilterChange($any($event.target).value)" />
+            </div>
+
+            <!-- Date From Filter -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">{{ "Date From" | translate }}</span>
+              </label>
+              <input type="date" class="input input-bordered" [value]="dateFromFilter()"
+                (input)="onDateFromFilterChange($any($event.target).value)" />
+            </div>
+
+            <!-- Date To Filter -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">{{ "Date To" | translate }}</span>
+              </label>
+              <input type="date" class="input input-bordered" [value]="dateToFilter()"
+                (input)="onDateToFilterChange($any($event.target).value)" />
+            </div>
+
+            <!-- Min Total Filter -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">{{ "Min Total" | translate }}</span>
+              </label>
+              <input type="number" class="input input-bordered" [placeholder]="'Minimum amount' | translate"
+                [value]="minTotalFilter() || ''" (input)="onMinTotalFilterChange($any($event.target).value)" />
+            </div>
+
+            <!-- Max Total Filter -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">{{ "Max Total" | translate }}</span>
+              </label>
+              <input type="number" class="input input-bordered" [placeholder]="'Maximum amount' | translate"
+                [value]="maxTotalFilter() || ''" (input)="onMaxTotalFilterChange($any($event.target).value)" />
+            </div>
+
+            <!-- Sort By -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">{{ "Sort By" | translate }}</span>
+              </label>
+              <select class="select select-bordered" [value]="sortBy()"
+                (change)="onSortChange($any($event.target).value)">
+                @for (option of sortOptions; track option.value) {
+                <option [value]="option.value">{{ option.label | translate }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Sort Order -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">{{ "Sort Order" | translate }}</span>
+              </label>
+              <button class="btn btn-outline" (click)="onSortOrderChange()">
+                <mat-icon [fontIcon]="sortOrder() === 'asc' ? 'arrow_upward' : 'arrow_downward'" />
+                {{ sortOrder() === 'asc' ? ('Ascending' | translate) : ('Descending' | translate) }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (invoices.isLoading()) {
+  <div class="flex justify-center items-center py-20">
+    <span class="loading loading-spinner loading-lg text-primary"></span>
+  </div>
+  }
+
+  <!-- Error State -->
+  @if (invoices.error()) {
+  <div class="alert alert-error mb-6">
+    <mat-icon fontIcon="error" />
+    <span>{{ "Error loading invoices" | translate }}: {{ invoices.error() }}</span>
+  </div>
+  }
+
+  <!-- Results Info -->
+  @if (invoices.value()) {
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
+    <div class="stats stats-horizontal shadow-sm bg-base-200">
+      <div class="stat">
+        <div class="stat-title">{{ "Total Invoices" | translate }}</div>
+        <div class="stat-value text-sm">{{ invoices.value()?.total || 0 }}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-title">{{ "Showing" | translate }}</div>
+        <div class="stat-value text-sm">{{ results() }}</div>
+      </div>
+    </div>
+
+    <!-- Page Size Selector -->
+    <div class="form-control mt-4 sm:mt-0">
+      <label class="label">
+        <span class="label-text">{{ "Items per page" | translate }}</span>
+      </label>
+      <select class="select select-bordered select-sm" [value]="pageSize()"
+        (change)="onPageSizeChange(+$any($event.target).value)">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+      </select>
+    </div>
+  </div>
+  }
+
+  <!-- Invoices Table -->
+  @if (invoices.value(); as invoicesData) {
+  @if (invoicesData?.items && invoicesData.items.length > 0) {
+  <div class="overflow-x-auto">
+    <table class="table table-zebra w-full">
+      <thead>
+        <tr>
+          <th>{{ "Invoice Code" | translate }}</th>
+          <th>{{ "User" | translate }}</th>
+          <th>{{ "Products" | translate }}</th>
+          <th>{{ "Total" | translate }}</th>
+          <th>{{ "Created" | translate }}</th>
+          <th>{{ "Actions" | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (invoice of invoicesData.items; track invoice.id) {
+        <tr class="hover">
+          <td>
+            <div class="font-mono font-semibold">{{ invoice.invoiceCode }}</div>
+            @if (invoice.orderCode) {
+            <div class="text-xs opacity-70">
+              {{ "Order" | translate }}: {{ invoice.orderCode }}
+            </div>
+            }
+          </td>
+          <td>
+            <div class="flex flex-col">
+              @if (invoice.userName) {
+              <div class="font-semibold">{{ invoice.userName }}</div>
+              }
+              @if (invoice.userEmail) {
+              <div class="text-sm opacity-70">{{ invoice.userEmail }}</div>
+              }
+              @if (invoice.userPhone) {
+              <div class="text-sm opacity-70">{{ invoice.userPhone }}</div>
+              }
+            </div>
+          </td>
+          <td>
+            <div class="flex flex-col">
+              <div class="font-semibold">
+                {{ getTotalProductsCount(invoice) }} {{ "items" | translate }}
+              </div>
+              @if (invoice.products && invoice.products.length > 0) {
+              <div class="text-sm opacity-70">
+                {{ invoice.products[0].name }}
+                @if (invoice.products.length > 1) {
+                {{ "and" | translate }} {{ invoice.products.length - 1 }} {{ "more" | translate }}
+                }
+              </div>
+              }
+            </div>
+          </td>
+          <td>
+            <div class="flex flex-col">
+              <div class="font-bold text-lg">{{ formatCurrency(invoice.totalPrice) }}</div>
+              @if (invoice.subtotal) {
+              <div class="text-sm opacity-70">
+                {{ "Subtotal" | translate }}: {{ formatCurrency(invoice.subtotal) }}
+              </div>
+              }
+              @if (invoice.discount && invoice.discount > 0) {
+              <div class="text-sm text-success">
+                {{ "Discount" | translate }}: -{{ formatCurrency(invoice.discount) }}
+              </div>
+              }
+              @if (invoice.deliveryFees && invoice.deliveryFees > 0) {
+              <div class="text-sm opacity-70">
+                {{ "Delivery" | translate }}: {{ formatCurrency(invoice.deliveryFees) }}
+              </div>
+              }
+            </div>
+          </td>
+          <td>
+            <div class="text-sm">{{ formatDate(invoice.createdAt) }}</div>
+            @if (invoice.updatedAt && invoice.updatedAt !== invoice.createdAt) {
+            <div class="text-xs opacity-70">
+              {{ "Updated" | translate }}: {{ formatDate(invoice.updatedAt) }}
+            </div>
+            }
+          </td>
+          <td>
+            <div class="flex gap-2">
+              <a [routerLink]="[routes.Invoices, 'view', invoice.invoiceCode]" class="btn btn-ghost btn-sm"
+                [title]="'View Invoice' | translate">
+                <mat-icon fontIcon="visibility" />
+              </a>
+              <a [routerLink]="[routes.Invoices, 'edit', invoice.invoiceCode]" class="btn btn-ghost btn-sm"
+                [title]="'Edit Invoice' | translate">
+                <mat-icon fontIcon="edit" />
+              </a>
+            </div>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  @if ((invoicesData.totalPages || 0) > 1) {
+  <div class="flex justify-center mt-6">
+    <div class="join">
+      <!-- Previous button -->
+      <button class="join-item btn" [disabled]="currentPage() <= 1" (click)="onPageChange(currentPage() - 1)">
+        <mat-icon fontIcon="chevron_left" />
+      </button>
+
+      <!-- Page numbers -->
+      @for (page of getVisiblePages(); track page) {
+      @if (page === -1) {
+      <span class="join-item btn btn-disabled">...</span>
+      } @else {
+      <button class="join-item btn" [class.btn-active]="page === currentPage()" (click)="onPageChange(page)">
+        {{ page }}
+      </button>
+      }
+      }
+
+      <!-- Next button -->
+      <button class="join-item btn" [disabled]="currentPage() >= (invoicesData.totalPages || 1)"
+        (click)="onPageChange(currentPage() + 1)">
+        <mat-icon fontIcon="chevron_right" />
+      </button>
+    </div>
+  </div>
+  }
+  } @else {
+  <!-- Empty State -->
+  <div class="text-center py-20">
+    <div class="flex flex-col items-center gap-4">
+      <mat-icon fontIcon="receipt_long" class="text-6xl opacity-50" />
+      <h3 class="text-xl font-semibold">{{ "No invoices found" | translate }}</h3>
+      <p class="text-base-content/70">
+        {{ "Try adjusting your filters or create a new invoice" | translate }}
+      </p>
+      <a [routerLink]="routes.InvoicesCreate" class="btn btn-primary">
+        <mat-icon fontIcon="add" />
+        {{ "Create Invoice" | translate }}
+      </a>
+    </div>
+  </div>
+  }
+  }
+</div>

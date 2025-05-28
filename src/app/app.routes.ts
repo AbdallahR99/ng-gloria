@@ -8,6 +8,7 @@ import { checkoutAddressResolver } from './pages/checkout/checkout.address.resol
 import { checkoutItemsResolver } from './pages/checkout/checkout-items.resolver';
 import { checkoutSummaryResolver } from './pages/checkout/checkout-summary.resolver';
 import { orderDetailsResolver } from './pages/orders/order-details/order-details.resolver';
+import { invoiceViewResolver } from './pages/invoices/invoice-view/invoice-view.resolver';
 import { directCheckoutProductResolver } from './pages/direct-checkout/direct-checkout-product.resolver';
 
 export const routes: Routes = [
@@ -121,6 +122,37 @@ export const routes: Routes = [
     resolve: {
       order: orderDetailsResolver,
     },
+  },
+  {
+    title: 'Invoices',
+    canActivate: [authGuard],
+    path: APP_ROUTES.Invoices.substring(1),
+
+    loadComponent: () =>
+      import('./pages/invoices/invoices.component').then(
+        (m) => m.InvoicesComponent
+      ),
+  },
+  {
+    title: 'Invoice Details',
+    canActivate: [authGuard],
+    path: `${APP_ROUTES.InvoiceDetails.substring(1)}/:invoiceCode`,
+    loadComponent: () =>
+      import('./pages/invoices/invoice-view/invoice-view.component').then(
+        (m) => m.InvoiceViewComponent
+      ),
+    resolve: {
+      invoice: invoiceViewResolver,
+    },
+  },
+  {
+    title: 'Create Invoice',
+    canActivate: [authGuard],
+    path: APP_ROUTES.InvoicesCreate.substring(1),
+    loadComponent: () =>
+      import('./pages/invoices/invoices-create/invoices-create.component').then(
+        (m) => m.InvoicesCreateComponent
+      ),
   },
   {
     path: APP_ROUTES.AUTH.substring(1),
