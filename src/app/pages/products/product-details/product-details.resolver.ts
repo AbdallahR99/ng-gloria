@@ -1,11 +1,12 @@
 import { inject } from '@angular/core';
-import { ResolveFn } from '@angular/router';
+import { RedirectCommand, ResolveFn } from '@angular/router';
 import { Product } from '@app/core/models/product.model';
 import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { FacadeService } from '@app/core/services/facade-service.service';
 import { Meta, Title } from '@angular/platform-browser';
+import { APP_ROUTES } from '@app/core/constants/app-routes.enum';
 
 export const productDetailsResolver: ResolveFn<
   Observable<Product | undefined>
@@ -38,12 +39,11 @@ export const productDetailsResolver: ResolveFn<
           });
         }
         if (!product) {
-          router.navigate(['/not-found']);
+          router.navigate([APP_ROUTES.NOT_FOUND]);
         }
         return product;
       })
     );
   }
-  router.navigate(['/not-found']);
-  return of(undefined);
+  return new RedirectCommand(router.parseUrl(APP_ROUTES.NOT_FOUND));
 };

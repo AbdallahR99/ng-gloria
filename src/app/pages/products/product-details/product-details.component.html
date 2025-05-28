@@ -464,9 +464,10 @@
         <p class="text-sm text-center text-base-content/70">
           {{reviews}} {{"Reviews" | translate}}
         </p>
-        <button class="btn btn-outline btn-primary border-1 px-9 btn-xs mt-4 bg-white rounded-md ">
+        <a [routerLink]="[routes.WriteReview, product().slug]"
+          class="btn btn-outline btn-primary border-1 px-9 btn-xs mt-4 bg-white rounded-md ">
           {{"Write a Review" | translate}}
-        </button>
+        </a>
       </div>
       <div class="flex justify-center max-md:items-center md:items-start flex-col gap-3">
         @if (ratingDistributionStars.value(); as ratingDist) {
@@ -549,6 +550,14 @@
           <p class="text-sm text-base-content/70">
             {{comment.comment}}
           </p>
+          @if ((comment.images?.length ?? 0) > 0) {
+          <div class="flex gap-2 mt-2 flex-wrap">
+            @for (image of comment.images; track image) {
+            <img [src]="imagePath + image" alt="review image"
+              class="w-16 h-16 object-contain bg-neutral-content rounded-md">
+            }
+          </div>
+          }
         </div>
 
       </div>

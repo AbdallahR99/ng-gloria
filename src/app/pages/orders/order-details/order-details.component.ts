@@ -187,4 +187,19 @@ export class OrderDetailsComponent {
 
     return steps;
   }
+
+  sendWhatsAppMessage(): void {
+    let message = `Order Code: ${this.order().orderCode}\n`;
+
+    message += this.isEn
+      ? 'I would like to inquire about my order details.'
+      : 'أود الاستفسار عن تفاصيل طلبي.';
+
+    const phoneNumber = '+971509700715';
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+      message
+    )}`;
+
+    window.open(whatsappUrl, '_blank');
+  }
 }

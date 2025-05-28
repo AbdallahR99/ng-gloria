@@ -10,6 +10,7 @@ import { checkoutSummaryResolver } from './pages/checkout/checkout-summary.resol
 import { orderDetailsResolver } from './pages/orders/order-details/order-details.resolver';
 import { invoiceViewResolver } from './pages/invoices/invoice-view/invoice-view.resolver';
 import { directCheckoutProductResolver } from './pages/direct-checkout/direct-checkout-product.resolver';
+import { reviewProductResolver } from './pages/products/product-details/write-review/review-product.resolver';
 
 export const routes: Routes = [
   {
@@ -48,6 +49,16 @@ export const routes: Routes = [
     //   product: productDetailsResolver,
     // },
     resolve: { product: productDetailsResolver },
+  },
+  {
+    path: `${APP_ROUTES.WriteReview.substring(1)}/:slug`,
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import(
+        './pages/products/product-details/write-review/write-review.component'
+      ).then((m) => m.WriteReviewComponent),
+
+    resolve: { product: reviewProductResolver },
   },
   {
     title: 'Cart',

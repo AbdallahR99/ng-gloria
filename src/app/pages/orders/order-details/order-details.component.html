@@ -243,16 +243,16 @@
     </button>
     }
 
-    <button (click)="reorderItems()" class="btn btn-primary"
+    <!-- <button (click)="reorderItems()" class="btn btn-primary"
       [disabled]="!order().items ||( order().items?.length ?? 0) === 0">
       <mat-icon fontIcon="refresh" class="scale-75"></mat-icon>
       {{"Reorder Items" | translate}}
-    </button>
+    </button> -->
 
     <!-- Contact Support -->
-    <a href="tel:+971509700715" class="btn btn-secondary btn-outline">
+    <button (click)="sendWhatsAppMessage()" class="btn btn-secondary btn-outline">
       <mat-icon fontIcon="support_agent" class="scale-75"></mat-icon>
       {{"Contact Support" | translate}}
-    </a>
+    </button>
   </div>
 </div>

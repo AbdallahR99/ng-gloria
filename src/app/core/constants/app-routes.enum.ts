@@ -8,6 +8,7 @@ export enum APP_ROUTES {
   WOMEN_PERFUME = products + '?category=perfum&gender=female',
   SKIN_CARE = products + '?category=skin_care',
   HAIR_CARE = products + '?category=hair_care',
+  WriteReview = '/write-review',
   SignIn = '/login',
   SignUp = '/signup',
   AUTH = '/auth',
