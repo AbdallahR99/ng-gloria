@@ -2,6 +2,7 @@ import { Component, computed, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { SHARED_MODULES } from '@app/core/shared/modules/shared.module';
 import { Invoice } from '../../../core/models/invoice.model';
+import { APP_ROUTES } from '@app/core/constants/app-routes.enum';
 
 @Component({
   selector: 'app-invoice-view',
@@ -41,7 +42,7 @@ export class InvoiceViewComponent {
 
   // Navigation methods
   goBack() {
-    this.router.navigate(['/invoices']);
+    this.router.navigate([APP_ROUTES.Invoices]);
   }
 
   editInvoice() {

@@ -175,10 +175,10 @@ export class InvoicesCreateComponent {
 
   isManualProductValid = computed(() => {
     return (
-      this.manualProductName().trim().length > 0 &&
-      this.manualProductSku().trim().length > 0 &&
-      this.manualProductPrice() > 0 &&
-      this.manualProductQuantity() > 0
+      (this.manualProductName() ?? '').trim().length > 0 &&
+      (this.manualProductSku() ?? '')?.trim().length > 0 &&
+      (this.manualProductPrice() ?? 0) > 0 &&
+      (this.manualProductQuantity() ?? 0) > 0
     );
   });
 
@@ -196,7 +196,9 @@ export class InvoicesCreateComponent {
 
   updateProductQuantity(index: number, quantity: number) {
     if (quantity <= 0) {
-      this.removeProduct(index);
+      this.products.update((products) =>
+        products.map((p, i) => (i === index ? { ...p, quantity: 0 } : p))
+      );
       return;
     }
 
@@ -231,11 +233,7 @@ export class InvoicesCreateComponent {
       );
 
       // Navigate to the created invoice
-      this.router.navigate([
-        APP_ROUTES.InvoiceDetails,
-
-        result.invoice.invoiceCode,
-      ]);
+      this.router.navigate([APP_ROUTES.InvoiceDetails, result.invoiceCode]);
     } catch (error) {
       console.error('Error creating invoice:', error);
       // You might want to show a toast or alert here

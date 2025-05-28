@@ -53,13 +53,14 @@ export class InvoicesService {
    * Create a new invoice
    */
   create(payload: CreateInvoiceRequest) {
-    return this.fn.callFunction<{ message: string; invoice: Invoice }>(
-      `${this.endpoint}`,
-      {
-        method: 'POST',
-        body: payload,
-      }
-    );
+    return this.fn.callFunction<{
+      message: string;
+      invoice: Invoice;
+      invoiceCode: string;
+    }>(`${this.endpoint}`, {
+      method: 'POST',
+      body: payload,
+    });
   }
   /**
    * Update an existing invoice
