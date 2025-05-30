@@ -1,0 +1,210 @@
+<div class="min-h-screen bg-base-100">
+  <!-- Header -->
+  <div class="navbar bg-base-200 border-b border-base-300">
+    <div class="navbar-start">
+      <button (click)="goBack()" class="btn btn-ghost btn-sm">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        {{ "Back to Vouchers" | translate }}
+      </button>
+    </div>
+
+    <div class="navbar-center">
+      <h1 class="text-xl font-semibold">
+        @if (voucher(); as voucher) {
+        {{ "Voucher Details" | translate }}
+        } @else {
+        {{ "Loading..." | translate }}
+        }
+      </h1>
+    </div>
+
+    <!-- <div class="navbar-end">
+      @if (voucher(); as voucher) {
+      <button (click)="editVoucher()" class="btn btn-primary btn-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+          </path>
+        </svg>
+        {{ "Edit" | translate }}
+      </button>
+      }
+    </div> -->
+  </div>
+
+  <!-- Content -->
+  <div class="container mx-auto px-4 py-8">
+    @if (voucher(); as voucher) {
+    <!-- Voucher Details Card -->
+    <div class="card bg-base-100 shadow-xl border border-base-300">
+      <div class="card-body">
+        <!-- Header Info -->
+        <div class="flex justify-between items-start mb-6">
+          <div>
+            <h2 class="card-title text-2xl">
+              {{ "Voucher" | translate }} #{{ voucher.voucherCode }}
+            </h2>
+            <p class="text-base-content/70 mt-1">
+              {{ "Created" | translate }}: {{ formatDate(voucher.createdAt) }}
+            </p>
+          </div>
+
+          <div class="badge badge-lg badge-primary p-2 px-3">
+            {{ voucher.voucherCode }}
+          </div>
+        </div>
+
+        <!-- Details Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- User Information -->
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold border-b border-base-300 pb-2">
+              {{ "User Information" | translate }}
+            </h3>
+
+            <div class="space-y-3">
+              <div>
+                <label class="text-sm font-medium text-base-content/70">
+                  {{ "Name" | translate }}
+                </label>
+                <p class="text-base font-medium">
+                  {{ voucher.userName || ("Not provided" | translate) }}
+                </p>
+              </div>
+
+              <div>
+                <label class="text-sm font-medium text-base-content/70">
+                  {{ "Email" | translate }}
+                </label>
+                <p class="text-base">
+                  @if (voucher.userEmail) {
+                  <a href="mailto:{{ voucher.userEmail }}" class="link link-primary">
+                    {{ voucher.userEmail }}
+                  </a>
+                  } @else {
+                  {{ "Not provided" | translate }}
+                  }
+                </p>
+              </div>
+
+              <div>
+                <label class="text-sm font-medium text-base-content/70">
+                  {{ "Phone" | translate }}
+                </label>
+                <p class="text-base">
+                  @if (voucher.userPhone) {
+                  <a href="tel:{{ voucher.userPhone }}" class="link link-primary">
+                    {{ voucher.userPhone }}
+                  </a>
+                  } @else {
+                  {{ "Not provided" | translate }}
+                  }
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- System Information -->
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold border-b border-base-300 pb-2">
+              {{ "System Information" | translate }}
+            </h3>
+
+            <div class="space-y-3">
+              <!-- <div>
+                <label class="text-sm font-medium text-base-content/70">
+                  {{ "Voucher ID" | translate }}
+                </label>
+                <p class="text-base font-mono text-sm bg-base-200 px-2 py-1 rounded">
+                  {{ voucher.id }}
+                </p>
+              </div> -->
+
+              <div>
+                <label class="text-sm font-medium text-base-content/70">
+                  {{ "Created At" | translate }}
+                </label>
+                <p class="text-base">
+                  {{ voucher.createdAt | date:'medium' }}
+                </p>
+              </div>
+              <!--
+              <div>
+                <label class="text-sm font-medium text-base-content/70">
+                  {{ "Created By" | translate }}
+                </label>
+                <p class="text-base">
+                  {{ voucher.createdBy || ("System" | translate) }}
+                </p>
+              </div> -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Notes Section -->
+        @if (voucher.notes) {
+        <div class="mt-6 space-y-3">
+          <h3 class="text-lg font-semibold border-b border-base-300 pb-2">
+            {{ "Notes" | translate }}
+          </h3>
+          <div class="bg-base-200 p-4 rounded-lg">
+            <p class="text-base whitespace-pre-wrap">{{ voucher.notes }}</p>
+          </div>
+        </div>
+        }
+
+        <!-- Actions -->
+        <div class="card-actions justify-end mt-6 pt-4 border-t border-base-300">
+          <button (click)="goBack()" class="btn btn-ghost">
+            {{ "Back to List" | translate }}
+          </button>
+
+          <!-- <button (click)="editVoucher()" class="btn btn-primary">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+              </path>
+            </svg>
+            {{ "Edit Voucher" | translate }}
+          </button> -->
+        </div>
+      </div>
+    </div>
+    } @else {
+    <!-- Loading State -->
+    <div class="flex justify-center items-center min-h-96">
+      <div class="text-center">
+        <span class="loading loading-spinner loading-lg text-primary"></span>
+        <p class="mt-4 text-base-content/70">{{ "Loading voucher details..." | translate }}</p>
+      </div>
+    </div>
+    }
+  </div>
+</div>
+<!-- Header -->
+<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
+  <div class="flex items-center gap-4 mb-4 lg:mb-0">
+    <button (click)="goBack()" class="btn btn-ghost btn-sm">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      {{ "Back" | translate }}
+    </button>
+    <div>
+      <h1 class="text-2xl font-bold">{{ "Voucher Details" | translate }}</h1>
+      <p class="text-base-content/70">{{ "View voucher information" | translate }}</p>
+    </div>
+  </div>
+
+  <!-- <div class="flex gap-2">
+    <button (click)="editVoucher()" class="btn btn-primary btn-sm">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+      </svg>
+      {{ "Edit" | translate }}
+    </button>
+  </div> -->
+</div>
