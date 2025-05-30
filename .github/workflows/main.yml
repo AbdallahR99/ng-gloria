@@ -28,6 +28,14 @@ jobs:
       - name: Build SSR project
         run: pnpm run build
 
+      - name: Convert server.mjs to CommonJS
+        run: |
+          echo '{ "compilerOptions": { "module": "commonjs", "target": "es2016" }, "include": ["dist/ng-gloria/server/*.mjs"] }' > tsconfig.convert.json
+          tsc -p tsconfig.convert.json --outDir dist/ng-gloria/server
+          rm dist/ng-gloria/server/server.mjs
+          mv dist/ng-gloria/server/server.js dist/ng-gloria/server/server.mjs  # Rename back for web.config compatibility
+
+
       - name: Deploy full dist/ng-gloria folder via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -40,5 +48,6 @@ jobs:
           server-dir: /
           dangerous-clean-slate: true
           exclude: |
+            web.config
             **/.git*
             **/node_modules/**
