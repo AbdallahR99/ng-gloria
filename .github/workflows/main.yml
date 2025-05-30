@@ -3,7 +3,8 @@ name: Deploy Angular SSR to Plesk (FTP)
 on:
   push:
     branches:
-      - main  # Adjust to your branch name if needed
+      - master  
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
