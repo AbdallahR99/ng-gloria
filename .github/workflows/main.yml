@@ -1,0 +1,57 @@
+name: Deploy Angular SSR to Plesk (FTP with CommonJS conversion)
+
+on:
+  push:
+    branches:
+      - commonjs
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies with pnpm
+        run: pnpm install
+
+      - name: Build project
+        run: pnpm run build
+
+      - name: Install Babel for ESM to CommonJS conversion
+        run: pnpm add -D @babel/core @babel/cli @babel/preset-env
+
+      - name: Create Babel config
+        run: |
+          echo '{ "presets": [["@babel/preset-env", { "targets": { "node": "current" }, "modules": "commonjs" }]] }' > .babelrc
+
+      - name: Transpile server.mjs to CommonJS (server.js)
+        run: |
+          npx babel dist/ng-gloria/server/server.mjs --out-file dist/ng-gloria/server/server.js --presets=@babel/preset-env
+          rm dist/ng-gloria/server/server.mjs
+
+      - name: Deploy full dist/ng-gloria folder via FTP (preserve web.config)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          port: 21
+          local-dir: dist/ng-gloria/
+          server-dir: /
+          dangerous-clean-slate: true
+          exclude: |
+            web.config
+            **/.git*
+            **/node_modules/**
