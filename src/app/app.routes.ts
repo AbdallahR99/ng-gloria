@@ -11,6 +11,7 @@ import { orderDetailsResolver } from './pages/orders/order-details/order-details
 import { invoiceViewResolver } from './pages/invoices/invoice-view/invoice-view.resolver';
 import { directCheckoutProductResolver } from './pages/direct-checkout/direct-checkout-product.resolver';
 import { reviewProductResolver } from './pages/products/product-details/write-review/review-product.resolver';
+import { voucherViewResolver } from './pages/vouchers/voucher-view/voucher-view.resolver';
 
 export const routes: Routes = [
   {
@@ -163,6 +164,37 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/invoices/invoices-create/invoices-create.component').then(
         (m) => m.InvoicesCreateComponent
+      ),
+  },
+  {
+    title: 'Vouchers',
+    // canActivate: [authGuard],
+    path: APP_ROUTES.Vouchers.substring(1),
+
+    loadComponent: () =>
+      import('./pages/vouchers/vouchers.component').then(
+        (m) => m.VouchersComponent
+      ),
+  },
+  {
+    title: 'Voucher Details',
+    // canActivate: [authGuard],
+    path: `${APP_ROUTES.VoucherDetails.substring(1)}/:voucherCode`,
+    loadComponent: () =>
+      import('./pages/vouchers/voucher-view/voucher-view.component').then(
+        (m) => m.VoucherViewComponent
+      ),
+    resolve: {
+      voucher: voucherViewResolver,
+    },
+  },
+  {
+    title: 'Voucher Invoice',
+    // canActivate: [authGuard],
+    path: APP_ROUTES.VoucherCreate.substring(1),
+    loadComponent: () =>
+      import('./pages/vouchers/vouchers-create/vouchers-create.component').then(
+        (m) => m.VouchersCreateComponent
       ),
   },
   {

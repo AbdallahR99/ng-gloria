@@ -1,0 +1,124 @@
+<div class="container mx-auto p-4 max-w-4xl">
+  <div class="flex items-center mb-6">
+    <button type="button" class="btn btn-ghost btn-sm mr-4" (click)="goBack()">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+      </svg>
+      {{ "Back" | translate }}
+    </button>
+    <h1 class="text-2xl font-bold">{{ "Create Voucher" | translate }}</h1>
+  </div>
+
+  @if (error()) {
+  <div class="alert alert-error mb-6">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    </svg>
+    <span>{{ error() }}</span>
+  </div>
+  }
+
+  @if (success()) {
+  <div class="alert alert-success mb-6">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    </svg>
+    <span>{{ success() }}</span>
+  </div>
+  }
+
+  <form #voucherForm="ngForm" (ngSubmit)="onSubmit(voucherForm)" class="space-y-6">
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+          <!-- User Name -->
+          <div class="form-control flex flex-col">
+            <label class="label">
+              <span class="label-text">{{ "User Name" | translate }}</span>
+            </label>
+
+            <input type="text" class="input input-primary border-1 border-primary/40"
+              [placeholder]="'Enter user name' | translate" name="userName" [(ngModel)]="userNameInput"
+              #userName="ngModel" />
+            @if (userName.invalid && userName.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error">{{ "User name is required" | translate }}</span>
+            </label>
+            }
+          </div>
+
+          <!-- User Email -->
+          <div class="form-control flex flex-col">
+            <label class="label">
+              <span class="label-text">{{ "User Email" | translate }}</span>
+            </label>
+            <input type="email" class="input input-primary border-1 border-primary/40"
+              [placeholder]="'Enter user email' | translate" name="userEmail" [(ngModel)]="userEmailInput"
+              #userEmail="ngModel" />
+            @if (userEmail.invalid && userEmail.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error">{{ "Please enter a valid email address" | translate }}</span>
+            </label>
+            }
+          </div>
+
+          <!-- User Phone -->
+          <div class="form-control flex flex-col">
+            <label class="label">
+              <span class="label-text">{{ "User Phone" | translate }}</span>
+            </label>
+            <input type="tel" class="input input-primary border-1 border-primary/40"
+              [placeholder]="'Enter user phone' | translate" name="userPhone" [(ngModel)]="userPhoneInput"
+              #userPhone="ngModel" />
+          </div>
+
+          <!-- Voucher Code -->
+          <div class="form-control flex flex-col">
+            <label class="label">
+              <span class="label-text">{{ "Voucher Code" | translate }}</span>
+              <span class="label-text-alt text-error">*</span>
+            </label>
+            <div class="join">
+              <input type="text" class="input input-primary border-1 border-primary/40 join-item flex-1"
+                [placeholder]="'Enter voucher code' | translate" name="voucherCode" [(ngModel)]="voucherCodeInput"
+                required #voucherCode="ngModel" />
+
+            </div>
+            @if (voucherCode.invalid && voucherCode.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error">{{ "Voucher code is required" | translate }}</span>
+            </label>
+            }
+          </div>
+
+          <!-- Notes -->
+          <div class="form-control flex flex-col lg:col-span-2">
+            <label class="label">
+              <span class="label-text">{{ "Notes" | translate }}</span>
+            </label>
+            <textarea class="textarea textarea-primary border-1 border-primary/40"
+              [placeholder]="'Enter notes' | translate" name="notes" rows="3" [(ngModel)]="notesInput"
+              #notes="ngModel"></textarea>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="flex justify-end gap-4">
+      <button type="button" class="btn btn-outline" (click)="goBack()" [disabled]="isSubmitting()">
+        {{ "Cancel" | translate }}
+      </button>
+      <button type="submit" class="btn btn-primary" [disabled]="voucherForm.invalid || isSubmitting()">
+        @if (isSubmitting()) {
+        <span class="loading loading-spinner loading-sm"></span>
+        }
+        {{ "Create Voucher" | translate }}
+      </button>
+    </div>
+  </form>
+</div>

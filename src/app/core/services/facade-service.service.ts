@@ -13,6 +13,7 @@ import { BundlesService } from './repository/bundles.service';
 import { AuthService } from './repository/auth.service';
 import { AddressesService } from './repository/addresses.service';
 import { InvoicesService } from './repository/invoices.service';
+import { VouchersService } from './repository/vouchers.service';
 
 @Injectable({
   providedIn: 'root',
@@ -34,6 +35,7 @@ export class FacadeService {
   private _authService?: AuthService;
   private _addressesService?: AddressesService;
   private _invoicesService?: InvoicesService;
+  private _vouchersService?: VouchersService;
 
   get translatorService() {
     if (!this._translatorService) {
@@ -124,11 +126,17 @@ export class FacadeService {
     }
     return this._addressesService;
   }
-
   get invoicesService() {
     if (!this._invoicesService) {
       this._invoicesService = this.inject.get(InvoicesService);
     }
     return this._invoicesService;
+  }
+
+  get vouchersService() {
+    if (!this._vouchersService) {
+      this._vouchersService = this.inject.get(VouchersService);
+    }
+    return this._vouchersService;
   }
 }

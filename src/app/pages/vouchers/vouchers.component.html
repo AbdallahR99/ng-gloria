@@ -1,0 +1,288 @@
+<div class="container mx-auto p-4">
+  <!-- Header -->
+  <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
+    <div>
+      <h1 class="text-3xl font-bold text-base-content mb-2">
+        {{ "Vouchers Management" | translate }}
+      </h1>
+      <p class="text-base-content/70">
+        {{ "Manage and track all vouchers" | translate }}
+      </p>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-2 mt-4 lg:mt-0">
+      <a [routerLink]="routes.VoucherCreate" class="btn btn-primary">
+        <mat-icon fontIcon="add" />
+        {{ "Create Voucher" | translate }}
+      </a>
+      <button class="btn btn-outline" (click)="clearFilters()">
+        <mat-icon fontIcon="filter_alt_off" />
+        {{ "Clear Filters" | translate }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="card bg-base-100 shadow-xl mb-6">
+    <div class="card-body">
+      <div class="collapse collapse-arrow">
+        <input type="checkbox" class="peer" />
+        <div class="collapse-title text-lg font-medium">
+          {{ "Filters" | translate }}
+        </div>
+        <div class="collapse-content">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <!-- User Email Filter -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">{{ "User Email" | translate }}</span>
+              </label>
+              <input type="email" class="input input-bordered" [placeholder]="'Search by email' | translate"
+                [value]="userEmailFilter()" (input)="onUserEmailFilterChange($any($event.target).value)" />
+            </div>
+
+            <!-- User Name Filter -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">{{ "User Name" | translate }}</span>
+              </label>
+              <input type="text" class="input input-bordered" [placeholder]="'Search by name' | translate"
+                [value]="userNameFilter()" (input)="onUserNameFilterChange($any($event.target).value)" />
+            </div>
+
+            <!-- User Phone Filter -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">{{ "User Phone" | translate }}</span>
+              </label>
+              <input type="tel" class="input input-bordered" [placeholder]="'Search by phone' | translate"
+                [value]="userPhoneFilter()" (input)="onUserPhoneFilterChange($any($event.target).value)" />
+            </div>
+
+            <!-- Voucher Code Filter -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">{{ "Voucher Code" | translate }}</span>
+              </label>
+              <input type="text" class="input input-bordered" [placeholder]="'Search by code' | translate"
+                [value]="voucherCodeFilter()" (input)="onVoucherCodeFilterChange($any($event.target).value)" />
+            </div>
+
+            <!-- Date From Filter -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">{{ "Date From" | translate }}</span>
+              </label>
+              <input type="date" class="input input-bordered" [value]="dateFromFilter()"
+                (input)="onDateFromFilterChange($any($event.target).value)" />
+            </div>
+
+            <!-- Date To Filter -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">{{ "Date To" | translate }}</span>
+              </label>
+              <input type="date" class="input input-bordered" [value]="dateToFilter()"
+                (input)="onDateToFilterChange($any($event.target).value)" />
+            </div>
+
+            <!-- Sort By -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">{{ "Sort By" | translate }}</span>
+              </label>
+              <select class="select select-bordered" [value]="sortBy()"
+                (change)="onSortChange($any($event.target).value)">
+                @for (option of sortOptions; track option.value) {
+                <option [value]="option.value">{{ option.label | translate }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Sort Order -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">{{ "Sort Order" | translate }}</span>
+              </label>
+              <button class="btn btn-outline" (click)="onSortOrderChange()">
+                <mat-icon [fontIcon]="sortOrder() === 'asc' ? 'arrow_upward' : 'arrow_downward'" />
+                {{ sortOrder() === 'asc' ? ('Ascending' | translate) : ('Descending' | translate) }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (vouchers.isLoading()) {
+  <div class="flex justify-center items-center py-20">
+    <span class="loading loading-spinner loading-lg text-primary"></span>
+  </div>
+  }
+
+  <!-- Error State -->
+  @if (vouchers.error()) {
+  <div class="alert alert-error mb-6">
+    <mat-icon fontIcon="error" />
+    <span>{{ "Error loading vouchers" | translate }}: {{ vouchers.error() }}</span>
+  </div>
+  }
+
+  <!-- Results Info -->
+  @if (vouchers.value()) {
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
+    <div class="stats stats-horizontal shadow-sm bg-base-200">
+      <div class="stat">
+        <div class="stat-title">{{ "Total Vouchers" | translate }}</div>
+        <div class="stat-value text-sm">{{ vouchers.value()?.pagination?.total || 0 }}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-title">{{ "Showing" | translate }}</div>
+        <div class="stat-value text-sm">{{ results() }}</div>
+      </div>
+    </div>
+
+    <!-- Page Size Selector -->
+    <div class="form-control mt-4 sm:mt-0">
+      <label class="label">
+        <span class="label-text">{{ "Items per page" | translate }}</span>
+      </label>
+      <select class="select select-bordered select-sm" [value]="pageSize()"
+        (change)="onPageSizeChange(+$any($event.target).value)">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+      </select>
+    </div>
+  </div>
+  }
+  <!-- Vouchers Table -->
+  @if (vouchers.value(); as vouchersData) {
+
+  @if (vouchersData?.data && vouchersData.data.length > 0) {
+  <div class="overflow-x-auto">
+    <table class="table table-zebra w-full">
+      <thead>
+        <tr>
+          <th>{{ "Voucher Code" | translate }}</th>
+          <th>{{ "User Details" | translate }}</th>
+          <th>{{ "Notes" | translate }}</th>
+          <th>{{ "Created" | translate }}</th>
+          <th>{{ "Actions" | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (voucher of vouchersData.data; track voucher.id) {
+        <tr class="hover">
+          <td>
+            <div class="font-mono font-semibold text-primary">{{ voucher.voucherCode }}</div>
+
+          </td>
+          <td>
+            <div class="flex flex-col">
+              @if (voucher.userName) {
+              <div class="font-semibold">{{ voucher.userName }}</div>
+              }
+              @if (voucher.userEmail) {
+              <div class="text-sm opacity-70">
+                <mat-icon fontIcon="email" class="text-xs mr-1" />
+                {{ voucher.userEmail }}
+              </div>
+              }
+              @if (voucher.userPhone) {
+              <div class="text-sm opacity-70">
+                <mat-icon fontIcon="phone" class="text-xs mr-1" />
+                {{ voucher.userPhone }}
+              </div>
+              }
+            </div>
+          </td>
+          <td>
+            @if (voucher.notes) {
+            <div class="max-w-xs truncate" [title]="voucher.notes">
+              {{ voucher.notes }}
+            </div>
+            } @else {
+            <span class="text-base-content/50 italic">{{ "No notes" | translate }}</span>
+            }
+          </td>
+          <td>
+            <div class="text-sm">{{ voucher.createdAt | date }}</div>
+
+            @if (voucher.createdBy) {
+            <div class="text-xs opacity-70">
+              {{ "By" | translate }}: {{ voucher.createdBy }}
+            </div>
+            }
+          </td>
+          <td>
+            <div class="flex gap-2">
+              <a [routerLink]="[routes.VoucherDetails, voucher.voucherCode]" class="btn btn-ghost btn-sm"
+                [title]="'View Voucher' | translate">
+                <mat-icon fontIcon="visibility" />
+              </a>
+              <!-- <a [routerLink]="[routes.Vouchers, 'edit', voucher.voucherCode]" class="btn btn-ghost btn-sm"
+                [title]="'Edit Voucher' | translate">
+                <mat-icon fontIcon="edit" />
+              </a>
+              <button class="btn btn-ghost btn-sm text-error" [title]="'Delete Voucher' | translate"
+                (click)="deleteVoucher(voucher)">
+                <mat-icon fontIcon="delete" />
+              </button> -->
+            </div>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  @if ((vouchersData.pagination.totalPages || 0) > 1) {
+  <div class="flex justify-center mt-6">
+    <div class="join">
+      <!-- Previous button -->
+      <button class="join-item btn" [disabled]="currentPage() <= 1" (click)="onPageChange(currentPage() - 1)">
+        <mat-icon fontIcon="chevron_left" />
+      </button>
+
+      <!-- Page numbers -->
+      @for (page of getVisiblePages(); track page) {
+      @if (page === -1) {
+      <span class="join-item btn btn-disabled">...</span>
+      } @else {
+      <button class="join-item btn" [class.btn-active]="page === currentPage()" (click)="onPageChange(page)">
+        {{ page }}
+      </button>
+      }
+      }
+
+      <!-- Next button -->
+      <button class="join-item btn" [disabled]="currentPage() >= (vouchersData.pagination.totalPages || 1)"
+        (click)="onPageChange(currentPage() + 1)">
+        <mat-icon fontIcon="chevron_right" />
+      </button>
+    </div>
+  </div>
+  }
+  } @else {
+  <!-- Empty State -->
+  <div class="text-center py-20">
+    <div class="flex flex-col items-center gap-4">
+      <mat-icon fontIcon="confirmation_number" class="text-6xl opacity-50" />
+      <h3 class="text-xl font-semibold">{{ "No vouchers found" | translate }}</h3>
+      <p class="text-base-content/70">
+        {{ "Try adjusting your filters or create a new voucher" | translate }}
+      </p>
+      <a [routerLink]="routes.VoucherCreate" class="btn btn-primary">
+        <mat-icon fontIcon="add" />
+        {{ "Create Voucher" | translate }}
+      </a>
+    </div>
+  </div>
+  }
+  }
+</div>
