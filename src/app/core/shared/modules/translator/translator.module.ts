@@ -8,7 +8,7 @@ export const provideClientTranslatorModule = () =>
   importProvidersFrom(
     TranslateModule.forRoot({
       defaultLanguage: APP_SETTINGS.defaultLanguage,
-      loader: {
+      stream: {
         provide: TranslateLoader,
         useClass: TranslateBrowserLoader,
 

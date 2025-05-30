@@ -28,7 +28,7 @@ Always use the `ngModel` directive for two-way data binding in forms, and use th
 
 ## rxResource
 
-The `rxResource` function creates a reactive resource that automatically manages loading states and updates based on request changes. It's perfect for data fetching scenarios where you need automatic loading states and reactive updates.
+The `rxResource` function creates a reactive resource that automatically manages loading states and updates based on params changes. It's perfect for data fetching scenarios where you need automatic loading states and reactive updates.
 
 ### Basic Usage
 
@@ -75,13 +75,13 @@ export class LiveViewComponent {
   searchQuery = signal("");
 
   liveViewCards = rxResource({
-    request: () => ({
+    params: () => ({
       queryParam: this.searchQuery(),
     }),
-    loader: ({ request }) => {
+    stream: ({ params }) => {
       return this.dataService.getObjects({
         advancedSearch: {
-          keyword: request.queryParam.length > 3 ? request.queryParam : undefined,
+          keyword: params.queryParam.length > 3 ? params.queryParam : undefined,
         },
         type: "LiveViewUiObject",
       });
@@ -90,7 +90,7 @@ export class LiveViewComponent {
 
   updateSearch(query: string) {
     this.searchQuery.set(query);
-    // rxResource automatically triggers reload when request changes
+    // rxResource automatically triggers reload when params changes
   }
 }
 ```
@@ -100,16 +100,16 @@ export class LiveViewComponent {
 ```typescript
 // With default value
 liveViewCards = rxResource({
-  request: () => ({ query: this.searchQuery() }),
-  loader: ({ request }) => this.dataService.getData(request),
+  params: () => ({ query: this.searchQuery() }),
+  stream: ({ params }) => this.dataService.getData(params),
   defaultValue: [], // Provides initial value while loading
 });
 
 // With error handling
 userProfile = rxResource({
-  request: () => ({ userId: this.userId() }),
-  loader: ({ request }) => {
-    return this.userService.getProfile(request.userId).pipe(
+  params: () => ({ userId: this.userId() }),
+  stream: ({ params }) => {
+    return this.userService.getProfile(params.userId).pipe(
       catchError((error) => {
         console.error("Failed to load profile:", error);
         return throwError(() => error);
@@ -120,12 +120,12 @@ userProfile = rxResource({
 
 // Dependent resources
 userPosts = rxResource({
-  request: () => {
+  params: () => {
     const profile = this.userProfile.value();
     return profile ? { userId: profile.id } : null;
   },
-  loader: ({ request }) => {
-    return request ? this.postsService.getUserPosts(request.userId) : EMPTY;
+  stream: ({ params }) => {
+    return params ? this.postsService.getUserPosts(params.userId) : EMPTY;
   },
 });
 ```
@@ -135,8 +135,8 @@ userPosts = rxResource({
 ```typescript
 export class DataComponent {
   data = rxResource({
-    request: () => ({}),
-    loader: () => this.service.getData(),
+    params: () => ({}),
+    stream: () => this.service.getData(),
   });
 
   ngOnInit() {
@@ -195,8 +195,8 @@ Angular 19 introduces new control flow syntax that replaces `*ngIf`, `*ngFor`, a
 export class DashboardComponent {
   user = signal({ role: "admin", profile: { settings: { preferences: { theme: "dark", language: "en" } } } });
   data = rxResource({
-    request: () => ({}),
-    loader: () => this.service.getData(),
+    params: () => ({}),
+    stream: () => this.service.getData(),
   });
 }
 ```
@@ -1679,8 +1679,8 @@ export class DataComponent {
   searchQuery = signal("");
 
   data = rxResource({
-    request: () => ({ query: this.searchQuery() }),
-    loader: ({ request }) => this.dataService.search(request.query),
+    params: () => ({ query: this.searchQuery() }),
+    stream: ({ params }) => this.dataService.search(params.query),
   });
 
   // No need for manual subscription management!

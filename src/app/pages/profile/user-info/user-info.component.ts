@@ -70,7 +70,7 @@ export class UserInfoComponent {
 
   // Order statistics
   orderStats = rxResource({
-    loader: () => {
+    stream: () => {
       return this.facadeService.ordersService.list({
         page: 1,
         pageSize: 1000, // Get all orders for stats
@@ -80,7 +80,7 @@ export class UserInfoComponent {
 
   // Favorites statistics
   favoriteStats = rxResource({
-    loader: () => {
+    stream: () => {
       return this.facadeService.favoritesService.get();
     },
   });

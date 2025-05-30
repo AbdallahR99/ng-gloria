@@ -28,7 +28,7 @@ export class AddressesComponent {
   }
 
   addresses = rxResource({
-    loader: () => this.facadeService.addressesService.getAll(),
+    stream: () => this.facadeService.addressesService.getAll(),
   });
 
   startAddNew() {

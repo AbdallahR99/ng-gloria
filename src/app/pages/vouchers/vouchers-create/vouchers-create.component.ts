@@ -63,7 +63,7 @@ export class VouchersCreateComponent {
     this.success.set('');
 
     try {
-      const request: CreateVoucherRequest = {
+      const params: CreateVoucherRequest = {
         voucherCode: this.voucherCodeInput()?.trim() || undefined,
         userName: this.userNameInput()?.trim() || undefined,
         userEmail: this.userEmailInput()?.trim() || undefined,

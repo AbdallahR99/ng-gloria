@@ -63,39 +63,39 @@ export class ProductDetailsComponent {
   routes = APP_ROUTES;
 
   bundle = rxResource({
-    request: () => ({
+    params: () => ({
       slug: this.product().slug,
     }),
-    loader: ({ request }) => {
-      return this.facadeService.bundlesService.getByProductSlug(request.slug);
+    stream: ({ params }) => {
+      return this.facadeService.bundlesService.getByProductSlug(params.slug);
     },
   });
 
   relatedProducts = rxResource({
-    request: () => ({
+    params: () => ({
       slug: this.product().slug,
     }),
-    loader: ({ request }) => {
-      return this.facadeService.productsService.related(request.slug);
+    stream: ({ params }) => {
+      return this.facadeService.productsService.related(params.slug);
     },
   });
 
   comments = rxResource({
-    request: () => ({
+    params: () => ({
       slug: this.product().slug,
     }),
-    loader: ({ request }) => {
-      return this.facadeService.reviewsService.get(request.slug);
+    stream: ({ params }) => {
+      return this.facadeService.reviewsService.get(params.slug);
     },
   });
 
   ratingDistributionStars = rxResource({
-    request: () => ({
+    params: () => ({
       slug: this.product().slug,
     }),
-    loader: ({ request }) => {
+    stream: ({ params }) => {
       return this.facadeService.reviewsService.getRatingDistribution(
-        request.slug
+        params.slug
       );
     },
   });

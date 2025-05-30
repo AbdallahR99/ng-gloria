@@ -35,7 +35,7 @@ export class AddressFormComponent {
   }
 
   states = rxResource({
-    loader: () => {
+    stream: () => {
       return this.facadeService.statesService.get('AE');
     },
   });

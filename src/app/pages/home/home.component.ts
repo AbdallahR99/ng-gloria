@@ -23,31 +23,31 @@ export class HomeComponent {
     return this.facadeService.translatorService.isEn;
   }
   categories = rxResource({
-    loader: ({ request }) => {
+    stream: ({ params }) => {
       return this.facadeService.categoryService.get();
     },
   });
   productsTodayDiscounts = rxResource({
-    request: () =>
+    params: () =>
       ({
         pageSize: 5,
         sortBy: 'created_at',
         sortOrder: 'asc',
       } as Partial<ProductQuery>),
 
-    loader: ({ request }) => {
-      return this.facadeService.productsService.filter(request);
+    stream: ({ params }) => {
+      return this.facadeService.productsService.filter(params);
     },
   });
   productsNewArrival = rxResource({
-    request: () =>
+    params: () =>
       ({
         pageSize: 4,
         sortBy: 'created_at',
         sortOrder: 'desc',
       } as Partial<ProductQuery>),
-    loader: ({ request }) => {
-      return this.facadeService.productsService.filter(request);
+    stream: ({ params }) => {
+      return this.facadeService.productsService.filter(params);
     },
   });
 }

@@ -23,10 +23,10 @@ export class DataComponent implements OnInit, OnDestroy {
             catchError((error) => {
               this.error = error.message;
               return of([]);
-            }),
+            })
           );
         }),
-        takeUntil(this.destroy$),
+        takeUntil(this.destroy$)
       )
       .subscribe((data) => {
         this.loading = false;
@@ -49,8 +49,8 @@ export class DataComponent {
   searchQuery = signal("");
 
   data = rxResource({
-    request: () => ({ query: this.searchQuery() }),
-    loader: ({ request }) => this.dataService.search(request.query),
+    params: () => ({ query: this.searchQuery() }),
+    stream: ({ params }) => this.dataService.search(params.query),
   });
 
   // No need for manual subscription management!

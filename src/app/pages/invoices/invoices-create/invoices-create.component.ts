@@ -56,9 +56,9 @@ export class InvoicesCreateComponent {
 
   // Product search resource
   productSearch = rxResource({
-    request: () => ({ query: this.searchQuery() }),
-    loader: ({ request }) => {
-      if (!request.query || request.query.length < 2) {
+    params: () => ({ query: this.searchQuery() }),
+    stream: ({ params }) => {
+      if (!params.query || params.query.length < 2) {
         return of({
           data: [],
           pagination: {
@@ -69,7 +69,7 @@ export class InvoicesCreateComponent {
         } as PaginatedResponse<Product>); // Return empty response if query is too short
       }
       return this.facadeService.productsService.filter({
-        name: request.query,
+        name: params.query,
         pageSize: 10,
       });
     },
@@ -219,7 +219,7 @@ export class InvoicesCreateComponent {
     this.isSubmitting.set(true);
 
     try {
-      const request: CreateInvoiceRequest = {
+      const params: CreateInvoiceRequest = {
         userEmail: this.userEmail(),
         userName: this.customerName() || undefined,
         userPhone: this.customerPhone() || undefined,
@@ -231,7 +231,7 @@ export class InvoicesCreateComponent {
       };
 
       const result = await firstValueFrom(
-        this.facadeService.invoicesService.create(request)
+        this.facadeService.invoicesService.create(params)
       );
 
       // Navigate to the created invoice
