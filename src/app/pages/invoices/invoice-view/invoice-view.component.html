@@ -33,190 +33,206 @@
     </div>
   </div>
 
-  <!-- Invoice Details Card -->
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-    <!-- Customer Information -->
-    <div class="card bg-base-100 shadow-xl">
-      <div class="card-body">
-        <h2 class="card-title">
-          <mat-icon fontIcon="person" />
-          {{ "Customer Information" | translate }}
-        </h2>
-        <div class="space-y-2">
-          <div>
-            <span class="font-medium">{{ "Email" | translate }}:</span>
-            <span class="ml-2">{{ invoiceData.userEmail }}</span>
-          </div>
-          @if (invoiceData.userName) {
-          <div>
-            <span class="font-medium">{{ "Name" | translate }}:</span>
-            <span class="ml-2">{{ invoiceData.userName }}</span>
-          </div>
-          }
-          @if (invoiceData.userPhone) {
-          <div>
-            <span class="font-medium">{{ "Phone" | translate }}:</span>
-            <span class="ml-2">{{ invoiceData.userPhone }}</span>
-          </div>
-          }
-        </div>
-      </div>
+  <!-- Invoice Content for PDF - Start -->
+  <div #invoiceContent class="invoice-pdf-content">
+
+    <!-- Invoice Header for PDF -->
+    <div class="mb-8 text-center print:block">
+      <h1 class="text-4xl font-bold text-base-content mb-2">
+        {{ "Invoice" | translate }} #{{ invoiceData.invoiceCode }}
+      </h1>
+      <p class="text-base-content/70 text-lg">
+        {{ "Created on" | translate }} {{ invoiceData.createdAt | date:'medium' }}
+      </p>
     </div>
 
-    <!-- Invoice Information -->
-    <div class="card bg-base-100 shadow-xl">
-      <div class="card-body">
-        <h2 class="card-title">
-          <mat-icon fontIcon="receipt" />
-          {{ "Invoice Details" | translate }}
-        </h2>
-        <div class="space-y-2">
-          <div>
-            <span class="font-medium">{{ "Invoice Code" | translate }}:</span>
-            <span class="ml-2">{{ invoiceData.invoiceCode }}</span>
-          </div>
-          <div>
-            <span class="font-medium">{{ "Date" | translate }}:</span>
-            <span class="ml-2">{{ invoiceData.createdAt | date:'medium' }}</span>
-          </div>
-          @if (invoiceData.updatedAt !== invoiceData.createdAt) {
-          <div>
-            <span class="font-medium">{{ "Last Updated" | translate }}:</span>
-            <span class="ml-2">{{ invoiceData.updatedAt | date:'medium' }}</span>
-          </div>
-          }
-        </div>
-      </div>
-    </div>
-
-    <!-- Order Reference -->
-    @if (invoiceData.orderCode) {
-    <div class="card bg-base-100 shadow-xl">
-      <div class="card-body">
-        <h2 class="card-title">
-          <mat-icon fontIcon="shopping_bag" />
-          {{ "Related Order" | translate }}
-        </h2>
-        <div class="space-y-2">
-          <div>
-            <span class="font-medium">{{ "Order Code" | translate }}:</span>
-            <span class="ml-2">{{ invoiceData.orderCode }}</span>
-          </div>
-          <div class="card-actions">
-            <a [routerLink]="['/orders', 'view', invoiceData.orderCode]" class="btn btn-sm btn-outline">
-              <mat-icon fontIcon="open_in_new" />
-              {{ "View Order" | translate }}
-            </a>
+    <!-- Invoice Details Card -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+      <!-- Customer Information -->
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title">
+            <mat-icon fontIcon="person" />
+            {{ "Customer Information" | translate }}
+          </h2>
+          <div class="space-y-2">
+            <div>
+              <span class="font-medium">{{ "Email" | translate }}:</span>
+              <span class="ml-2">{{ invoiceData.userEmail }}</span>
+            </div>
+            @if (invoiceData.userName) {
+            <div>
+              <span class="font-medium">{{ "Name" | translate }}:</span>
+              <span class="ml-2">{{ invoiceData.userName }}</span>
+            </div>
+            }
+            @if (invoiceData.userPhone) {
+            <div>
+              <span class="font-medium">{{ "Phone" | translate }}:</span>
+              <span class="ml-2">{{ invoiceData.userPhone }}</span>
+            </div>
+            }
           </div>
         </div>
       </div>
+
+      <!-- Invoice Information -->
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title">
+            <mat-icon fontIcon="receipt" />
+            {{ "Invoice Details" | translate }}
+          </h2>
+          <div class="space-y-2">
+            <div>
+              <span class="font-medium">{{ "Invoice Code" | translate }}:</span>
+              <span class="ml-2">{{ invoiceData.invoiceCode }}</span>
+            </div>
+            <div>
+              <span class="font-medium">{{ "Date" | translate }}:</span>
+              <span class="ml-2">{{ invoiceData.createdAt | date:'medium' }}</span>
+            </div>
+            @if (invoiceData.updatedAt !== invoiceData.createdAt) {
+            <div>
+              <span class="font-medium">{{ "Last Updated" | translate }}:</span>
+              <span class="ml-2">{{ invoiceData.updatedAt | date:'medium' }}</span>
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Reference -->
+      @if (invoiceData.orderCode) {
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title">
+            <mat-icon fontIcon="shopping_bag" />
+            {{ "Related Order" | translate }}
+          </h2>
+          <div class="space-y-2">
+            <div>
+              <span class="font-medium">{{ "Order Code" | translate }}:</span>
+              <span class="ml-2">{{ invoiceData.orderCode }}</span>
+            </div>
+            <div class="card-actions">
+              <a [routerLink]="['/orders', 'view', invoiceData.orderCode]" class="btn btn-sm btn-outline">
+                <mat-icon fontIcon="open_in_new" />
+                {{ "View Order" | translate }}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      }
     </div>
-    }
-  </div>
 
-  <!-- Products Table -->
-  <div class="card bg-base-100 shadow-xl mb-6">
-    <div class="card-body">
-      <h2 class="card-title mb-4">
-        <mat-icon fontIcon="inventory" />
-        {{ "Products" | translate }}
-      </h2>
+    <!-- Products Table -->
+    <div class="card bg-base-100 shadow-xl mb-6">
+      <div class="card-body">
+        <h2 class="card-title mb-4">
+          <mat-icon fontIcon="inventory" />
+          {{ "Products" | translate }}
+        </h2>
 
-      <div class="overflow-x-auto">
-        <table class="table table-zebra">
-          <thead>
-            <tr>
-              <th>{{ "Product" | translate }}</th>
-              <th class="text-center">{{ "Quantity" | translate }}</th>
-              <th class="text-right">{{ "Unit Price" | translate }}</th>
-              <th class="text-right">{{ "Total" | translate }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (product of invoice().products; track product.sku) {
-            <tr>
-              <td>
-                <div class="flex items-center space-x-3">
-                  <!-- @if (product.productImage) {
+        <div class="overflow-x-auto">
+          <table class="table table-zebra">
+            <thead>
+              <tr>
+                <th>{{ "Product" | translate }}</th>
+                <th class="text-center">{{ "Quantity" | translate }}</th>
+                <th class="text-right">{{ "Unit Price" | translate }}</th>
+                <th class="text-right">{{ "Total" | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (product of invoice().products; track product.sku) {
+              <tr>
+                <td>
+                  <div class="flex items-center space-x-3">
+                    <!-- @if (product.productImage) {
                   <div class="avatar">
                     <div class="mask mask-squircle w-12 h-12">
                       <img [src]="product.productImage" [alt]="product.productName" />
                     </div>
                   </div>
                   } -->
-                  <div>
-                    <div class="font-bold">{{ product.name }}</div>
+                    <div>
+                      <div class="font-bold">{{ product.name }}</div>
 
+                    </div>
                   </div>
-                </div>
-              </td>
-              <td class="text-center">
-                <span class="badge badge-ghost">{{ product.quantity }}</span>
-              </td>
-              <td class="text-right">
-                {{ product.price | currency:'AED':'symbol':'1.2-2' }}
-              </td>
-              <td class="text-right font-medium">
-                {{ (product.price * product.quantity) | currency:'AED':'symbol':'1.2-2' }}
-              </td>
-            </tr>
-            }
-          </tbody>
-        </table>
+                </td>
+                <td class="text-center">
+                  <span class="badge badge-ghost">{{ product.quantity }}</span>
+                </td>
+                <td class="text-right">
+                  {{ (+product.price) | currency:'AED':'symbol':'1.2-2' }}
+                </td>
+                <td class="text-right font-medium">
+                  {{ ((+product.price) * (+product.quantity)) | currency:'AED':'symbol':'1.2-2' }}
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Invoice Summary -->
-  <div class="card bg-base-100 shadow-xl">
-    <div class="card-body">
-      <h2 class="card-title mb-4">
-        <mat-icon fontIcon="calculate" />
-        {{ "Invoice Summary" | translate }}
-      </h2>
+    <!-- Invoice Summary -->
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body">
+        <h2 class="card-title mb-4">
+          <mat-icon fontIcon="calculate" />
+          {{ "Invoice Summary" | translate }}
+        </h2>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Left side - Additional Details -->
-        <div class="space-y-4">
-          @if (invoice().notes) {
-          <div>
-            <h3 class="font-medium mb-2">{{ "Notes" | translate }}</h3>
-            <div class="p-3 bg-base-200 rounded-lg">
-              {{ invoice().notes }}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Left side - Additional Details -->
+          <div class="space-y-4">
+            @if (invoice().notes) {
+            <div>
+              <h3 class="font-medium mb-2">{{ "Notes" | translate }}</h3>
+              <div class="p-3 bg-base-200 rounded-lg">
+                {{ invoice().notes }}
+              </div>
+            </div>
+            }
+          </div>
+
+          <!-- Right side - Financial Summary -->
+          <div class="space-y-3">
+            <div class="flex justify-between">
+              <span>{{ "Subtotal" | translate }}:</span>
+              <span>{{ subtotal() | currency:'AED':'symbol':'1.2-2' }}</span>
+            </div>
+
+            @if (totalDiscount() > 0) {
+            <div class="flex justify-between text-success">
+              <span>{{ "Discount" | translate }}:</span>
+              <span>-{{ totalDiscount() | currency:'AED':'symbol':'1.2-2' }}</span>
+            </div>
+            }
+
+            @if (deliveryFees() > 0) {
+            <div class="flex justify-between">
+              <span>{{ "Delivery Fees" | translate }}:</span>
+              <span>{{ deliveryFees() | currency:'AED':'symbol':'1.2-2' }}</span>
+            </div>
+            }
+
+            <div class="divider"></div>
+            <div class="flex justify-between text-lg font-bold">
+              <span>{{ "Total" | translate }}:</span>
+              <span>{{ grandTotal() | currency:'AED':'symbol':'1.2-2' }}</span>
             </div>
           </div>
-          }
-        </div>
-
-        <!-- Right side - Financial Summary -->
-        <div class="space-y-3">
-          <div class="flex justify-between">
-            <span>{{ "Subtotal" | translate }}:</span>
-            <span>{{ subtotal() | currency:'AED':'symbol':'1.2-2' }}</span>
-          </div>
-
-          @if (totalDiscount() > 0) {
-          <div class="flex justify-between text-success">
-            <span>{{ "Discount" | translate }}:</span>
-            <span>-{{ totalDiscount() | currency:'AED':'symbol':'1.2-2' }}</span>
-          </div>
-          }
-
-          @if (deliveryFees() > 0) {
-          <div class="flex justify-between">
-            <span>{{ "Delivery Fees" | translate }}:</span>
-            <span>{{ deliveryFees() | currency:'AED':'symbol':'1.2-2' }}</span>
-          </div>
-          }
-
-          <div class="divider"></div>
-          <div class="flex justify-between text-lg font-bold">
-            <span>{{ "Total" | translate }}:</span>
-            <span>{{ grandTotal() | currency:'AED':'symbol':'1.2-2' }}</span>
-          </div>
         </div>
       </div>
     </div>
+
+    <!-- End of Invoice Content for PDF -->
   </div>
 
   }
