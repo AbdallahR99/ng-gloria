@@ -5,6 +5,7 @@ import {
   contentChild,
   inject,
   input,
+  linkedSignal,
   signal,
 } from '@angular/core';
 import { SHARED_MODULES } from '../../modules/shared.module';
@@ -36,10 +37,10 @@ export class CartButtonComponent {
   isAddedToCart = computed(
     () => this.isAddedManually() || this.product().inCart
   );
-  customQuantity = signal<number | null>(null);
-  quantity = computed(
-    () => this.customQuantity() || this.product().cartQuantity || 1
-  );
+  // quantity = computed(
+  //   () => this.customQuantity() || this.product().cartQuantity || 1
+  // );
+  quantity = linkedSignal(() => this.product().cartQuantity || 1);
   className = input<string>();
   additionalClasses = input<string>('');
   get isLoggedIn() {
@@ -115,7 +116,7 @@ export class CartButtonComponent {
         console.log('Updated quantity in cart', response);
         this.isLoading.set(false);
         this.product().quantity = quantity; // Update the product's quantity
-        this.customQuantity.set(quantity); // Update the custom quantity signal
+        this.quantity.set(quantity); // Update the custom quantity signal
       },
       error: (error) => {
         console.error('Error updating quantity in cart', error);
@@ -134,12 +135,12 @@ export class CartButtonComponent {
 
   increaseQuantity() {
     const newQuantity =
-      (this.customQuantity() || this.product().cartQuantity || 0) + 1;
+      (this.quantity() ?? this.product().cartQuantity ?? 0) + 1;
     this.onQuantityChange(newQuantity);
   }
   decreaseQuantity() {
     const newQuantity =
-      (this.customQuantity() || this.product().cartQuantity || 0) - 1;
+      (this.quantity() ?? this.product().cartQuantity ?? 0) - 1;
     if (newQuantity <= 0) {
       this.removeFromCart();
     } else {
