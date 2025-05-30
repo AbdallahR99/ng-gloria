@@ -26,7 +26,7 @@ jobs:
         run: pnpm install
 
       - name: Build SSR project
-        run: pnpm run build:ssr
+        run: pnpm run build
 
       - name: Deploy full dist/ng-gloria folder via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
