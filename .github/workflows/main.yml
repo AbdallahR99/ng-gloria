@@ -36,7 +36,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftp
           port: 21
-          local-dir: dist/ng-gloria
+          local-dir: dist/ng-gloria/
           server-dir: /
           dangerous-clean-slate: true
           exclude: |
