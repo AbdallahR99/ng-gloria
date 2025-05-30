@@ -134,6 +134,7 @@ export class InvoicesCreateComponent {
   }
 
   addManualProduct() {
+    this.manualProductQuantity.update((val) => val ?? 1); // Ensure quantity is at least 1
     if (!this.isManualProductValid()) return;
 
     const existingIndex = this.products()?.findIndex(
@@ -154,7 +155,7 @@ export class InvoicesCreateComponent {
       const newProduct: InvoiceProduct = {
         name: this.manualProductName(),
         sku: this.manualProductSku(),
-        quantity: this.manualProductQuantity(),
+        quantity: this.manualProductQuantity() ?? 1,
         price: this.manualProductPrice(),
         oldPrice: this.manualProductOldPrice() || undefined,
       };
@@ -174,12 +175,13 @@ export class InvoicesCreateComponent {
   }
 
   isManualProductValid = computed(() => {
-    return (
-      (this.manualProductName() ?? '').trim().length > 0 &&
-      (this.manualProductSku() ?? '')?.trim().length > 0 &&
-      (this.manualProductPrice() ?? 0) > 0 &&
-      (this.manualProductQuantity() ?? 0) > 0
-    );
+    return (this.manualProductSku() ?? '').trim().length > 0;
+    // return (
+    //   (this.manualProductName() ?? '').trim().length > 0 &&
+    //   (this.manualProductSku() ?? '')?.trim().length > 0 &&
+    //   (this.manualProductPrice() ?? 0) > 0 &&
+    //   (this.manualProductQuantity() ?? 0) > 0
+    // );
   });
 
   switchProductEntryMode(mode: 'search' | 'manual') {

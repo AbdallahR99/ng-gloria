@@ -1,3 +1,15 @@
 :host {
   display: block;
 }
+
+// Hide action buttons when printing using the print() function
+@media print {
+  .print-hide {
+    display: none !important;
+  }
+
+  .invoice-pdf-content {
+    margin: 0;
+    padding: 0;
+  }
+}

@@ -136,7 +136,7 @@ export const routes: Routes = [
   },
   {
     title: 'Invoices',
-    canActivate: [authGuard],
+    // canActivate: [authGuard],
     path: APP_ROUTES.Invoices.substring(1),
 
     loadComponent: () =>
@@ -146,7 +146,7 @@ export const routes: Routes = [
   },
   {
     title: 'Invoice Details',
-    canActivate: [authGuard],
+    // canActivate: [authGuard],
     path: `${APP_ROUTES.InvoiceDetails.substring(1)}/:invoiceCode`,
     loadComponent: () =>
       import('./pages/invoices/invoice-view/invoice-view.component').then(
@@ -158,7 +158,7 @@ export const routes: Routes = [
   },
   {
     title: 'Create Invoice',
-    canActivate: [authGuard],
+    // canActivate: [authGuard],
     path: APP_ROUTES.InvoicesCreate.substring(1),
     loadComponent: () =>
       import('./pages/invoices/invoices-create/invoices-create.component').then(
