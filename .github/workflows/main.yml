@@ -1,10 +1,10 @@
-name: Deploy Angular SSR to Plesk (FTP)
+name: Deploy Angular SSR to Plesk (FTP with pnpm)
 
 on:
   push:
     branches:
-      - master  
-  workflow_dispatch:
+      - master  # 🟢 Updated from 'main' to 'master'
+  workflow_dispatch:  # 🟢 Add manual trigger
 
 jobs:
   build-and-deploy:
@@ -17,13 +17,16 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'  # Adjust to match your project
+          node-version: '20'
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies with pnpm
+        run: pnpm install
 
       - name: Build SSR project
-        run: npm run build:ssr
+        run: pnpm run build:ssr
 
       - name: Deploy full dist/ng-gloria folder via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -33,9 +36,9 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftp
           port: 21
-          local-dir: dist/ng-gloria  # 🟢 Upload the entire dist/ng-gloria folder
-          server-dir: /              # 🟢 Replace everything at the server root
-          dangerous-clean-slate: true  # 🔥 Remove EVERYTHING before uploading
+          local-dir: dist/ng-gloria
+          server-dir: /
+          dangerous-clean-slate: true
           exclude: |
             **/.git*
             **/node_modules/**
