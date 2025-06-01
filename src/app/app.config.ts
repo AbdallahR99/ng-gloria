@@ -2,39 +2,43 @@ import {
   ApplicationConfig,
   inject,
   provideAppInitializer,
+  provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection,
+  provideZonelessChangeDetection,
 } from '@angular/core';
 import {
   provideRouter,
   withComponentInputBinding,
   withInMemoryScrolling,
-  withViewTransitions,
 } from '@angular/router';
 
 import { routes } from './app.routes';
 import {
   provideClientHydration,
   withEventReplay,
+  withIncrementalHydration,
 } from '@angular/platform-browser';
-import { provideClientTranslatorModule } from '@core/shared/modules/translator/translator.module';
 import { provideHttpClient, withFetch } from '@angular/common/http';
-import { IconService } from './core/services/utils/icon.service';
 import { MatIconModule } from '@angular/material/icon';
-import { TranslatorService } from './core/services/translate/translator.service';
-import { AuthService } from './core/services/repository/auth.service';
+import { AuthService } from '@core/services/repository/auth.service';
+import { TranslatorService } from '@core/services/translate/translator.service';
+import { IconService } from '@core/services/utils/icon.service';
+import { provideClientTranslatorModule } from '@core/shared/modules/translator/translator.module';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideBrowserGlobalErrorListeners(),
+    // provideZoneChangeDetection({ eventCoalescing: true }),
+
+    provideZonelessChangeDetection(),
     provideRouter(
       routes,
       withComponentInputBinding(),
       withInMemoryScrolling({ scrollPositionRestoration: 'top' })
-      // withViewTransitions()
     ),
-    // provideClientHydration(withEventReplay()),
-    provideClientTranslatorModule(),
+    // provideClientHydration(withEventReplay(), withIncrementalHydration()),
     provideHttpClient(withFetch()),
+    provideClientTranslatorModule(),
     MatIconModule,
     provideAppInitializer(() => {
       inject(IconService).registerIcons();

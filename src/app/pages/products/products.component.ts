@@ -37,19 +37,19 @@ export class ProductsComponent {
     return this.facadeService.translatorService.isEn;
   }
   categories = rxResource({
-    loader: ({ request }) => {
+    stream: ({ params }) => {
       return this.facadeService.categoryService.get();
     },
   });
   products = rxResource({
-    request: () =>
+    params: () =>
       ({
         name: this.queryString(),
         categorySlug: this.categorySlug(),
       } as Partial<ProductQuery>),
 
-    loader: ({ request }) => {
-      return this.facadeService.productsService.filter(request);
+    stream: ({ params }) => {
+      return this.facadeService.productsService.filter(params);
     },
   });
 

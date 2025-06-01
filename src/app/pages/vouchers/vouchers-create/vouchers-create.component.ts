@@ -63,7 +63,7 @@ export class VouchersCreateComponent {
     this.success.set('');
 
     try {
-      const request: CreateVoucherRequest = {
+      const params: CreateVoucherRequest = {
         voucherCode: this.voucherCodeInput()?.trim() || undefined,
         userName: this.userNameInput()?.trim() || undefined,
         userEmail: this.userEmailInput()?.trim() || undefined,
@@ -72,7 +72,7 @@ export class VouchersCreateComponent {
       };
 
       const response = await firstValueFrom(
-        this.facadeService.vouchersService.create(request)
+        this.facadeService.vouchersService.create(params)
       );
 
       this.success.set('Voucher created successfully!');

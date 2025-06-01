@@ -40,9 +40,9 @@ export class OrdersComponent {
 
   // Orders data resource
   orders = rxResource({
-    request: () => this.filters(),
-    loader: ({ request }) => {
-      return this.facadeService.ordersService.list(request);
+    params: () => this.filters(),
+    stream: ({ params }) => {
+      return this.facadeService.ordersService.list(params);
     },
   });
 

@@ -1,7 +1,7 @@
 {
   "github.copilot.chat.codeGeneration.instructions": [
     {
-      "file": "./.vscode/daisyui.md"
+      "file": "./.github/copilot-instructions.md"
     }
   ],
   "tailwindCSS.experimental.configFile": "public/styles/tailwind.scss",

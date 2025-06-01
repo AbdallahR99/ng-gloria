@@ -1,6 +1,6 @@
 import { PlatformService } from './../platform/platform.service';
-import { DOCUMENT } from '@angular/common';
-import { EventEmitter, inject, Injectable } from '@angular/core';
+
+import { EventEmitter, inject, Injectable, DOCUMENT } from '@angular/core';
 import { APP_SETTINGS } from '@app/core/constants/app-settings.constants';
 import { LocalStorageKeys } from '@app/core/constants/local_storage';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';

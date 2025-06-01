@@ -30,7 +30,7 @@ export class FavoritesComponent {
   }
 
   favorites = rxResource({
-    loader: () => this.facadeService.favoritesService.get(),
+    stream: () => this.facadeService.favoritesService.get(),
   });
 
   removeFavorite(product: Product) {

@@ -37,13 +37,13 @@ export class CartComponent {
   }
 
   cartItems = rxResource({
-    loader: () => {
+    stream: () => {
       return this.facadeService.cartService.get();
     },
   });
 
   cartSummary = rxResource({
-    loader: () => {
+    stream: () => {
       return this.facadeService.cartService.summary();
     },
   });

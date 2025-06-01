@@ -51,9 +51,9 @@ export class VouchersComponent {
 
   // Vouchers data resource
   vouchers = rxResource({
-    request: () => this.filters(),
-    loader: ({ request }) => {
-      return this.facadeService.vouchersService.list(request);
+    params: () => this.filters(),
+    stream: ({ params }) => {
+      return this.facadeService.vouchersService.list(params);
     },
   });
 
@@ -199,9 +199,9 @@ export class VouchersComponent {
         next: () => {
           // Refresh the vouchers list after successful deletion
           this.vouchers = rxResource({
-            request: () => this.filters(),
-            loader: ({ request }) => {
-              return this.facadeService.vouchersService.list(request);
+            params: () => this.filters(),
+            stream: ({ params }) => {
+              return this.facadeService.vouchersService.list(params);
             },
           });
         },

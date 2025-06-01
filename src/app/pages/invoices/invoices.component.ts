@@ -51,9 +51,9 @@ export class InvoicesComponent {
 
   // Invoices data resource
   invoices = rxResource({
-    request: () => this.filters(),
-    loader: ({ request }) => {
-      return this.facadeService.invoicesService.list(request);
+    params: () => this.filters(),
+    stream: ({ params }) => {
+      return this.facadeService.invoicesService.list(params);
     },
   });
 

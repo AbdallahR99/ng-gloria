@@ -19,11 +19,11 @@ export class CartService {
   private readonly endpoint = 'cart';
 
   cartCount = rxResource({
-    request: () => ({
+    params: () => ({
       isAuth: this.authService.isLoggedIn(),
     }),
-    loader: ({ request }) => {
-      if (!request.isAuth) {
+    stream: ({ params }) => {
+      if (!params.isAuth) {
         return of(0);
       }
       return this.count().pipe(map((count) => count.count || 0));
