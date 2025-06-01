@@ -511,6 +511,8 @@
     <div class="py-3">
       <div class="w-full border-b border-gray-200 max-md:hidden"></div>
     </div>
+
+    @defer (hydrate on viewport) {
     <div class="flex flex-col gap-3  max-w-[1000px] mx-auto">
       @for (comment of comments.value(); track comment.id) {
       <div class="flex bg-white border rounded p-3 gap-3">
@@ -563,6 +565,8 @@
       </div>
       }
     </div>
+    }
+
   </div>
 </section>
 }

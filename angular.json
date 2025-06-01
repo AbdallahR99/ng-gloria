@@ -1,10 +1,10 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
+  "newProjectRoot": "projects",
   "cli": {
     "packageManager": "pnpm"
   },
-  "newProjectRoot": "projects",
   "projects": {
     "ng-gloria": {
       "projectType": "application",
@@ -20,31 +20,30 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "outputPath": "dist/ng-gloria",
-            "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+               "src/favicon.ico",
+              "src/robots.txt",
+              "src/assets",
+              "src/llms.txt",
+              "src/llms-full.txt"
             ],
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": [],
             "stylePreprocessorOptions": {
               "includePaths": [
                 "public/styles"
               ]
             },
             "server": "src/main.server.ts",
-            "prerender": true,
+            "outputMode": "server",
             "ssr": {
               "entry": "src/server.ts"
             }
@@ -97,22 +96,22 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/favicon.ico",
+              "src/robots.txt",
+              "src/assets",
+              "src/llms.txt",
+              "src/llms-full.txt"
             ],
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": [],
             "stylePreprocessorOptions": {
               "includePaths": [
                 "public/styles"
@@ -121,32 +120,6 @@
           }
         }
       }
-    }
-  },
-  "schematics": {
-    "@schematics/angular:component": {
-      "type": "component"
-    },
-    "@schematics/angular:directive": {
-      "type": "directive"
-    },
-    "@schematics/angular:service": {
-      "type": "service"
-    },
-    "@schematics/angular:guard": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:interceptor": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:module": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:pipe": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:resolver": {
-      "typeSeparator": "."
     }
   }
 }

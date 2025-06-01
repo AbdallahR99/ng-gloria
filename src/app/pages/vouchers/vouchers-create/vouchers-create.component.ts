@@ -72,7 +72,7 @@ export class VouchersCreateComponent {
       };
 
       const response = await firstValueFrom(
-        this.facadeService.vouchersService.create(request)
+        this.facadeService.vouchersService.create(params)
       );
 
       this.success.set('Voucher created successfully!');

@@ -3,31 +3,30 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@app/*": [
-        "src/app/*"
-      ],
-      "@assets/*": [
-        "src/assets/*"
-      ],
-      "@core/*": [
-        "src/app/core/*"
-      ],
-      "@environments/*": [
-        "src/environments/*"
-      ],
-      "@pages/*": [
-        "src/app/*"
-      ],
-      "@server/*": [
-        "src/app/server/*"
-      ],
-       "@public/*": [
-        "public/*"
-      ]
-    },
-    "outDir": "./dist/out-tsc",
+     "baseUrl": ".",
+  "paths": {
+    "@app/*": [
+      "src/app/*"
+    ],
+    "@assets/*": [
+      "src/assets/*"
+    ],
+    "@core/*": [
+      "src/app/core/*"
+    ],
+    "@environments/*": [
+      "src/environments/*"
+    ],
+    "@pages/*": [
+      "src/app/*"
+    ],
+    "@server/*": [
+      "src/app/server/*"
+    ],
+      "@public/*": [
+      "public/*"
+    ]
+  },
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
@@ -35,18 +34,25 @@
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "isolatedModules": true,
-    "esModuleInterop": true,
-    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
-    "module": "ES2022"
+    "module": "preserve"
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
+    "typeCheckHostBindings": true,
     "strictTemplates": true
-  }
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
 }

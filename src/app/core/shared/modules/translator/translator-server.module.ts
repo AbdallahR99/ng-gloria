@@ -13,7 +13,7 @@ export const provideServerTranslatorModule = () =>
     TranslateModule.forRoot({
       isolate: true,
       defaultLanguage: APP_SETTINGS.defaultLanguage,
-      stream: {
+      loader: {
         provide: TranslateLoader,
         useFactory: translateServerLoaderFactory,
         deps: [TransferState, PlatformService],
