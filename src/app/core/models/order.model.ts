@@ -3,15 +3,15 @@ import { Address } from './address.model';
 import { Product } from './product.model';
 
 export interface Order {
-  id?: number; // ID of the order
-  orderCode?: string; // Unique order code
-  status?: OrderStatus; // Status of the order (e.g., pending, completed)
+  id?: number; // ID of the order (optional for new orders)
+  orderCode: string; // Unique order code
+  status: OrderStatus; // Status of the order (e.g., pending, completed)
   note?: string; // Optional note for the order
   userNote?: string; // Note from the user
-  totalPrice?: number; // Total price of the order
+  totalPrice: number; // Total price of the order
   createdAt?: string; // Timestamp of order creation
-  address?: Address; // Address associated with the order
-  items?: OrderItem[]; // Items in the order
+  address: Address; // Address associated with the order
+  items: OrderItem[]; // Items in the order
 }
 
 export interface OrderItem {
