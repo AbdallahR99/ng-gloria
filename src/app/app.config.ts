@@ -1,6 +1,5 @@
 import {
   ApplicationConfig,
-  inject,
   provideAppInitializer,
   provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection,
@@ -20,9 +19,7 @@ import {
 } from '@angular/platform-browser';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { MatIconModule } from '@angular/material/icon';
-import { AuthService } from '@core/services/repository/auth.service';
-import { TranslatorService } from '@core/services/translate/translator.service';
-import { IconService } from '@core/services/utils/icon.service';
+import { AppInitializerService } from '@core/services/app-initializer.service';
 import { provideClientTranslatorModule } from '@core/shared/modules/translator/translator.module';
 
 export const appConfig: ApplicationConfig = {
@@ -40,10 +37,8 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch()),
     provideClientTranslatorModule(),
     MatIconModule,
-    provideAppInitializer(() => {
-      inject(IconService).registerIcons();
-      inject(TranslatorService).setCurrentLang();
-      inject(AuthService).init();
-    }),
+    provideAppInitializer((initService: AppInitializerService) => {
+      return () => initService.initialize();
+    }, [AppInitializerService]),
   ],
 };
