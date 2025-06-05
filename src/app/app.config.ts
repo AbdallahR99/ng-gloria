@@ -36,7 +36,7 @@ export const appConfig: ApplicationConfig = {
       withComponentInputBinding(),
       withInMemoryScrolling({ scrollPositionRestoration: 'top' })
     ),
-    // provideClientHydration(withEventReplay(), withIncrementalHydration()),
+    provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch()),
     provideClientTranslatorModule(),
     MatIconModule,
