@@ -52,7 +52,7 @@
             </p>
           </div>
           <div class="flex-1 flex justify-end items-start">
-            <img [src]="imagePath + inspiredBy.image" alt="inspired by"
+            <img [src]="inspiredBy.image | supabaseImage:'inspired-products'" alt="inspired by"
               class="w-16 h-16 object-contain bg-neutral-content rounded-md">
           </div>
         </div>
@@ -154,7 +154,7 @@
     <div class="flex-1 __product_images max-md:order-first">
       <div class="flex max-lg:flex-col gap-2">
         <div class="flex-1 h-full">
-          <img [src]="imagePath +  currentImage()" alt="product image"
+          <img [src]="currentImage() | supabaseImage:'products'" alt="product image"
             class="w-full min-h-[20rem] max-h-[28rem] bg-primary/5 h-full object-contain  rounded-md">
         </div>
         <div class="flex lg:flex-col gap-2 overflow-x-auto mx-auto">
@@ -163,7 +163,7 @@
           <figure (click)="setImage($index)"
             [ngClass]="$index == currentImageIndex() ? 'border-primary/40' : 'border-gray-200'"
             class="aspect-square trains hover:border transition-color border hover:border-primary/40 cursor-pointer rounded-md flex items-center justify-center bg-gray-100 h-18">
-            <img [src]="imagePath + image" alt="product image" class="h-full object-contain aspect-square" />
+            <img [src]="image | supabaseImage:'products'" alt="product image" class="h-full object-contain aspect-square" />
           </figure>
           }
         </div>
@@ -205,7 +205,7 @@
 
           </button>
           <figure class="aspect-square flex items-center justify-center bg-gray-100 p-1 max-h-[250px]">
-            <img [src]="imagePath + item?.thumbnail" alt="{{name}}" class="h-full object-contain aspect-square" />
+            <img [src]="item?.thumbnail | supabaseImage:'products'" alt="{{name}}" class="h-full object-contain aspect-square" />
           </figure>
           <div class="__card-body flex flex-col p-3">
 
@@ -275,7 +275,7 @@
       @let name = isEn ? item?.nameEn : item.nameAr;
       <div class="flex items-center pb-4 border-b border-gray-200 ">
         <input type="checkbox" checked="checked" class="checkbox checkbox-primary mr-3" />
-        <img [src]="imagePath + item?.thumbnail" alt="{{name}}" class="w-16 h-16 object-contain rounded-md mr-3" />
+        <img [src]="item?.thumbnail | supabaseImage:'products'" alt="{{name}}" class="w-16 h-16 object-contain rounded-md mr-3" />
         <div class="flex-1">
           <h4 class="text-sm font-medium mb-1">{{name}}</h4>
           <div class="text-sm flex justify-between">
@@ -336,7 +336,7 @@
           <mat-icon class="scale-75" svgIcon="heart" />
         </button>
         <figure class="aspect-square flex items-center justify-center bg-gray-100 p-1 max-h-[250px]">
-          <img [src]="imagePath + item.thumbnail" alt="{{name}}" class="h-full object-contain aspect-square" />
+          <img [src]="item.thumbnail | supabaseImage:'products'" alt="{{name}}" class="h-full object-contain aspect-square" />
         </figure>
         <div class="__card-body flex flex-col p-3">
 
@@ -555,7 +555,7 @@
           @if ((comment.images?.length ?? 0) > 0) {
           <div class="flex gap-2 mt-2 flex-wrap">
             @for (image of comment.images; track image) {
-            <img [src]="imagePath + image" alt="review image"
+            <img [src]="image | supabaseImage" alt="review image"
               class="w-16 h-16 object-contain bg-neutral-content rounded-md">
             }
           </div>

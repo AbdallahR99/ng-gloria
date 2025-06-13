@@ -20,7 +20,7 @@
           @let name = isEn ? item.nameEn : item.nameAr;
           <div class="flex items-center gap-4 p-3 bg-neutral-content/20 rounded-lg border border-primary/20">
             <figure class="flex-shrink-0">
-              <img [src]="imagePath + item.thumbnail" [alt]="name"
+              <img [src]="item.thumbnail | supabaseImage:'products'" [alt]="name"
                 class="w-16 h-16 object-cover rounded-lg shadow-sm border border-primary/40">
             </figure>
 

@@ -127,7 +127,7 @@
               <li>
                 <a (click)="addProduct(product)" class="flex items-center gap-3">
                   @if (product.thumbnail) {
-                  <img [src]="imagePath + product.thumbnail" [alt]="product.nameEn" class="w-10 h-10 rounded" />
+                  <img [src]="product.thumbnail | supabaseImage:'products'" [alt]="product.nameEn" class="w-10 h-10 rounded" />
                   }
                   <div class="flex-1">
                     <div class="font-medium">{{ product.nameEn }}</div>

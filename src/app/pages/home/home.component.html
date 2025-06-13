@@ -23,7 +23,7 @@
         <div class="avatar card-app ">
           <div
             class="w-20 h-20 md:h-24 md:w-24  group-hover:shadow-md shadow-gray-300/50 transition-shadow rounded-full border border-gray-300 bg-gray-100 overflow-hidden">
-            <img [src]="imagePath + item.image" alt="{{name}}" class="object-contain w-full h-full" />
+            <img [src]="item.image  | supabaseImage:'categories'" alt="{{name}}" class="object-contain w-full h-full" />
           </div>
         </div>
         <span class="mt-2 text-sm font-medium group-hover:text-secondary transition-colors">{{name}}</span>
@@ -358,7 +358,7 @@
         [product]="item" />
 
       <figure class="aspect-square flex items-center justify-center bg-gray-100 p-1 max-h-[250px]">
-        <img [src]="imagePath +  item.thumbnail" alt="{{name}}" class="h-full object-contain aspect-square" />
+        <img [src]="item.thumbnail | supabaseImage:'products'" alt="{{name}}" class="h-full object-contain aspect-square" />
       </figure>
       <div class="__card-body flex-1 flex flex-col p-3">
 

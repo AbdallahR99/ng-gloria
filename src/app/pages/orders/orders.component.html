@@ -145,7 +145,7 @@
           @let name = isEn ? item.product.nameEn : item.product.nameAr;
           <div class="flex items-center gap-2 min-w-0 flex-1">
             @if (item.product.thumbnail) {
-            <img [src]="imagePath + item.product.thumbnail" [alt]="name"
+            <img [src]="item.product.thumbnail | supabaseImage:'products'" [alt]="name"
               class="w-12 h-12 object-cover rounded border border-primary/20 flex-shrink-0">
             }
             <div class="min-w-0 flex-1">
