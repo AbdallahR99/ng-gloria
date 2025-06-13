@@ -25,7 +25,7 @@
               <div class="avatar">
                 <div class="w-12 h-12 rounded-full border-2 border-white/20">
                   @if (user()?.avatar) {
-                  <img [src]="imagePath + user()!.avatar" [alt]="user()!.firstName" />
+                  <img [src]="user()!.avatar | supabaseImage" [alt]="user()!.firstName" />
                   } @else {
                   <div class="bg-white/20 w-full h-full flex items-center justify-center">
                     <span class="text-lg font-bold">{{user()?.firstName?.charAt(0) || 'U'}}</span>

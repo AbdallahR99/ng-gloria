@@ -170,7 +170,7 @@
         <!-- Product Image -->
         @if (item.product.thumbnail) {
         <div class="flex-shrink-0">
-          <img [src]="imagePath + item.product.thumbnail" [alt]="name"
+          <img [src]="item.product.thumbnail  | supabaseImage:'products'" [alt]="name"
             class="w-20 h-20 object-cover rounded-lg border border-primary/10">
         </div>
         }

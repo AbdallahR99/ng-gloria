@@ -18,7 +18,7 @@
     <div class="flex items-center gap-4 p-4 bg-base-200 rounded-lg">
       <div class="avatar">
         <div class="w-16 h-16 rounded-lg">
-          <img [src]="imagePath + product().thumbnail" [alt]="product().nameEn" class="object-cover" />
+          <img [src]="product().thumbnail | supabaseImage:'products'" [alt]="product().nameEn" class="object-cover" />
         </div>
       </div>
       <div>

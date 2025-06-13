@@ -22,7 +22,7 @@
         <div class="avatar">
           <div class="w-24 h-24 rounded-full border-4 border-primary/20">
             @if (user()?.avatar) {
-            <img [src]="imagePath + user()!.avatar" [alt]="user()!.firstName" />
+            <img [src]="user()!.avatar | supabaseImage" [alt]="user()!.firstName" />
             } @else {
             <div class="bg-primary/10 w-full h-full flex items-center justify-center">
               <span class="text-2xl font-bold text-primary">{{user()?.firstName?.charAt(0) || 'U'}}</span>
