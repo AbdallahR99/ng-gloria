@@ -21,6 +21,7 @@
       <a [routerLink]="appRoutes.PRODUCTS" [queryParams]="{category: item.slug}"
         class="group flex flex-col items-center text-center ">
         <div class="avatar card-app ">
+
           <div
             class="w-20 h-20 md:h-24 md:w-24  group-hover:shadow-md shadow-gray-300/50 transition-shadow rounded-full border border-gray-300 bg-gray-100 overflow-hidden">
             <img [src]="item.image  | supabaseImage:'categories'" alt="{{name}}" class="object-contain w-full h-full" />
