@@ -352,6 +352,7 @@
 
 <ng-template #productCard let-item>
   @let name = isEn ? item.nameEn : item.nameAr;
+
   <a [routerLink]="[appRoutes.PRODUCT_DETAILS, item.slug]">
     <div
       class="__product_card hover:shadow-md h-full shadow-gray-300/50 cursor-pointer transition-shadow rounded-lg relative border border-gray-200 flex flex-col">
@@ -359,7 +360,8 @@
         [product]="item" />
 
       <figure class="aspect-square flex items-center justify-center bg-gray-100 p-1 max-h-[250px]">
-        <img [src]="item.thumbnail | supabaseImage:'products'" alt="{{name}}" class="h-full object-contain aspect-square" />
+        <img [src]="item.thumbnail | supabaseImage:'products'" alt="{{name}}"
+          class="h-full object-contain aspect-square" />
       </figure>
       <div class="__card-body flex-1 flex flex-col p-3">
 
