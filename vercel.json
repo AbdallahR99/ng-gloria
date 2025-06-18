@@ -1,8 +1,36 @@
     {
-      "rewrites": [
-        {
-          "source": "/(.*)",
-          "destination": "/index.html"
-        }
-      ]
+        "version": 2,
+        "public": true,
+        "devCommand": "node dist/ng-gloria/server/server.mjs",
+        "rewrites": [
+            {
+                "source": "/(.*)",
+                "destination": "/api"
+            }
+        ],
+        "functions": {
+            "api/index.js": {
+                "includeFiles": "dist/ng-gloria/browser/**"
+            }
+        },
+        "headers": [
+            {
+                "source": "/(.*).js",
+                "headers": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/javascript"
+                    }
+                ]
+            },
+            {
+                "source": "/(.*).mjs",
+                "headers": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/javascript"
+                    }
+                ]
+            }
+        ]
     }
