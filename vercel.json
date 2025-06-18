@@ -3,16 +3,11 @@
     "public": true,
     "devCommand": "node dist/ng-gloria/server/server.mjs",
     "rewrites": [
-        {
-            "source": "/(.*)",
-            "destination": "/api"
-        }
-    ],
-    "functions": {
-        "api/index.js": {
-            "includeFiles": "dist/ng-gloria/browser/**"
-        }
-    },
+       {
+         "source": "/(.*)",
+         "destination": "/index.csr.html"
+       }
+     ],
     "headers": [
         {
             "source": "/(.*).js",
